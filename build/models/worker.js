@@ -21,6 +21,10 @@ const workerSchema = new Schema({
     },
     userToken: {
         type: String || null
+    },
+    authorization: {
+        type: Schema.Types.ObjectId,
+        ref: 'Auth'
     }
 });
 export default model("Worker", workerSchema);

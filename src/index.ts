@@ -42,7 +42,6 @@ const apolloServer = new ApolloServer<IUserContext>({
   plugins: [ApolloServerPluginDrainHttpServer({ httpServer })]
 });
 await apolloServer.start();
-
 // MIDDLEWARE
 app.use(
   '/gql',
@@ -53,13 +52,13 @@ app.use(
     preflightContinue: false,
     optionsSuccessStatus: 204,
   }),
-  express.json(),
   expressMiddleware(apolloServer),
 )
+app.use(express.json());
 app.use(cookieParser());
 app.use('/api/auth', authRoutes);
 
 
-await new Promise<void>(resolve => httpServer.listen({ port: 9000 }, resolve));
+await new Promise<void>(resolve => httpServer.listen({ port: PORT }, resolve));
 console.log(`🚀 Server connected at http://localhost:${PORT} - YES!`);
 

@@ -37,8 +37,9 @@ app.use('/gql', cors({
     methods: "GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS",
     preflightContinue: false,
     optionsSuccessStatus: 204,
-}), express.json(), expressMiddleware(apolloServer));
+}), expressMiddleware(apolloServer));
+app.use(express.json());
 app.use(cookieParser());
 app.use('/api/auth', authRoutes);
-await new Promise(resolve => httpServer.listen({ port: 9000 }, resolve));
+await new Promise(resolve => httpServer.listen({ port: PORT }, resolve));
 console.log(`🚀 Server connected at http://localhost:${PORT} - YES!`);

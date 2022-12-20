@@ -30,6 +30,7 @@ export interface IAuth {
   password: string;
   user: Types.ObjectId;
   active: boolean;
+  userToken: string;
 }
 
 export interface IWorker {
@@ -39,6 +40,7 @@ export interface IWorker {
   last4SSN: string;
   class: string;
   userToken: string | null;
+  authorization: Types.ObjectId;
 }
 
 export interface IWorkType {

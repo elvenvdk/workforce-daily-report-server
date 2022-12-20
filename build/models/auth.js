@@ -12,6 +12,9 @@ const authSchema = new Schema({
     },
     active: {
         type: Boolean
+    },
+    userToken: {
+        type: String
     }
 });
 export default model('Auth', authSchema);

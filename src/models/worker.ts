@@ -24,6 +24,10 @@ const workerSchema = new Schema<IWorker>({
   },
   userToken: {
     type: String || null
+  },
+  authorization: {
+    type: Schema.Types.ObjectId,
+    ref: 'Auth'
   }
 });
 

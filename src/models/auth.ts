@@ -14,6 +14,9 @@ const authSchema = new Schema<IAuth>({
   },
   active: {
     type: Boolean
+  },
+  userToken: {
+    type: String
   }
 })
 
