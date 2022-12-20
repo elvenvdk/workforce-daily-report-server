@@ -31,7 +31,7 @@ const apolloServer = new ApolloServer({
 });
 await apolloServer.start();
 // MIDDLEWARE
-app.use('/gql', cors({
+app.use('/gql', express.json(), cors({
     origin: ['http://localhost:3000', 'https://studio.apollographql.com'],
     credentials: true,
     methods: "GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS",
