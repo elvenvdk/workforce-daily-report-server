@@ -16,11 +16,6 @@ export const registerUser = async (req: TypedRequestBody<RegisterUserType>, res:
     if (userName === "" || password === "") {
       res.status(400).json({ msg: "Username and Password Are Required" });
     }
-    console.log("NEW USER: ", {
-      userName,
-      password,
-      user,
-    });
     // Check if user exists
     const existingUser = await Worker.findOne({
       _id: user,
@@ -77,31 +72,56 @@ export const login = async (req: TypedRequestBody<RegisterUserType>, res: TypedR
   try {
     const { userName, password } = req.body;
     if (!userName || !password) {
-      res.status(404).json({ msg: "Username and Password Are Required" });
+      return res.status(404).json({ msg: "Username and Password Are Required" });
     }
+    // const verified = await verifyPassword(password, userAuth.password)
+    // if (!verified) {
+    //   return res.status(404).json({ msg: "Username or Password not recognized" });
+    // }
     const userAuth = await Auth.findOne({ userName });
-    if (userAuth && (await verifyPassword(password, userAuth.password))) {
+    if (userAuth) {
+      console.log("USER AUTH: ", userAuth);
+      const verifiedPassword = await verifyPassword(password, userAuth.password);
+      console.log("VERIFIED PASSWORD", verifiedPassword);
       // Get user info
       const verifiedUser = await Worker.findOne({ id: userAuth.user });
+      console.log("VERIFIED USER: ", verifiedUser.id);
       if (verifiedUser) {
         // Mark user as active
-        userAuth.active = true;
         // Create token
-        const token = jwt.sign({ userId: verifiedUser._id, class: verifiedUser.class }, `${process.env.TOKEN_KEY}`);
-        verifiedUser.userToken = token;
-        const user = {
-          firstName: verifiedUser.firstName,
-          lastName: verifiedUser.lastName,
-          middleInitial: verifiedUser.middleInitial ? verifiedUser.middleInitial : null,
-          class: verifiedUser.class,
-          userToken: verifiedUser.userToken,
-        };
-        res.cookie("user", user);
+        jwt.sign({ userId: verifiedUser.id, level: 1 }, `${process.env.TOKEN_KEY}`, { algorithm: "HS256" }, async (err, userToken) => {
+          if (err) {
+            console.log("TOKEN ERROR: ", err);
+            return res.status(400).json({ msg: err.message });
+          } else {
+            await Worker.findOneAndUpdate(
+              {
+                id: verifiedUser.id,
+              },
+              {
+                $set: {
+                  active: true,
+                  userToken,
+                },
+              }
+            );
+            const user = {
+              firstName: verifiedUser.firstName,
+              lastName: verifiedUser.lastName,
+              middleInitial: verifiedUser.middleInitial ? verifiedUser.middleInitial : null,
+              class: verifiedUser.class,
+              userToken: verifiedUser.userToken,
+            };
+            console.log('THE USER: ', user);
+            // res.send(user);
+            res.cookie("user", user);
+          }
+        });
       } else {
-        res.status(400).json({ msg: "Unable to verifiy user" });
+        return res.status(404).json({ msg: "Username or Password not recognized" });
       }
     } else {
-      res.status(401).json({ msg: "Cannot authenicate" });
+      return res.status(401).json({ msg: "Cannot authenicate" });
     }
   } catch (error) {
     console.log(error);
