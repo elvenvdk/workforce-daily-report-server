@@ -28,6 +28,8 @@
   },
   "dependencies": {
     "@apollo/server": "^4.3.0",
+    "@types/axios": "^0.14.0",
+    "axios": "^1.2.1",
     "bcryptjs": "^2.4.3",
     "cookie-parser": "^1.4.6",
     "cors": "^2.8.5",

@@ -57,8 +57,10 @@ app.use(
 )
 app.use(express.json());
 app.use(cookieParser());
-app.use('/api/auth', authRoutes);
-
+app.use('/api/auth', authRoutes, cors<cors.CorsRequest>({
+  origin: ['http://localhost:3000', 'https://studio.apollographql.com'],
+  optionsSuccessStatus: 204,
+}));
 
 await new Promise<void>(resolve => httpServer.listen({ port: PORT }, resolve));
 console.log(`🚀 Server connected at http://localhost:${PORT} - YES!`);

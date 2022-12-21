@@ -80,12 +80,12 @@ export const login = async (req: TypedRequestBody<RegisterUserType>, res: TypedR
     // }
     const userAuth = await Auth.findOne({ userName });
     if (userAuth) {
-      console.log("USER AUTH: ", userAuth);
       const verifiedPassword = await verifyPassword(password, userAuth.password);
-      console.log("VERIFIED PASSWORD", verifiedPassword);
       // Get user info
       const verifiedUser = await Worker.findOne({ id: userAuth.user });
-      console.log("VERIFIED USER: ", verifiedUser.id);
+      if (!verifiedPassword) {
+        return res.status(404).json({ msg: 'Username or Password Incorrect' });
+      }
       if (verifiedUser) {
         // Mark user as active
         // Create token
@@ -114,7 +114,7 @@ export const login = async (req: TypedRequestBody<RegisterUserType>, res: TypedR
             };
             console.log('THE USER: ', user);
             // res.send(user);
-            res.cookie("user", user);
+            res.cookie("user", user).send('Cookies successfully sent')
           }
         });
       } else {
