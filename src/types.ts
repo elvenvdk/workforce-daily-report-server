@@ -71,6 +71,8 @@ export interface ISiteEmployee {
   timeOutSignature: string;
   imageCapture: string;
   notes: string;
+  doubleTime: number;
+  doubletimeSignature: string
 }
 
 export type MaterialsType = {

@@ -92,6 +92,12 @@ const SigninSignoutSchema = new Schema<ISigninSignout>({
           type: String,
           // required: true,
         },
+        doubleTime: {
+          type: Number
+        },
+        doubletimeSignature: {
+          type: Number
+        },
         imageCapture: {
           type: String,
         },
