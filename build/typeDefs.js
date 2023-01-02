@@ -66,7 +66,7 @@ export const typeDefs = gql `
     location: String
     contractNo: String
     agency: Agency
-    laborTicketAvb: String
+    laborTicketAbv: String
     contractorRep: ContractorRep
     projectMgr: ProjectMgr
     siteEmployees: WorksiteEmployees
@@ -241,7 +241,7 @@ export const typeDefs = gql `
     location: String
     contractNo: String
     agencyId: String
-    laborTicketAvb: String
+    laborTicketAbv: String
     contractorRepId: String
     projectMgrId: String
   }
@@ -330,7 +330,7 @@ export const typeDefs = gql `
     contractStartDate: Date
     startDate: Date
     taskCompletionDate: Date
-    laborTicketAvb: String
+    laborTicketAbv: String
     jobName: String
     location: String
     workType: String
