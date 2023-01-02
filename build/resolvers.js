@@ -20,6 +20,17 @@ export const resolvers = {
             const newAgency = await Agency.create(agencyInput);
             return newAgency;
         },
+        updateAgency: async (_root, { input: updateAgency }) => {
+            const updatedAgency = await Agency.updateOne({
+                _id: updateAgency?.id
+            }, {
+                $set: {
+                    agencyName: updateAgency?.agencyName
+                }
+            });
+            console.log('UPDATED AGENCY: ', updatedAgency);
+            return updatedAgency;
+        },
         createChecklist: async (_root, { input: checklistInput }) => {
             console.log('CHECKLIST INPUT: ', checklistInput);
             const newChecklist = await new Checklist(checklistInput);
@@ -78,8 +89,12 @@ export const resolvers = {
         foreman: async (worksiteData) => await Worker.findById(worksiteData.foremanId),
     },
     Worker: {
+        // jobs: async (data: any) =>
+        //   await WorksiteEmployees.find({
+        //     foremanId: data._id,
+        //   }),
         jobs: async (data) => await WorksiteEmployees.find({
-            foremanId: data._id,
-        }),
+            employees: { _id: data._id }
+        })
     },
 };

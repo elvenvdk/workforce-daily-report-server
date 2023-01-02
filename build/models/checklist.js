@@ -11,6 +11,12 @@ const ChecklistSchema = new Schema({
             type: String
         }
     },
+    date: {
+        type: String
+    },
+    datePrepared: {
+        type: String
+    },
     location: {
         type: String
     },
@@ -37,13 +43,7 @@ const ChecklistSchema = new Schema({
     locationOfWork: {
         type: String
     },
-    date: {
-        type: Date
-    },
     preparedBy: {
-        type: String
-    },
-    datePrepared: {
         type: String
     },
     inspectorName: {

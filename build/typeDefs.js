@@ -10,10 +10,12 @@ export const typeDefs = gql `
     worker(id: ID!): Worker
     workers: [Worker]
     checklists: [Checklist]
+    foreman(id: ID!): Foreman
   }
 
   type Mutation {
     createAgency(input: CreateAgencyInput!): Agency
+    updateAgency(input: UpdateAgencyInput!): Agency
     createJob(input: CreateJobInput!): Job
     updateJob(input: UpdateJobInput!): Job
     deleteJob(input: ID!): Job
@@ -80,8 +82,9 @@ export const typeDefs = gql `
   }
 
   type Foreman {
-    id: ID!
-    employee: Worker
+    id: ID
+    self: Worker
+    worksites: [WorksiteEmployees]
   }
 
   type WorkType {
@@ -225,6 +228,11 @@ export const typeDefs = gql `
   }
 
   input CreateAgencyInput {
+    agencyName: String!
+  }
+
+  input UpdateAgencyInput {
+    id: ID!
     agencyName: String!
   }
 

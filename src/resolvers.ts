@@ -19,6 +19,8 @@ export const resolvers = {
 
     worker: async (_root: any, { id: workerId }: any) => await Worker.findById(workerId),
 
+
+
     worksiteEmployeesList: async () => await WorksiteEmployees.find(),
 
     worksiteEmployees: async (_root: any, { id: employeeId }: any) => await WorksiteEmployees.findById(employeeId),
@@ -28,6 +30,21 @@ export const resolvers = {
     createAgency: async (_root: any, { input: agencyInput }: any) => {
       const newAgency = await Agency.create(agencyInput);
       return newAgency;
+    },
+
+    updateAgency: async (_root: any, { input: updateAgency }: any) => {
+      const updatedAgency = await Agency.updateOne(
+        {
+          _id: updateAgency?.id
+        },
+        {
+          $set: {
+            agencyName: updateAgency?.agencyName
+          }
+        }
+      )
+      console.log('UPDATED AGENCY: ', updatedAgency);
+      return updatedAgency;
     },
 
     createChecklist: async (_root: any, { input: checklistInput }: any) => {
@@ -119,9 +136,13 @@ export const resolvers = {
   },
 
   Worker: {
-    jobs: async (data: any) =>
-      await WorksiteEmployees.find({
-        foremanId: data._id,
-      }),
+    // jobs: async (data: any) =>
+    //   await WorksiteEmployees.find({
+    //     foremanId: data._id,
+    //   }),
+    jobs: async (data: any) => await WorksiteEmployees.find({
+      employees: { _id: data._id }
+    })
   },
+
 };
