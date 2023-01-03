@@ -32,7 +32,7 @@ const JobSchema = new Schema({
     startDate: {
         type: Date
     },
-    taskCompletion: {
+    taskCompletionDate: {
         type: Date
     }
 });

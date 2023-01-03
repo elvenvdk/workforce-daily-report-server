@@ -144,7 +144,7 @@ export interface IJob {
   projectMgrId: Types.ObjectId;
   worksiteId: Types.ObjectId;
   startDate: Date;
-  taskCompletion: Date;
+  taskCompletionDate: Date;
 }
 
 export interface IContractRep {

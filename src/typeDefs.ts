@@ -245,6 +245,8 @@ export const typeDefs = gql`
     laborTicketAbv: String
     contractorRepId: String
     projectMgrId: String
+    startDate: Date
+    taskCompletionDate: Date
   }
 
   input UpdateJobInput {
@@ -256,6 +258,8 @@ export const typeDefs = gql`
     laborTicketAbv: String
     contractorRepId: String
     projectMgrId: String
+    startDate: Date
+    taskCompletionDate: Date
   }
 
   input CreateWorksiteEmployeesInput {

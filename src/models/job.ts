@@ -34,7 +34,7 @@ const JobSchema = new Schema<IJob>({
   startDate: {
     type: Date
   },
-  taskCompletion: {
+  taskCompletionDate: {
     type: Date
   }
 });

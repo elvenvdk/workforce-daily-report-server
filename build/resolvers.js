@@ -56,7 +56,10 @@ export const resolvers = {
             console.log(updatedSI);
             return updateSIInput;
         },
-        createJob: async (_root, { input: jobInput }) => await Job.create(jobInput),
+        createJob: async (_root, { input: jobInput }) => {
+            console.log('CREATE JOB INPUT: ', jobInput);
+            await Job.create(jobInput);
+        },
         updateJob: async (_root, { input: jobInput }) => await Job.updateOne({
             _id: jobInput.id,
         }, {
@@ -80,7 +83,7 @@ export const resolvers = {
         }),
     },
     Job: {
-        agency: async (job) => await Agency.findById(job.agencyId.toString()),
+        agency: async (job) => await Agency.findById(job.agencyId),
         siteEmployees: async (job) => await WorksiteEmployees.findById(job.worksiteId),
     },
     WorksiteEmployees: {
