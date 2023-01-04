@@ -28,21 +28,16 @@ export const resolvers = {
                     agencyName: updateAgency?.agencyName
                 }
             });
-            console.log('UPDATED AGENCY: ', updatedAgency);
             return updatedAgency;
         },
         createChecklist: async (_root, { input: checklistInput }) => {
-            console.log('CHECKLIST INPUT: ', checklistInput);
             const newChecklist = await new Checklist(checklistInput);
             await newChecklist.save();
-            console.log('NEW CHECKLIST: ', newChecklist);
             return newChecklist;
         },
         createSI: async (_root, { input: createSIInput }) => {
-            console.log(createSIInput);
             const newSI = new SigninSignout(createSIInput);
             await newSI.save();
-            console.log(newSI);
             return newSI;
         },
         updateSI: async (_root, { input: updateSIInput }) => {
@@ -53,7 +48,6 @@ export const resolvers = {
                     updateSIInput,
                 }
             });
-            console.log(updatedSI);
             return updateSIInput;
         },
         createJob: async (_root, { input: jobInput }) => {
@@ -67,6 +61,7 @@ export const resolvers = {
         }),
         deleteJob: async (_root, { input: id }) => await Job.deleteOne({ _id: id }),
         createWorker: async (_root, { input: createWorkerInput }) => {
+            console.log('CREATE WORKER INPUT: ', createWorkerInput);
             const newWorker = await Worker.create(createWorkerInput);
             return newWorker;
         },
