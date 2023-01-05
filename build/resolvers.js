@@ -51,7 +51,6 @@ export const resolvers = {
             return updateSIInput;
         },
         createJob: async (_root, { input: jobInput }) => {
-            console.log('CREATE JOB INPUT: ', jobInput);
             await Job.create(jobInput);
         },
         updateJob: async (_root, { input: jobInput }) => await Job.updateOne({
@@ -61,21 +60,24 @@ export const resolvers = {
         }),
         deleteJob: async (_root, { input: id }) => await Job.deleteOne({ _id: id }),
         createWorker: async (_root, { input: createWorkerInput }) => {
-            console.log('CREATE WORKER INPUT: ', createWorkerInput);
             const newWorker = await Worker.create(createWorkerInput);
             return newWorker;
         },
-        updateWorker: async (_root, { input: updateWorkerInput }) => await Worker.updateOne({
-            _id: updateWorkerInput.id,
-        }, {
-            $set: updateWorkerInput,
-        }),
+        updateWorker: async (_root, { input: updateWorkerInput }) => {
+            await Worker.updateOne({
+                _id: updateWorkerInput.id,
+            }, {
+                $set: updateWorkerInput,
+            });
+        },
         createWorksiteEmployees: async (_root, { input: employees }) => await WorksiteEmployees.create(employees),
-        updateWorksiteEmployees: async (_root, { input: employeeData }) => await WorksiteEmployees.updateOne({
-            _id: employeeData.id,
-        }, {
-            $set: employeeData,
-        }),
+        updateWorksiteEmployees: async (_root, { input: employeeData }) => {
+            await WorksiteEmployees.updateOne({
+                _id: employeeData.id,
+            }, {
+                $set: employeeData,
+            });
+        },
     },
     Job: {
         agency: async (job) => await Agency.findById(job.agencyId),
