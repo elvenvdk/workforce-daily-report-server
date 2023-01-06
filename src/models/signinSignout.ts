@@ -92,7 +92,7 @@ const SigninSignoutSchema = new Schema<ISigninSignout>({
           type: String,
           // required: true,
         },
-        doubleTime: {
+        doubletime: {
           type: Number
         },
         doubletimeSignature: {

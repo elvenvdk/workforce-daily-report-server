@@ -71,7 +71,7 @@ export interface ISiteEmployee {
   timeOutSignature: string;
   imageCapture: string;
   notes: string;
-  doubleTime: number;
+  doubletime: number;
   doubletimeSignature: string
 }
 

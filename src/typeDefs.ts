@@ -296,6 +296,7 @@ export const typeDefs = gql`
     timeOutSignature: String
     imageCapture: String
     notes: String
+    doubletime: Int
   }
 
   input UpdateSIWorker {
