@@ -82,9 +82,9 @@ export type MaterialsType = {
 };
 
 
-export interface ISiteEmployees {
-  employees: ISiteEmployee[];
-}
+// export interface ISiteEmployees {
+//   employees: ISiteEmployee[];
+// }
 
 export interface IAgency {
   id: string;
@@ -111,7 +111,7 @@ export interface ISigninSignout {
   workType: string;
   workDescription: string;
   incidentReport: string;
-  siteEmployees: ISiteEmployees;
+  siteEmployees: ISiteEmployee[];
   materialsDesc: MaterialsType[];
   foreman: string;
   projectMgr: string;
@@ -138,6 +138,7 @@ export interface IJob {
   jobName: string;
   location: string;
   contractNo: string;
+  contractStartDate: Date;
   agencyId: Types.ObjectId;
   laborTicketAbv: string;
   contractorRepId: Types.ObjectId;

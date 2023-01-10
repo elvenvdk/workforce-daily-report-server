@@ -19,11 +19,11 @@ export const resolvers = {
 
     worker: async (_root: any, { id: workerId }: any) => await Worker.findById(workerId),
 
-
-
     worksiteEmployeesList: async () => await WorksiteEmployees.find(),
 
     worksiteEmployees: async (_root: any, { id: employeeId }: any) => await WorksiteEmployees.findById(employeeId),
+
+    workreportList: async () => await SigninSignout.find()
   },
 
   Mutation: {

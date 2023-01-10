@@ -49,62 +49,60 @@ const SigninSignoutSchema = new Schema({
     incidentReport: {
         type: String
     },
-    siteEmployees: {
-        employees: [
-            {
-                id: {
-                    type: Schema.Types.ObjectId,
-                    ref: "Worker"
-                },
-                firstName: {
-                    type: String,
-                    // required: true,
-                },
-                middleInitial: {
-                    type: String,
-                },
-                lastName: {
-                    type: String,
-                    // required: true,
-                },
-                last4SSN: {
-                    type: String,
-                    // required: true,
-                },
-                class: {
-                    type: String
-                },
-                timeIn: {
-                    type: Date,
-                    // required: true,
-                },
-                timeOut: {
-                    type: Date,
-                    // required: true,
-                },
-                timeInSignature: {
-                    type: String,
-                    // required: true,
-                },
-                timeOutSignature: {
-                    type: String,
-                    // required: true,
-                },
-                doubletime: {
-                    type: Number
-                },
-                doubletimeSignature: {
-                    type: Number
-                },
-                imageCapture: {
-                    type: String,
-                },
-                notes: {
-                    type: String,
-                },
+    siteEmployees: [
+        {
+            id: {
+                type: Schema.Types.ObjectId,
+                ref: "Worker"
             },
-        ],
-    },
+            firstName: {
+                type: String,
+                // required: true,
+            },
+            middleInitial: {
+                type: String,
+            },
+            lastName: {
+                type: String,
+                // required: true,
+            },
+            last4SSN: {
+                type: String,
+                // required: true,
+            },
+            class: {
+                type: String
+            },
+            timeIn: {
+                type: Date,
+                // required: true,
+            },
+            timeOut: {
+                type: Date,
+                // required: true,
+            },
+            timeInSignature: {
+                type: String,
+                // required: true,
+            },
+            timeOutSignature: {
+                type: String,
+                // required: true,
+            },
+            doubletime: {
+                type: Number
+            },
+            doubletimeSignature: {
+                type: Number
+            },
+            imageCapture: {
+                type: String,
+            },
+            notes: {
+                type: String,
+            },
+        },
+    ],
     foreman: {
         type: String,
         // required: true,
@@ -140,6 +138,19 @@ const SigninSignoutSchema = new Schema({
     forcast: {
         type: String,
     },
+    materialsDesc: [
+        {
+            qty: {
+                type: String
+            },
+            item: {
+                type: String
+            },
+            description: {
+                type: String
+            }
+        }
+    ],
     tasks: [
         {
             details: {
@@ -153,5 +164,5 @@ const SigninSignoutSchema = new Schema({
             }
         },
     ]
-});
+}, { timestamps: true });
 export default model("SigninSignout", SigninSignoutSchema);
