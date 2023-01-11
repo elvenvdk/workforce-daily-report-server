@@ -3,6 +3,9 @@ const ChecklistSchema = new Schema({
     type: {
         type: String
     },
+    checklistType: {
+        type: String
+    },
     agency: {
         id: {
             type: String

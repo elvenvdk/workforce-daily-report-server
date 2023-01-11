@@ -5,6 +5,9 @@ const ChecklistSchema = new Schema<IChecklist>({
   type: {
     type: String
   },
+  checklistType: {
+    type: String
+  },
   agency: {
     id: {
       type: String

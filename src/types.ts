@@ -122,7 +122,7 @@ export interface ISigninSignout {
   agencyRepSignature: string;
   contractorRepSignature: string;
   signatureDate: Date;
-  temperature: string;
+  temperature: number;
   forcast: string;
   tasks: TaskType[];
 }
@@ -167,6 +167,7 @@ export interface ITasks {
 
 export interface IChecklist {
   type: string;
+  checklistType: string;
   agency: IAgency;
   location: string;
   fieldTasks: ITasks;

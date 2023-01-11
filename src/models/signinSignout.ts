@@ -136,7 +136,7 @@ const SigninSignoutSchema = new Schema<ISigninSignout>({
     type: Date,
   },
   temperature: {
-    type: String,
+    type: Number,
   },
   forcast: {
     type: String,

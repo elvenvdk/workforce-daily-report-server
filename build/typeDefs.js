@@ -120,7 +120,7 @@ export const typeDefs = gql `
     agencyRepSignature: String
     contractorRepSignature: String
     signatureDate: Date
-    temperature: String
+    temperature: Float
     forcast: String
     tasks: [SITask]
     materialsDesc: [SIMaterialsDesc]
@@ -218,6 +218,7 @@ export const typeDefs = gql `
     surveillanceReport: String
     drawing: String
     additionalRemarks: AdditionalRemarksInput
+    checklistType: String
   }
 
 
@@ -370,7 +371,7 @@ export const typeDefs = gql `
     agencyRepSignature: String
     contractorRepSignature: String
     signatureDate: Date
-    temperature: String
+    temperature: Float
     forcast: String
     tasks: [TaskInput]
   }
@@ -396,7 +397,7 @@ export const typeDefs = gql `
     agencyRepSignature: String
     contractorRepSignature: String
     signatureDate: Date
-    temperature: String
+    temperature: Float
     forcast: String
   }
 
