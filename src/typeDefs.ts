@@ -13,6 +13,7 @@ export const typeDefs = gql`
     checklists: [Checklist]
     foreman(id: ID!): Foreman
     workreportList: [SigninSignout]
+    workreport(id: ID!): SigninSignout
   }
 
   type Mutation {
