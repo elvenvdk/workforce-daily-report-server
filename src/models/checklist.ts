@@ -78,6 +78,6 @@ const ChecklistSchema = new Schema<IChecklist>({
       date3: { type: String },
     }
   }
-})
+}, { timestamps: true })
 
 export default model<IChecklist>("Checklist", ChecklistSchema);

@@ -76,5 +76,5 @@ const ChecklistSchema = new Schema({
             date3: { type: String },
         }
     }
-});
+}, { timestamps: true });
 export default model("Checklist", ChecklistSchema);

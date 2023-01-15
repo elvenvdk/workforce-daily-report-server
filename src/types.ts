@@ -72,7 +72,8 @@ export interface ISiteEmployee {
   imageCapture: string;
   notes: string;
   doubletime: number;
-  doubletimeSignature: string
+  regulartime: number;
+  doubletimeSignature: string;
 }
 
 export type MaterialsType = {

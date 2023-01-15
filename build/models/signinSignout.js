@@ -89,6 +89,9 @@ const SigninSignoutSchema = new Schema({
                 type: String,
                 // required: true,
             },
+            regulartime: {
+                type: Number
+            },
             doubletime: {
                 type: Number
             },
