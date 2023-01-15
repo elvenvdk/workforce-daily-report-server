@@ -33,9 +33,18 @@ export const typeDefs = gql`
     createSI(input: CreateSIInput): SigninSignout
     updateSI(input: UpdateSIInput): SigninSignout
     createChecklist(input: CreateChecklistInput): Checklist
+    createWorkReportEmailTemplate(input: WorkreportEmailTemplateInput): Boolean
   }
 
   scalar GraphQLJSONObject
+
+  type WorkreportEmailTemplate {
+    email: String
+  }
+
+  input WorkreportEmailTemplateInput {
+    email: String
+  }
 
   type Agency {
     id: ID!

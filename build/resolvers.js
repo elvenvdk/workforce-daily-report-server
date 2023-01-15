@@ -4,6 +4,7 @@ import Worker from "./models/worker.ts";
 import WorksiteEmployees from "./models/worksiteEmployees.ts";
 import SigninSignout from "./models/signinSignout.ts";
 import Checklist from "./models/checklist.ts";
+import { sendEmail } from "./aws/emailService.ts";
 export const resolvers = {
     Query: {
         agency: async (_root, { id: agencyId }) => await Agency.findOne({ id: agencyId }),
@@ -80,6 +81,10 @@ export const resolvers = {
                 $set: employeeData,
             });
         },
+        createWorkReportEmailTemplate: async (_root, { input: emailTemplate }) => {
+            const mailRes = await sendEmail(emailTemplate);
+            console.log(mailRes);
+        }
     },
     Job: {
         agency: async (job) => await Agency.findById(job.agencyId),

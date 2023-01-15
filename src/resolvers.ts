@@ -4,6 +4,7 @@ import Worker from "./models/worker.ts";
 import WorksiteEmployees from "./models/worksiteEmployees.ts";
 import SigninSignout from "./models/signinSignout.ts";
 import Checklist from "./models/checklist.ts";
+import { sendEmail } from "./aws/emailService.ts"
 
 export const resolvers = {
   Query: {
@@ -120,6 +121,11 @@ export const resolvers = {
         }
       )
     },
+
+    createWorkReportEmailTemplate: async (_root: any, { input: emailTemplate }: any) => {
+      const mailRes = await sendEmail(emailTemplate);
+      console.log(mailRes);
+    }
 
   },
 

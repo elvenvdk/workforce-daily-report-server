@@ -1,5 +1,5 @@
 import gql from "graphql-tag";
-export const typeDefs = gql `
+export const typeDefs = gql`
   type Query {
     agencies: [Agency]
     agency(id: ID!): Agency
@@ -32,9 +32,18 @@ export const typeDefs = gql `
     createSI(input: CreateSIInput): SigninSignout
     updateSI(input: UpdateSIInput): SigninSignout
     createChecklist(input: CreateChecklistInput): Checklist
+    createWorkReportEmailTemplate(input: WorkreportEmailTemplateInput): Boolean
   }
 
   scalar GraphQLJSONObject
+
+  type WorkreportEmailTemplate {
+    email: String
+  }
+
+  input WorkreportEmailTemplateInput {
+    email: String
+  }
 
   type Agency {
     id: ID!
