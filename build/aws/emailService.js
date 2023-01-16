@@ -30,11 +30,13 @@ const params = {
     Source: "no-reply@notifications.workforce-daily-report.com",
 };
 export const sendEmail = async (body) => {
+    console.log('BODY: ', body);
+    console.log('HELLO THIS IS GETTING THERE...');
     const params = {
         Destination: {
             ToAddresses: [
-                "vanderkuech@icloud.com",
-                // "annecyops@gmail.com",
+                // "vanderkuech@icloud.com",
+                "annecyops@gmail.com",
                 // 'fedner@bissettalist.com'
             ],
         },
@@ -54,7 +56,8 @@ export const sendEmail = async (body) => {
                 Data: "Test email",
             },
         },
-        Source: "no-reply@notifications.workforce-daily-report.com",
+        // Source: "no-reply@notifications.workforce-daily-report.com",
+        Source: "vanderkuech@icloud.com"
     };
     const sendPromise = new AWS.SES({ apiVersion: "2010-12-01" }).sendEmail(params).promise();
     const data = await sendPromise;

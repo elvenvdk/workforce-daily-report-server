@@ -1,5 +1,5 @@
 import gql from "graphql-tag";
-export const typeDefs = gql`
+export const typeDefs = gql `
   type Query {
     agencies: [Agency]
     agency(id: ID!): Agency
@@ -61,8 +61,8 @@ export const typeDefs = gql`
     timeOut: Date
     timeInSignature: String
     timeOutSignature: String
-    doubletime: Int
-    regulartime: Int
+    doubleTime: Int
+    regularTime: Int
    }
 
   type Worker {
@@ -123,7 +123,7 @@ export const typeDefs = gql`
     location: String
     workType: String
     siteEmployees: [SIWorker]
-    foreMan: String
+    foreman: String
     projectMgr: String
     agencyRep: String
     contractorRep: String
@@ -135,7 +135,9 @@ export const typeDefs = gql`
     temperature: Float
     forcast: String
     tasks: [SITask]
+    incidentReport: String
     materialsDesc: [SIMaterialsDesc]
+    workDescription: String
   }
 
   type SIMaterialsDesc {
@@ -326,8 +328,8 @@ export const typeDefs = gql`
     timeOutSignature: String
     imageCapture: String
     notes: String
-    doubletime: Int
-    regulartime: Int
+    doubleTime: Int
+    regularTime: Int
   }
 
   input UpdateSIWorker {

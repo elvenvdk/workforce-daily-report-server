@@ -123,8 +123,9 @@ export const resolvers = {
     },
 
     createWorkReportEmailTemplate: async (_root: any, { input: emailTemplate }: any) => {
+      console.log('EMAIL TEMPLATE: ', emailTemplate);
       const mailRes = await sendEmail(emailTemplate);
-      console.log(mailRes);
+
     }
 
   },
