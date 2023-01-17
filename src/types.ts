@@ -31,6 +31,8 @@ export interface IAuth {
   user: Types.ObjectId;
   active: boolean;
   userToken: string;
+  level: string;
+  type: string;
 }
 
 export interface IWorker {
@@ -41,6 +43,9 @@ export interface IWorker {
   class: string;
   userToken: string | null;
   authorization: Types.ObjectId;
+  level: number;
+  type: string;
+  email: string;
 }
 
 export interface IWorkType {

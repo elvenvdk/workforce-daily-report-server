@@ -19,6 +19,7 @@ export const resolvers = {
         workreport: async (_root, { id: workreportId }) => await SigninSignout.findById(workreportId)
     },
     Mutation: {
+        // registration: async (_root: any, { input: })
         createAgency: async (_root, { input: agencyInput }) => {
             const newAgency = await Agency.create(agencyInput);
             return newAgency;
@@ -84,6 +85,7 @@ export const resolvers = {
         createWorkReportEmailTemplate: async (_root, { input: emailTemplate }) => {
             console.log('EMAIL TEMPLATE: ', emailTemplate);
             const mailRes = await sendEmail(emailTemplate);
+            return mailRes;
         }
     },
     Job: {

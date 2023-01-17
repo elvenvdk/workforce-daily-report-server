@@ -30,6 +30,8 @@ export const resolvers = {
   },
 
   Mutation: {
+    // registration: async (_root: any, { input: })
+
     createAgency: async (_root: any, { input: agencyInput }: any) => {
       const newAgency = await Agency.create(agencyInput);
       return newAgency;
@@ -125,7 +127,7 @@ export const resolvers = {
     createWorkReportEmailTemplate: async (_root: any, { input: emailTemplate }: any) => {
       console.log('EMAIL TEMPLATE: ', emailTemplate);
       const mailRes = await sendEmail(emailTemplate);
-
+      return mailRes;
     }
 
   },

@@ -33,8 +33,32 @@ export const typeDefs = gql`
     createSI(input: CreateSIInput): SigninSignout
     updateSI(input: UpdateSIInput): SigninSignout
     createChecklist(input: CreateChecklistInput): Checklist
-    createWorkReportEmailTemplate(input: WorkreportEmailTemplateInput): Boolean
+    createWorkReportEmailTemplate(input: WorkreportEmailTemplateInput): WorkreportEmailTemplate
+    registration(input: RegisterUser): Auth
   }
+
+  input RegisterUser {
+    username: String
+    password: String
+    user: String
+  }
+
+  input Signin {
+    username: String
+    password: String
+  }
+
+  input updateAuth {
+    username: String
+  }
+
+type Auth {
+  id: ID!
+  username: String
+  password: String
+  userToken: String
+}
+
 
   scalar GraphQLJSONObject
 
@@ -74,6 +98,9 @@ export const typeDefs = gql`
     last4SSN: String!
     class: String!
     jobs: [WorksiteEmployees]
+    level: Int
+    type: String
+    email: String
   }
 
   type Job {
