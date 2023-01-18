@@ -317,7 +317,7 @@ export const typeDefs = gql`
     lastName: String
     middleInitial: String
     last4SSN: String
-    class: String!
+    class: String
     level: Int
     role: String
     email: String

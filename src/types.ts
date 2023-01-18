@@ -44,7 +44,7 @@ export interface IWorker {
   userToken: string | null;
   authorization: Types.ObjectId;
   level: number;
-  type: string;
+  role: string;
   email: string;
 }
 

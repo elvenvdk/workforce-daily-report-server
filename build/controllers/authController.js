@@ -43,7 +43,7 @@ export const registerUser = async (req, res) => {
                 console.log("NEW AUTHORIZATI0N: ", newAuthRegistration);
                 if (newAuthRegistration instanceof Auth) {
                     await Worker.findOneAndUpdate({
-                        _id: user,
+                        _id: existingUser.id,
                     }, {
                         $set: {
                             authorization: newAuthRegistration._id,

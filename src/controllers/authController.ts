@@ -46,7 +46,7 @@ export const registerUser = async (req: TypedRequestBody<RegisterUserType>, res:
         if (newAuthRegistration instanceof Auth) {
           await Worker.findOneAndUpdate(
             {
-              _id: user,
+              _id: existingUser.id,
             },
             {
               $set: {
