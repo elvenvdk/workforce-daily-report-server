@@ -15,6 +15,6 @@ const authSchema = new Schema({
     },
     userToken: {
         type: String
-    }
+    },
 });
 export default model('Auth', authSchema);

@@ -19,7 +19,6 @@ export const resolvers = {
         workreport: async (_root, { id: workreportId }) => await SigninSignout.findById(workreportId)
     },
     Mutation: {
-        // registration: async (_root: any, { input: })
         createAgency: async (_root, { input: agencyInput }) => {
             const newAgency = await Agency.create(agencyInput);
             return newAgency;
@@ -64,6 +63,7 @@ export const resolvers = {
         }),
         deleteJob: async (_root, { input: id }) => await Job.deleteOne({ _id: id }),
         createWorker: async (_root, { input: createWorkerInput }) => {
+            console.log('CREATE WORKER INPUT: ', createWorkerInput);
             const newWorker = await Worker.create(createWorkerInput);
             return newWorker;
         },

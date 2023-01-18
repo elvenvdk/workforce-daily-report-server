@@ -30,7 +30,6 @@ export const resolvers = {
   },
 
   Mutation: {
-    // registration: async (_root: any, { input: })
 
     createAgency: async (_root: any, { input: agencyInput }: any) => {
       const newAgency = await Agency.create(agencyInput);
@@ -95,7 +94,7 @@ export const resolvers = {
     deleteJob: async (_root: any, { input: id }: any) => await Job.deleteOne({ _id: id }),
 
     createWorker: async (_root: any, { input: createWorkerInput }: any) => {
-
+      console.log('CREATE WORKER INPUT: ', createWorkerInput)
       const newWorker = await Worker.create(createWorkerInput);
       return newWorker;
     },

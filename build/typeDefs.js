@@ -33,30 +33,7 @@ export const typeDefs = gql `
     updateSI(input: UpdateSIInput): SigninSignout
     createChecklist(input: CreateChecklistInput): Checklist
     createWorkReportEmailTemplate(input: WorkreportEmailTemplateInput): WorkreportEmailTemplate
-    registration(input: RegisterUser): Auth
   }
-
-  input RegisterUser {
-    username: String
-    password: String
-    user: String
-  }
-
-  input Signin {
-    username: String
-    password: String
-  }
-
-  input updateAuth {
-    username: String
-  }
-
-type Auth {
-  id: ID!
-  username: String
-  password: String
-  userToken: String
-}
 
 
   scalar GraphQLJSONObject
@@ -335,11 +312,14 @@ type Auth {
   }
 
   input CreateWorkerInput {
-    firstName: String!
-    lastName: String!
+    firstName: String
+    lastName: String
     middleInitial: String
-    last4SSN: String!
+    last4SSN: String
     class: String!
+    level: Int
+    role: String
+    email: String
   }
 
   input SIWorkerInput {

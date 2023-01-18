@@ -13,11 +13,9 @@ const workerSchema = new Schema({
     },
     last4SSN: {
         type: String,
-        required: true,
     },
     class: {
         type: String,
-        required: true,
     },
     userToken: {
         type: String || null
@@ -25,6 +23,15 @@ const workerSchema = new Schema({
     authorization: {
         type: Schema.Types.ObjectId,
         ref: 'Auth'
+    },
+    level: {
+        type: Number
+    },
+    role: {
+        type: String
+    },
+    email: {
+        type: String
     }
-});
+}, { timestamps: true });
 export default model("Worker", workerSchema);

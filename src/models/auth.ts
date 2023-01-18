@@ -17,7 +17,8 @@ const authSchema = new Schema<IAuth>({
   },
   userToken: {
     type: String
-  }
+  },
+
 })
 
 export default model<IAuth>('Auth', authSchema);

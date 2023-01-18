@@ -5,7 +5,6 @@ import Worker from "../models/worker.ts";
 const verifyPassword = async (currentPassword, userPassword) => await bcrypt.compare(currentPassword, userPassword);
 export const registerUser = async (req, res) => {
     try {
-        // console.log("REQUEST BODY: ", req);
         const { userName, password, user } = req.body;
         if (!userName && !password) {
             res.status(400).json({ msg: "Username and Password Are Required" });
@@ -15,11 +14,11 @@ export const registerUser = async (req, res) => {
         }
         // Check if user exists
         const existingUser = await Worker.findOne({
-            _id: user,
+            email: userName,
         });
         if (existingUser) {
             const userAuthCheck = await Auth.findOne({
-                user,
+                user: existingUser.id,
             });
             if (userAuthCheck) {
                 return res.status(400).json({ msg: "User currently exists.  Please log in" });
@@ -28,7 +27,7 @@ export const registerUser = async (req, res) => {
             const salt = await bcrypt.genSalt(10);
             const encryptedPassword = await bcrypt.hash(password, salt);
             // Create token
-            jwt.sign({ userId: user, level: 1 }, `${process.env.TOKEN_KEY}`, { algorithm: "HS256" }, async (err, userToken) => {
+            jwt.sign({ userId: existingUser.id, level: existingUser.level, role: existingUser.role }, `${process.env.TOKEN_KEY}`, { algorithm: "HS256" }, async (err, userToken) => {
                 if (err) {
                     console.log("TOKEN ERROR: ", err);
                     return res.status(400).json({ msg: err.message });
@@ -38,7 +37,7 @@ export const registerUser = async (req, res) => {
                 const newAuthRegistration = await Auth.create({
                     userName,
                     password: encryptedPassword,
-                    user,
+                    user: existingUser.id,
                     userToken,
                 });
                 console.log("NEW AUTHORIZATI0N: ", newAuthRegistration);
