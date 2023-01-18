@@ -75,10 +75,12 @@ export const login = async (req, res) => {
         //   return res.status(404).json({ msg: "Username or Password not recognized" });
         // }
         const userAuth = await Auth.findOne({ userName });
+        console.log('USER AUTH: ', userAuth);
         if (userAuth) {
             const verifiedPassword = await verifyPassword(password, userAuth.password);
             // Get user info
-            const verifiedUser = await Worker.findOne({ id: userAuth.user });
+            const verifiedUser = await Worker.findOne({ _id: userAuth.user });
+            console.log('VERIFIED USER: ', verifiedUser);
             if (!verifiedPassword) {
                 return res.status(404).json({ msg: 'Username or Password Incorrect' });
             }
@@ -91,11 +93,17 @@ export const login = async (req, res) => {
                         return res.status(400).json({ msg: err.message });
                     }
                     else {
+                        await Auth.findOneAndUpdate({
+                            user: verifiedUser.id,
+                        }, {
+                            $set: {
+                                userToken,
+                            },
+                        });
                         await Worker.findOneAndUpdate({
                             id: verifiedUser.id,
                         }, {
                             $set: {
-                                active: true,
                                 userToken,
                             },
                         });
@@ -106,7 +114,7 @@ export const login = async (req, res) => {
                             class: verifiedUser.class,
                             userToken: verifiedUser.userToken,
                         };
-                        console.log('THE USER: ', user);
+                        // console.log('THE USER: ', user);
                         // res.send(user);
                         res.cookie("user", user).send('Cookies successfully sent');
                     }
