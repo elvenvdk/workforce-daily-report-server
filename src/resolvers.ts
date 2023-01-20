@@ -18,9 +18,9 @@ export const resolvers = {
     agencies: async () => await Agency.find(),
 
     job: async (_root: any, { id: jobId }: any, contextValue: IUserContext) => {
-      if (contextValue.user.role !== "ADMIN") {
-        throw new Error("Not Authorized");
-      }
+      // if (contextValue.user.role !== "ADMIN") {
+      //   throw new Error("Not Authorized");
+      // }
       const job = await Job.findById(jobId)
       return job;
     },
