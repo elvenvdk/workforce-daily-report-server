@@ -8,7 +8,7 @@ const verifyPassword = async (currentPassword: string, userPassword: string) => 
 
 export const registerUser = async (req: TypedRequestBody<RegisterUserType>, res: TypedResponse<RegisterUserResponseType>) => {
   try {
-    const { userName, password, user } = req.body;
+    const { userName, password } = req.body;
     if (!userName && !password) {
       res.status(400).json({ msg: "Username and Password Are Required" });
     }
@@ -60,7 +60,7 @@ export const registerUser = async (req: TypedRequestBody<RegisterUserType>, res:
         }
       });
     } else {
-      return res.status(400).json({ msg: "Please enter user's profile before registering their username and password" });
+      return res.status(400).json({ msg: "Please enter user's profile before registering or updating their username and password" });
     }
   } catch (error) {
     console.log(error);

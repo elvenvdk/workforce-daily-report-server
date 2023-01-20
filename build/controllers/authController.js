@@ -5,7 +5,7 @@ import Worker from "../models/worker.ts";
 const verifyPassword = async (currentPassword, userPassword) => await bcrypt.compare(currentPassword, userPassword);
 export const registerUser = async (req, res) => {
     try {
-        const { userName, password, user } = req.body;
+        const { userName, password } = req.body;
         if (!userName && !password) {
             res.status(400).json({ msg: "Username and Password Are Required" });
         }
@@ -57,7 +57,7 @@ export const registerUser = async (req, res) => {
             });
         }
         else {
-            return res.status(400).json({ msg: "Please enter user's profile before registering their username and password" });
+            return res.status(400).json({ msg: "Please enter user's profile before registering or updating their username and password" });
         }
     }
     catch (error) {
