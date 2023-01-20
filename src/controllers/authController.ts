@@ -118,15 +118,17 @@ export const login = async (req: TypedRequestBody<RegisterUserType>, res: TypedR
               }
             );
             const user = {
+              userId: verifiedUser.id,
               firstName: verifiedUser.firstName,
               lastName: verifiedUser.lastName,
               middleInitial: verifiedUser.middleInitial ? verifiedUser.middleInitial : null,
               class: verifiedUser.class,
-              userToken: verifiedUser.userToken,
+              level: verifiedUser.level,
+              role: verifiedUser.role
             };
-            // console.log('THE USER: ', user);
+            console.log('THE USER: ', user);
             // res.send(user);
-            res.cookie("user", user).send('Cookies successfully sent')
+            res.cookie("userToken", userToken).send({ msg: 'User successfully set', user })
           }
         });
       } else {

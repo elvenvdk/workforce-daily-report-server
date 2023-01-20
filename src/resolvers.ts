@@ -5,6 +5,11 @@ import WorksiteEmployees from "./models/worksiteEmployees.ts";
 import SigninSignout from "./models/signinSignout.ts";
 import Checklist from "./models/checklist.ts";
 import { sendEmail } from "./aws/emailService.ts"
+import { IUserContext } from './types';
+
+type userContext = {
+  userToken: string
+}
 
 export const resolvers = {
   Query: {
@@ -12,11 +17,17 @@ export const resolvers = {
 
     agencies: async () => await Agency.find(),
 
-    job: async (_root: any, { id: jobId }: any) => await Job.findById(jobId),
+    job: async (_root: any, { id: jobId }: any, contextValue: IUserContext) => {
+      if (contextValue.user.role !== "ADMIN") {
+        throw new Error("Not Authorized");
+      }
+      const job = await Job.findById(jobId)
+      return job;
+    },
 
     jobs: async () => await Job.find(),
 
-    workers: async () => await Worker.find(),
+    workers: async () => await Worker.find({ role: "FIELD" }),
 
     worker: async (_root: any, { id: workerId }: any) => await Worker.findById(workerId),
 

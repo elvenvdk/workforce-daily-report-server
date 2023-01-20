@@ -1,6 +1,7 @@
 import { ApolloServer } from "@apollo/server";
 import { expressMiddleware } from "@apollo/server/express4";
 import { ApolloServerPluginDrainHttpServer } from "@apollo/server/plugin/drainHttpServer";
+import { TypedRequestBody, TypedResponse, RegisterUserType, RegisterUserResponseType } from "./types";
 import http from 'http';
 import dotenv from "dotenv";
 import express from "express";
@@ -53,7 +54,12 @@ app.use(
     preflightContinue: false,
     optionsSuccessStatus: 204,
   }),
-  expressMiddleware(apolloServer),
+  expressMiddleware(apolloServer, {
+    context: async ({ req, res }) => ({
+      userToken: req.headers.authorization,
+      user: req.headers.user
+    })
+  }),
 )
 app.use(express.json());
 app.use(cookieParser());

@@ -11,13 +11,25 @@ export interface TypedResponse<ResBody> extends Express.Response {
 }
 
 export interface IUserContext {
-  userToken?: String;
+  userToken?: string;
+  user: IUserContextUser
+}
+
+export interface IUserContextUser {
+  firstName: string;
+  lastName: string;
+  middleInitial: string;
+  class: string;
+  level: number;
+  role: string;
+  email: string;
 }
 
 export type RegisterUserType = {
   userName: string;
   password: string;
   user: string;
+
 }
 
 export type RegisterUserResponseType = {

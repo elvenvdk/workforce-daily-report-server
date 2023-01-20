@@ -9,9 +9,15 @@ export const resolvers = {
     Query: {
         agency: async (_root, { id: agencyId }) => await Agency.findOne({ id: agencyId }),
         agencies: async () => await Agency.find(),
-        job: async (_root, { id: jobId }) => await Job.findById(jobId),
+        job: async (_root, { id: jobId }, contextValue) => {
+            if (contextValue.user.role !== "ADMIN") {
+                throw new Error("Not Authorized");
+            }
+            const job = await Job.findById(jobId);
+            return job;
+        },
         jobs: async () => await Job.find(),
-        workers: async () => await Worker.find(),
+        workers: async () => await Worker.find({ role: "FIELD" }),
         worker: async (_root, { id: workerId }) => await Worker.findById(workerId),
         worksiteEmployeesList: async () => await WorksiteEmployees.find(),
         worksiteEmployees: async (_root, { id: employeeId }) => await WorksiteEmployees.findById(employeeId),

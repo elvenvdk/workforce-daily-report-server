@@ -37,7 +37,12 @@ app.use('/gql', express.json(), cors({
     methods: "GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS",
     preflightContinue: false,
     optionsSuccessStatus: 204,
-}), expressMiddleware(apolloServer));
+}), expressMiddleware(apolloServer, {
+    context: async ({ req, res }) => ({
+        userToken: req.headers.authorization,
+        user: req.headers.user
+    })
+}));
 app.use(express.json());
 app.use(cookieParser());
 app.use(cors({

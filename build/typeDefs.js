@@ -71,12 +71,13 @@ export const typeDefs = gql `
     firstName: String!
     lastName: String!
     middleInitial: String
-    last4SSN: String!
-    class: String!
+    last4SSN: String
+    class: String
     jobs: [WorksiteEmployees]
     level: Int
     type: String
     email: String
+    role: String
   }
 
   type Job {
