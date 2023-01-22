@@ -3,6 +3,9 @@ const ChecklistSchema = new Schema({
     type: {
         type: String
     },
+    checklistType: {
+        type: String
+    },
     agency: {
         id: {
             type: String
@@ -73,5 +76,5 @@ const ChecklistSchema = new Schema({
             date3: { type: String },
         }
     }
-});
+}, { timestamps: true });
 export default model("Checklist", ChecklistSchema);

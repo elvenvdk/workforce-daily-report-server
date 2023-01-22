@@ -10,6 +10,9 @@ const JobSchema = new Schema({
     contractNo: {
         type: String,
     },
+    contractStartDate: {
+        type: Date
+    },
     agencyId: {
         type: Schema.Types.ObjectId,
         ref: "Agency",

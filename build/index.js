@@ -37,12 +37,21 @@ app.use('/gql', express.json(), cors({
     methods: "GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS",
     preflightContinue: false,
     optionsSuccessStatus: 204,
-}), expressMiddleware(apolloServer));
+}), expressMiddleware(apolloServer, {
+    context: async ({ req, res }) => ({
+        userToken: req.headers.authorization,
+        user: req.headers.user
+    })
+}));
 app.use(express.json());
 app.use(cookieParser());
-app.use('/api/auth', authRoutes, cors({
-    origin: ['http://localhost:3000', 'https://studio.apollographql.com'],
+app.use(cors({
+    origin: ['http://localhost:3000'],
     optionsSuccessStatus: 204,
+    credentials: true,
+    methods: "GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS",
+    preflightContinue: false,
 }));
+app.use('/api/auth', authRoutes);
 await new Promise(resolve => httpServer.listen({ port: PORT }, resolve));
 console.log(`🚀 Server connected at http://localhost:${PORT} - YES!`);

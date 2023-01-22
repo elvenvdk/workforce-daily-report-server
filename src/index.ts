@@ -1,6 +1,7 @@
 import { ApolloServer } from "@apollo/server";
 import { expressMiddleware } from "@apollo/server/express4";
 import { ApolloServerPluginDrainHttpServer } from "@apollo/server/plugin/drainHttpServer";
+import { TypedRequestBody, TypedResponse, RegisterUserType, RegisterUserResponseType } from "./types";
 import http from 'http';
 import dotenv from "dotenv";
 import express from "express";
@@ -47,20 +48,31 @@ app.use(
   '/gql',
   express.json(),
   cors<cors.CorsRequest>({
-    origin: ['http://localhost:3000', 'https://studio.apollographql.com'],
+    origin: ['http://localhost:3000', 'http://workforce-daily-report.com', 'https://studio.apollographql.com'],
     credentials: true,
     methods: "GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS",
     preflightContinue: false,
     optionsSuccessStatus: 204,
   }),
-  expressMiddleware(apolloServer),
+  expressMiddleware(apolloServer, {
+    context: async ({ req, res }) => ({
+      userToken: req.headers.authorization,
+      user: req.headers.user
+    })
+  }),
 )
 app.use(express.json());
 app.use(cookieParser());
-app.use('/api/auth', authRoutes, cors<cors.CorsRequest>({
-  origin: ['http://localhost:3000', 'https://studio.apollographql.com'],
+app.use(cors<cors.CorsRequest>({
+  origin: ['http://localhost:3000', 'http://workforce-daily-report.com',],
   optionsSuccessStatus: 204,
-}));
+  credentials: true,
+  methods: "GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS",
+  preflightContinue: false,
+}))
+app.use('/api/auth',
+  authRoutes,
+);
 
 await new Promise<void>(resolve => httpServer.listen({ port: PORT }, resolve));
 console.log(`🚀 Server connected at http://localhost:${PORT} - YES!`);

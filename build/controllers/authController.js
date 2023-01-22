@@ -5,8 +5,7 @@ import Worker from "../models/worker.ts";
 const verifyPassword = async (currentPassword, userPassword) => await bcrypt.compare(currentPassword, userPassword);
 export const registerUser = async (req, res) => {
     try {
-        // console.log("REQUEST BODY: ", req);
-        const { userName, password, user } = req.body;
+        const { userName, password } = req.body;
         if (!userName && !password) {
             res.status(400).json({ msg: "Username and Password Are Required" });
         }
@@ -15,11 +14,11 @@ export const registerUser = async (req, res) => {
         }
         // Check if user exists
         const existingUser = await Worker.findOne({
-            _id: user,
+            email: userName,
         });
         if (existingUser) {
             const userAuthCheck = await Auth.findOne({
-                user,
+                user: existingUser.id,
             });
             if (userAuthCheck) {
                 return res.status(400).json({ msg: "User currently exists.  Please log in" });
@@ -28,7 +27,7 @@ export const registerUser = async (req, res) => {
             const salt = await bcrypt.genSalt(10);
             const encryptedPassword = await bcrypt.hash(password, salt);
             // Create token
-            jwt.sign({ userId: user, level: 1 }, `${process.env.TOKEN_KEY}`, { algorithm: "HS256" }, async (err, userToken) => {
+            jwt.sign({ userId: existingUser.id, level: existingUser.level, role: existingUser.role }, `${process.env.TOKEN_KEY}`, { algorithm: "HS256" }, async (err, userToken) => {
                 if (err) {
                     console.log("TOKEN ERROR: ", err);
                     return res.status(400).json({ msg: err.message });
@@ -38,13 +37,13 @@ export const registerUser = async (req, res) => {
                 const newAuthRegistration = await Auth.create({
                     userName,
                     password: encryptedPassword,
-                    user,
+                    user: existingUser.id,
                     userToken,
                 });
                 console.log("NEW AUTHORIZATI0N: ", newAuthRegistration);
                 if (newAuthRegistration instanceof Auth) {
                     await Worker.findOneAndUpdate({
-                        _id: user,
+                        _id: existingUser.id,
                     }, {
                         $set: {
                             authorization: newAuthRegistration._id,
@@ -58,7 +57,7 @@ export const registerUser = async (req, res) => {
             });
         }
         else {
-            return res.status(400).json({ msg: "Please enter user's profile before registering their username and password" });
+            return res.status(400).json({ msg: "Please enter user's profile before registering or updating their username and password" });
         }
     }
     catch (error) {
@@ -76,10 +75,12 @@ export const login = async (req, res) => {
         //   return res.status(404).json({ msg: "Username or Password not recognized" });
         // }
         const userAuth = await Auth.findOne({ userName });
+        console.log('USER AUTH: ', userAuth);
         if (userAuth) {
             const verifiedPassword = await verifyPassword(password, userAuth.password);
             // Get user info
-            const verifiedUser = await Worker.findOne({ id: userAuth.user });
+            const verifiedUser = await Worker.findOne({ _id: userAuth.user });
+            console.log('VERIFIED USER: ', verifiedUser);
             if (!verifiedPassword) {
                 return res.status(404).json({ msg: 'Username or Password Incorrect' });
             }
@@ -92,24 +93,32 @@ export const login = async (req, res) => {
                         return res.status(400).json({ msg: err.message });
                     }
                     else {
+                        await Auth.findOneAndUpdate({
+                            user: verifiedUser.id,
+                        }, {
+                            $set: {
+                                userToken,
+                            },
+                        });
                         await Worker.findOneAndUpdate({
                             id: verifiedUser.id,
                         }, {
                             $set: {
-                                active: true,
                                 userToken,
                             },
                         });
                         const user = {
+                            userId: verifiedUser.id,
                             firstName: verifiedUser.firstName,
                             lastName: verifiedUser.lastName,
                             middleInitial: verifiedUser.middleInitial ? verifiedUser.middleInitial : null,
                             class: verifiedUser.class,
-                            userToken: verifiedUser.userToken,
+                            level: verifiedUser.level,
+                            role: verifiedUser.role
                         };
                         console.log('THE USER: ', user);
                         // res.send(user);
-                        res.cookie("user", user).send('Cookies successfully sent');
+                        res.cookie("userToken", userToken).send({ msg: 'User successfully set', user });
                     }
                 });
             }

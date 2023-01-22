@@ -11,13 +11,25 @@ export interface TypedResponse<ResBody> extends Express.Response {
 }
 
 export interface IUserContext {
-  userToken?: String;
+  userToken?: string;
+  user: IUserContextUser
+}
+
+export interface IUserContextUser {
+  firstName: string;
+  lastName: string;
+  middleInitial: string;
+  class: string;
+  level: number;
+  role: string;
+  email: string;
 }
 
 export type RegisterUserType = {
   userName: string;
   password: string;
   user: string;
+
 }
 
 export type RegisterUserResponseType = {
@@ -31,6 +43,8 @@ export interface IAuth {
   user: Types.ObjectId;
   active: boolean;
   userToken: string;
+  level: string;
+  type: string;
 }
 
 export interface IWorker {
@@ -41,6 +55,9 @@ export interface IWorker {
   class: string;
   userToken: string | null;
   authorization: Types.ObjectId;
+  level: number;
+  role: string;
+  email: string;
 }
 
 export interface IWorkType {
@@ -71,8 +88,9 @@ export interface ISiteEmployee {
   timeOutSignature: string;
   imageCapture: string;
   notes: string;
-  doubletime: number;
-  doubletimeSignature: string
+  doubleTime: number;
+  regularTime: number;
+  doubletimeSignature: string;
 }
 
 export type MaterialsType = {
@@ -82,9 +100,9 @@ export type MaterialsType = {
 };
 
 
-export interface ISiteEmployees {
-  employees: ISiteEmployee[];
-}
+// export interface ISiteEmployees {
+//   employees: ISiteEmployee[];
+// }
 
 export interface IAgency {
   id: string;
@@ -111,7 +129,7 @@ export interface ISigninSignout {
   workType: string;
   workDescription: string;
   incidentReport: string;
-  siteEmployees: ISiteEmployees;
+  siteEmployees: ISiteEmployee[];
   materialsDesc: MaterialsType[];
   foreman: string;
   projectMgr: string;
@@ -122,7 +140,7 @@ export interface ISigninSignout {
   agencyRepSignature: string;
   contractorRepSignature: string;
   signatureDate: Date;
-  temperature: string;
+  temperature: number;
   forcast: string;
   tasks: TaskType[];
 }
@@ -138,6 +156,7 @@ export interface IJob {
   jobName: string;
   location: string;
   contractNo: string;
+  contractStartDate: Date;
   agencyId: Types.ObjectId;
   laborTicketAbv: string;
   contractorRepId: Types.ObjectId;
@@ -166,6 +185,7 @@ export interface ITasks {
 
 export interface IChecklist {
   type: string;
+  checklistType: string;
   agency: IAgency;
   location: string;
   fieldTasks: ITasks;

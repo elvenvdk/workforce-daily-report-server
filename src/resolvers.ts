@@ -4,6 +4,12 @@ import Worker from "./models/worker.ts";
 import WorksiteEmployees from "./models/worksiteEmployees.ts";
 import SigninSignout from "./models/signinSignout.ts";
 import Checklist from "./models/checklist.ts";
+import { sendEmail } from "./aws/emailService.ts"
+import { IUserContext } from './types';
+
+type userContext = {
+  userToken: string
+}
 
 export const resolvers = {
   Query: {
@@ -11,22 +17,31 @@ export const resolvers = {
 
     agencies: async () => await Agency.find(),
 
-    job: async (_root: any, { id: jobId }: any) => await Job.findById(jobId),
+    job: async (_root: any, { id: jobId }: any, contextValue: IUserContext) => {
+      // if (contextValue.user.role !== "ADMIN") {
+      //   throw new Error("Not Authorized");
+      // }
+      const job = await Job.findById(jobId)
+      return job;
+    },
 
     jobs: async () => await Job.find(),
 
-    workers: async () => await Worker.find(),
+    workers: async () => await Worker.find({ role: "FIELD" }),
 
     worker: async (_root: any, { id: workerId }: any) => await Worker.findById(workerId),
-
-
 
     worksiteEmployeesList: async () => await WorksiteEmployees.find(),
 
     worksiteEmployees: async (_root: any, { id: employeeId }: any) => await WorksiteEmployees.findById(employeeId),
+
+    workreportList: async () => await SigninSignout.find(),
+
+    workreport: async (_root: any, { id: workreportId }: any) => await SigninSignout.findById(workreportId)
   },
 
   Mutation: {
+
     createAgency: async (_root: any, { input: agencyInput }: any) => {
       const newAgency = await Agency.create(agencyInput);
       return newAgency;
@@ -90,7 +105,7 @@ export const resolvers = {
     deleteJob: async (_root: any, { input: id }: any) => await Job.deleteOne({ _id: id }),
 
     createWorker: async (_root: any, { input: createWorkerInput }: any) => {
-
+      console.log('CREATE WORKER INPUT: ', createWorkerInput)
       const newWorker = await Worker.create(createWorkerInput);
       return newWorker;
     },
@@ -118,6 +133,12 @@ export const resolvers = {
         }
       )
     },
+
+    createWorkReportEmailTemplate: async (_root: any, { input: emailTemplate }: any) => {
+      console.log('EMAIL TEMPLATE: ', emailTemplate);
+      const mailRes = await sendEmail(emailTemplate);
+      return mailRes;
+    }
 
   },
 

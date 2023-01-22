@@ -4,16 +4,25 @@ import Worker from "./models/worker.ts";
 import WorksiteEmployees from "./models/worksiteEmployees.ts";
 import SigninSignout from "./models/signinSignout.ts";
 import Checklist from "./models/checklist.ts";
+import { sendEmail } from "./aws/emailService.ts";
 export const resolvers = {
     Query: {
         agency: async (_root, { id: agencyId }) => await Agency.findOne({ id: agencyId }),
         agencies: async () => await Agency.find(),
-        job: async (_root, { id: jobId }) => await Job.findById(jobId),
+        job: async (_root, { id: jobId }, contextValue) => {
+            // if (contextValue.user.role !== "ADMIN") {
+            //   throw new Error("Not Authorized");
+            // }
+            const job = await Job.findById(jobId);
+            return job;
+        },
         jobs: async () => await Job.find(),
-        workers: async () => await Worker.find(),
+        workers: async () => await Worker.find({ role: "FIELD" }),
         worker: async (_root, { id: workerId }) => await Worker.findById(workerId),
         worksiteEmployeesList: async () => await WorksiteEmployees.find(),
         worksiteEmployees: async (_root, { id: employeeId }) => await WorksiteEmployees.findById(employeeId),
+        workreportList: async () => await SigninSignout.find(),
+        workreport: async (_root, { id: workreportId }) => await SigninSignout.findById(workreportId)
     },
     Mutation: {
         createAgency: async (_root, { input: agencyInput }) => {
@@ -60,6 +69,7 @@ export const resolvers = {
         }),
         deleteJob: async (_root, { input: id }) => await Job.deleteOne({ _id: id }),
         createWorker: async (_root, { input: createWorkerInput }) => {
+            console.log('CREATE WORKER INPUT: ', createWorkerInput);
             const newWorker = await Worker.create(createWorkerInput);
             return newWorker;
         },
@@ -78,6 +88,11 @@ export const resolvers = {
                 $set: employeeData,
             });
         },
+        createWorkReportEmailTemplate: async (_root, { input: emailTemplate }) => {
+            console.log('EMAIL TEMPLATE: ', emailTemplate);
+            const mailRes = await sendEmail(emailTemplate);
+            return mailRes;
+        }
     },
     Job: {
         agency: async (job) => await Agency.findById(job.agencyId),

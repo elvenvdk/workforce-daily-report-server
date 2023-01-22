@@ -12,6 +12,8 @@ export const typeDefs = gql`
     workers: [Worker]
     checklists: [Checklist]
     foreman(id: ID!): Foreman
+    workreportList: [SigninSignout]
+    workreport(id: ID!): SigninSignout
   }
 
   type Mutation {
@@ -31,9 +33,19 @@ export const typeDefs = gql`
     createSI(input: CreateSIInput): SigninSignout
     updateSI(input: UpdateSIInput): SigninSignout
     createChecklist(input: CreateChecklistInput): Checklist
+    createWorkReportEmailTemplate(input: WorkreportEmailTemplateInput): WorkreportEmailTemplate
   }
 
+
   scalar GraphQLJSONObject
+
+  type WorkreportEmailTemplate {
+    email: String
+  }
+
+  input WorkreportEmailTemplateInput {
+    email: String
+  }
 
   type Agency {
     id: ID!
@@ -49,6 +61,10 @@ export const typeDefs = gql`
     class: String!
     timeIn: Date
     timeOut: Date
+    timeInSignature: String
+    timeOutSignature: String
+    doubleTime: Int
+    regularTime: Int
    }
 
   type Worker {
@@ -56,9 +72,13 @@ export const typeDefs = gql`
     firstName: String!
     lastName: String!
     middleInitial: String
-    last4SSN: String!
-    class: String!
+    last4SSN: String
+    class: String
     jobs: [WorksiteEmployees]
+    level: Int
+    type: String
+    email: String
+    role: String
   }
 
   type Job {
@@ -66,6 +86,7 @@ export const typeDefs = gql`
     jobName: String
     location: String
     contractNo: String
+    contractStartDate: Date
     agency: Agency
     laborTicketAbv: String
     contractorRep: ContractorRep
@@ -98,7 +119,7 @@ export const typeDefs = gql`
 
   type SigninSignout {
     id: ID!
-    agency: String
+    agency: Agency
     contractNo: String
     shift: String
     contractStartDate: Date
@@ -107,8 +128,8 @@ export const typeDefs = gql`
     jobName: String
     location: String
     workType: String
-    workers: [SIWorker]
-    foreMan: String
+    siteEmployees: [SIWorker]
+    foreman: String
     projectMgr: String
     agencyRep: String
     contractorRep: String
@@ -117,8 +138,25 @@ export const typeDefs = gql`
     agencyRepSignature: String
     contractorRepSignature: String
     signatureDate: Date
-    temperature: String
+    temperature: Float
     forcast: String
+    tasks: [SITask]
+    incidentReport: String
+    materialsDesc: [SIMaterialsDesc]
+    workDescription: String
+  }
+
+  type SIMaterialsDesc {
+    qty: String
+    item: String
+    description: String
+  }
+
+  type SITask {
+    details: String
+    progress: String
+    status: String
+    title: String
   }
 
   type ContractorRep {
@@ -200,11 +238,9 @@ export const typeDefs = gql`
     surveillanceReport: String
     drawing: String
     additionalRemarks: AdditionalRemarksInput
+    checklistType: String
   }
 
-
-
-  
 
   input TaskInput {
     id: Int
@@ -241,6 +277,7 @@ export const typeDefs = gql`
     jobName: String!
     location: String
     contractNo: String
+    contractStartDate: Date
     agencyId: String
     laborTicketAbv: String
     contractorRepId: String
@@ -254,6 +291,7 @@ export const typeDefs = gql`
     jobName: String
     location: String
     contractNo: String
+    contractStartDate: Date
     agencyId: String
     laborTicketAbv: String
     contractorRepId: String
@@ -276,11 +314,14 @@ export const typeDefs = gql`
   }
 
   input CreateWorkerInput {
-    firstName: String!
-    lastName: String!
+    firstName: String
+    lastName: String
     middleInitial: String
-    last4SSN: String!
-    class: String!
+    last4SSN: String
+    class: String
+    level: Int
+    role: String
+    email: String
   }
 
   input SIWorkerInput {
@@ -296,7 +337,8 @@ export const typeDefs = gql`
     timeOutSignature: String
     imageCapture: String
     notes: String
-    doubletime: Int
+    doubleTime: Int
+    regularTime: Int
   }
 
   input UpdateSIWorker {
@@ -324,9 +366,9 @@ export const typeDefs = gql`
     title: String
   }
 
-  input SiteEmployeesInput {
-    employees: [SIWorkerInput]
-  }
+  # input SiteEmployeesInput {
+  #   employees: [SIWorkerInput]
+  # }
 
 
   input CreateSIInput {
@@ -342,7 +384,7 @@ export const typeDefs = gql`
     workType: String
     workDescription: String
     incidentReport: String
-    siteEmployees: SiteEmployeesInput
+    siteEmployees: [SIWorkerInput]
     materialsDesc: [MaterialsDescInput]
     foreman: String
     projectMgr: String
@@ -353,7 +395,7 @@ export const typeDefs = gql`
     agencyRepSignature: String
     contractorRepSignature: String
     signatureDate: Date
-    temperature: String
+    temperature: Float
     forcast: String
     tasks: [TaskInput]
   }
@@ -379,7 +421,7 @@ export const typeDefs = gql`
     agencyRepSignature: String
     contractorRepSignature: String
     signatureDate: Date
-    temperature: String
+    temperature: Float
     forcast: String
   }
 
