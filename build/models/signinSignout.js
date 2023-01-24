@@ -166,6 +166,12 @@ const SigninSignoutSchema = new Schema({
                 type: String
             }
         },
-    ]
+    ],
+    canRecall: {
+        type: Boolean
+    },
+    hasBeenRecalled: {
+        type: Boolean
+    }
 }, { timestamps: true });
 export default model("SigninSignout", SigninSignoutSchema);

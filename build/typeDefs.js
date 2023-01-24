@@ -143,6 +143,10 @@ export const typeDefs = gql `
     incidentReport: String
     materialsDesc: [SIMaterialsDesc]
     workDescription: String
+    createdAt: Date
+    updatedAt: Date
+    canRecall: Boolean
+    hasBeenRecalled: Boolean
   }
 
   type SIMaterialsDesc {
@@ -397,6 +401,8 @@ export const typeDefs = gql `
     temperature: Float
     forcast: String
     tasks: [TaskInput]
+    canRecall: Boolean
+    hasBeenRecalled: Boolean
   }
 
   input UpdateSIInput {
@@ -422,6 +428,8 @@ export const typeDefs = gql `
     signatureDate: Date
     temperature: Float
     forcast: String
+    canRecall: Boolean
+    hasBeenRecalled: Boolean
   }
 
   input UpdateWorkerInput {

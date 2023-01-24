@@ -143,6 +143,10 @@ export interface ISigninSignout {
   temperature: number;
   forcast: string;
   tasks: TaskType[];
+  createdAt: Date;
+  updatedAt: Date;
+  canRecall: boolean
+  hasBeenRecalled: boolean
 }
 
 export interface IProjectMgr {
