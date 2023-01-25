@@ -34,7 +34,7 @@ export const resolvers = {
                 _id: updateAgency?.id
             }, {
                 $set: {
-                    agencyName: updateAgency?.agencyName
+                    updateAgency
                 }
             });
             return updatedAgency;
@@ -57,7 +57,7 @@ export const resolvers = {
                     updateSIInput,
                 }
             });
-            return updateSIInput;
+            return updatedSI;
         },
         createJob: async (_root, { input: jobInput }) => {
             await Job.create(jobInput);

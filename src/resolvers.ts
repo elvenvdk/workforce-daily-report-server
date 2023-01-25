@@ -54,7 +54,7 @@ export const resolvers = {
         },
         {
           $set: {
-            agencyName: updateAgency?.agencyName
+            updateAgency
           }
         }
       )
@@ -84,7 +84,7 @@ export const resolvers = {
           }
         },
       )
-      return updateSIInput
+      return updatedSI;
 
     },
 
