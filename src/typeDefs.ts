@@ -19,6 +19,7 @@ export const typeDefs = gql`
   type Mutation {
     createAgency(input: CreateAgencyInput!): Agency
     updateAgency(input: UpdateAgencyInput!): Agency
+    deleteAgency(input: UpdateAgencyInput!): Agency
     createJob(input: CreateJobInput!): Job
     updateJob(input: UpdateJobInput!): Job
     deleteJob(input: ID!): Job
@@ -144,6 +145,10 @@ export const typeDefs = gql`
     incidentReport: String
     materialsDesc: [SIMaterialsDesc]
     workDescription: String
+    createdAt: Date
+    updatedAt: Date
+    canRecall: Boolean
+    hasBeenRecalled: Boolean
   }
 
   type SIMaterialsDesc {
@@ -398,21 +403,27 @@ export const typeDefs = gql`
     temperature: Float
     forcast: String
     tasks: [TaskInput]
+    canRecall: Boolean
+    hasBeenRecalled: Boolean
   }
 
   input UpdateSIInput {
     id: ID!
-    agency: String
+    agency: AgencyInput
     contractNo: String
     shift: String
     contractStartDate: Date
     startDate: Date
     taskCompletionDate: Date
+    laborTicketAbv: String
     jobName: String
     location: String
     workType: String
-    workers: [UpdateSIWorker]
-    foreMan: String
+    workDescription: String
+    incidentReport: String
+    siteEmployees: [SIWorkerInput]
+    materialsDesc: [MaterialsDescInput]
+    foreman: String
     projectMgr: String
     agencyRep: String
     contractorRep: String
@@ -423,6 +434,9 @@ export const typeDefs = gql`
     signatureDate: Date
     temperature: Float
     forcast: String
+    tasks: [TaskInput]
+    canRecall: Boolean
+    hasBeenRecalled: Boolean
   }
 
   input UpdateWorkerInput {
