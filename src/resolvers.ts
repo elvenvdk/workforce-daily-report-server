@@ -18,24 +18,31 @@ export const resolvers = {
     agencies: async () => await Agency.find(),
 
     job: async (_root: any, { id: jobId }: any, contextValue: IUserContext) => {
-      // if (contextValue.user.role !== "ADMIN") {
-      //   throw new Error("Not Authorized");
-      // }
+      console.log('CONTEXT VALUE: ', contextValue);
+      if (!contextValue.user) {
+        throw new Error("Not Authorized");
+      }
       const job = await Job.findById(jobId)
       return job;
     },
 
-    jobs: async () => await Job.find(),
+    jobs: async (_root: any, args: any, contextValue: IUserContext) => {
+      console.log('JOBS CONTEXT VALUE: ', contextValue.user);
+      if (!contextValue.user) {
+        throw new Error("Not Authorized");
+      }
+      return await Job.find()
+    },
 
-    workers: async () => await Worker.find({ role: "FIELD" }),
+    workers: async (_root: any, args: any, contextValue: IUserContext) => await Worker.find({ role: "FIELD" }),
 
     worker: async (_root: any, { id: workerId }: any) => await Worker.findById(workerId),
 
-    worksiteEmployeesList: async () => await WorksiteEmployees.find(),
+    worksiteEmployeesList: async (_root: any, args: any, contextValue: IUserContext) => await WorksiteEmployees.find(),
 
     worksiteEmployees: async (_root: any, { id: employeeId }: any) => await WorksiteEmployees.findById(employeeId),
 
-    workreportList: async () => await SigninSignout.find(),
+    workreportList: async (_root: any, args: any, contextValue: IUserContext) => await SigninSignout.find(),
 
     workreport: async (_root: any, { id: workreportId }: any) => await SigninSignout.findById(workreportId)
   },

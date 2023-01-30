@@ -43,6 +43,7 @@ const apolloServer = new ApolloServer<IUserContext>({
   plugins: [ApolloServerPluginDrainHttpServer({ httpServer })]
 });
 await apolloServer.start();
+
 // MIDDLEWARE
 app.use(
   '/gql',
@@ -55,10 +56,16 @@ app.use(
     optionsSuccessStatus: 204,
   }),
   expressMiddleware(apolloServer, {
-    context: async ({ req, res }) => ({
-      userToken: req.headers.authorization,
-      user: req.headers.user
-    })
+    context: async ({ req, res }) => {
+      console.log('AUTH HEADERS: ', {
+        userToken: req.headers.authorization,
+        user: req.headers.user
+      });
+      return {
+        userToken: req.headers.authorization,
+        user: req.headers.user
+      }
+    }
   }),
 )
 app.use(express.json());
