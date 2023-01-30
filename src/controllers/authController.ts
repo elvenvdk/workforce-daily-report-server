@@ -78,7 +78,6 @@ export const login = async (req: TypedRequestBody<RegisterUserType>, res: TypedR
     //   return res.status(404).json({ msg: "Username or Password not recognized" });
     // }
     const userAuth = await Auth.findOne({ userName });
-    console.log('USER AUTH: ', userAuth)
     if (userAuth) {
       const verifiedPassword = await verifyPassword(password, userAuth.password);
 
