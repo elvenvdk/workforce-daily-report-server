@@ -57,13 +57,8 @@ app.use(
   }),
   expressMiddleware(apolloServer, {
     context: async ({ req, res }) => {
-      console.log('AUTH HEADERS: ', {
-        userToken: req.headers.authorization,
-        user: req.headers.user
-      });
       return {
         userToken: req.headers.authorization,
-        user: req.headers.user
       }
     }
   }),

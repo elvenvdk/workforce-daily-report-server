@@ -12,7 +12,7 @@ export interface TypedResponse<ResBody> extends Express.Response {
 
 export interface IUserContext {
   userToken?: string;
-  user: IUserContextUser
+  userRole: string;
 }
 
 export interface IUserContextUser {

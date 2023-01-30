@@ -7,19 +7,25 @@ import Checklist from "./models/checklist.ts";
 import { sendEmail } from "./aws/emailService.ts"
 import { IUserContext } from './types';
 
-type userContext = {
-  userToken: string
-}
 
 export const resolvers = {
   Query: {
-    agency: async (_root: any, { id: agencyId }: any) => await Agency.findOne({ id: agencyId }),
+    agency: async (_root: any, { id: agencyId }: any, contextValue: IUserContext) => {
+      if (!contextValue.userToken) {
+        throw new Error("Not Authorized");
+      }
+      return await Agency.findOne({ id: agencyId })
+    },
 
-    agencies: async () => await Agency.find(),
+    agencies: async (_root: any, args: any, contextValue: IUserContext) => {
+      if (!contextValue.userToken) {
+        throw new Error("Not Authorized");
+      }
+      return await Agency.find()
+    },
 
     job: async (_root: any, { id: jobId }: any, contextValue: IUserContext) => {
-      console.log('CONTEXT VALUE: ', contextValue);
-      if (!contextValue.user) {
+      if (!contextValue.userToken) {
         throw new Error("Not Authorized");
       }
       const job = await Job.findById(jobId)
@@ -27,34 +33,69 @@ export const resolvers = {
     },
 
     jobs: async (_root: any, args: any, contextValue: IUserContext) => {
-      console.log('JOBS CONTEXT VALUE: ', contextValue.user);
-      if (!contextValue.user) {
+      if (!contextValue.userToken) {
         throw new Error("Not Authorized");
       }
       return await Job.find()
     },
 
-    workers: async (_root: any, args: any, contextValue: IUserContext) => await Worker.find({ role: "FIELD" }),
+    workers: async (_root: any, args: any, contextValue: IUserContext) => {
+      if (!contextValue.userToken) {
+        throw new Error("Not Authorized");
+      }
+      return await Worker.find({ role: "FIELD" })
+    },
 
-    worker: async (_root: any, { id: workerId }: any) => await Worker.findById(workerId),
+    worker: async (_root: any, { id: workerId }: any, contextValue: IUserContext) => {
+      if (!contextValue.userToken) {
+        throw new Error("Not Authorized");
+      }
+      return await Worker.findById(workerId)
+    },
 
-    worksiteEmployeesList: async (_root: any, args: any, contextValue: IUserContext) => await WorksiteEmployees.find(),
+    worksiteEmployeesList: async (_root: any, args: any, contextValue: IUserContext) => {
+      if (!contextValue.userToken) {
+        throw new Error("Not Authorized");
+      }
+      return await WorksiteEmployees.find()
+    },
 
-    worksiteEmployees: async (_root: any, { id: employeeId }: any) => await WorksiteEmployees.findById(employeeId),
+    worksiteEmployees: async (_root: any, { id: employeeId }: any, contextValue: IUserContext) => {
+      if (!contextValue.userToken) {
+        throw new Error("Not Authorized");
+      }
+      return await WorksiteEmployees.findById(employeeId)
+    },
 
-    workreportList: async (_root: any, args: any, contextValue: IUserContext) => await SigninSignout.find(),
+    workreportList: async (_root: any, args: any, contextValue: IUserContext) => {
+      if (!contextValue.userToken) {
+        throw new Error("Not Authorized");
+      }
+      return await SigninSignout.find()
+    },
 
-    workreport: async (_root: any, { id: workreportId }: any) => await SigninSignout.findById(workreportId)
+    workreport: async (_root: any, { id: workreportId }: any, contextValue: IUserContext) => {
+      if (!contextValue.userToken) {
+        throw new Error("Not Authorized");
+      }
+      return await SigninSignout.findById(workreportId)
+    }
   },
 
   Mutation: {
 
-    createAgency: async (_root: any, { input: agencyInput }: any) => {
+    createAgency: async (_root: any, { input: agencyInput }: any, contextValue: IUserContext) => {
+      if (!contextValue.userToken) {
+        throw new Error("Not Authorized");
+      }
       const newAgency = await Agency.create(agencyInput);
       return newAgency;
     },
 
-    updateAgency: async (_root: any, { input: updateAgency }: any) => {
+    updateAgency: async (_root: any, { input: updateAgency }: any, contextValue: IUserContext) => {
+      if (!contextValue.userToken) {
+        throw new Error("Not Authorized");
+      }
       const updatedAgency = await Agency.updateOne(
         {
           _id: updateAgency?.id
@@ -68,19 +109,28 @@ export const resolvers = {
       return updatedAgency;
     },
 
-    createChecklist: async (_root: any, { input: checklistInput }: any) => {
+    createChecklist: async (_root: any, { input: checklistInput }: any, contextValue: IUserContext) => {
+      if (!contextValue.userToken) {
+        throw new Error("Not Authorized");
+      }
       const newChecklist = await new Checklist(checklistInput);
       await newChecklist.save();
       return newChecklist;
     },
 
-    createSI: async (_root: any, { input: createSIInput }: any) => {
+    createSI: async (_root: any, { input: createSIInput }: any, contextValue: IUserContext) => {
+      if (!contextValue.userToken) {
+        throw new Error("Not Authorized");
+      }
       const newSI = new SigninSignout(createSIInput);
       await newSI.save();
       return newSI;
     },
 
-    updateSI: async (_root: any, { input: updateSIInput }: any) => {
+    updateSI: async (_root: any, { input: updateSIInput }: any, contextValue: IUserContext) => {
+      if (!contextValue.userToken) {
+        throw new Error("Not Authorized");
+      }
       const updatedSI = await SigninSignout.updateOne(
         {
           _id: updateSIInput.id
@@ -95,30 +145,47 @@ export const resolvers = {
 
     },
 
-    createJob: async (_root: any, { input: jobInput }: any) => {
-      await Job.create(jobInput)
+    createJob: async (_root: any, { input: jobInput }: any, contextValue: IUserContext) => {
+      if (!contextValue.userToken) {
+        throw new Error("Not Authorized");
+      }
+      return await Job.create(jobInput)
     },
 
-    updateJob: async (_root: any, { input: jobInput }: any) =>
-      await Job.updateOne(
+    updateJob: async (_root: any, { input: jobInput }: any, contextValue: IUserContext) => {
+      if (!contextValue.userToken) {
+        throw new Error("Not Authorized");
+      }
+      return await Job.updateOne(
         {
           _id: jobInput.id,
         },
         {
           $set: jobInput,
         }
-      ),
+      )
+    },
 
-    deleteJob: async (_root: any, { input: id }: any) => await Job.deleteOne({ _id: id }),
+    deleteJob: async (_root: any, { input: id }: any, contextValue: IUserContext) => {
+      if (!contextValue.userToken) {
+        throw new Error("Not Authorized");
+      }
+      return await Job.deleteOne({ _id: id })
+    },
 
-    createWorker: async (_root: any, { input: createWorkerInput }: any) => {
-      console.log('CREATE WORKER INPUT: ', createWorkerInput)
+    createWorker: async (_root: any, { input: createWorkerInput }: any, contextValue: IUserContext) => {
+      if (!contextValue.userToken) {
+        throw new Error("Not Authorized");
+      }
       const newWorker = await Worker.create(createWorkerInput);
       return newWorker;
     },
 
-    updateWorker: async (_root: any, { input: updateWorkerInput }: any) => {
-      await Worker.updateOne(
+    updateWorker: async (_root: any, { input: updateWorkerInput }: any, contextValue: IUserContext) => {
+      if (!contextValue.userToken) {
+        throw new Error("Not Authorized");
+      }
+      return await Worker.updateOne(
         {
           _id: updateWorkerInput.id,
         },
@@ -128,9 +195,17 @@ export const resolvers = {
       )
     },
 
-    createWorksiteEmployees: async (_root: any, { input: employees }: any) => await WorksiteEmployees.create(employees),
+    createWorksiteEmployees: async (_root: any, { input: employees }: any, contextValue: IUserContext) => {
+      if (!contextValue.userToken) {
+        throw new Error("Not Authorized");
+      }
+      await WorksiteEmployees.create(employees)
+    },
 
-    updateWorksiteEmployees: async (_root: any, { input: employeeData }: any) => {
+    updateWorksiteEmployees: async (_root: any, { input: employeeData }: any, contextValue: IUserContext) => {
+      if (!contextValue.userToken) {
+        throw new Error("Not Authorized");
+      }
       await WorksiteEmployees.updateOne(
         {
           _id: employeeData.id,
@@ -141,8 +216,10 @@ export const resolvers = {
       )
     },
 
-    createWorkReportEmailTemplate: async (_root: any, { input: emailTemplate }: any) => {
-      console.log('EMAIL TEMPLATE: ', emailTemplate);
+    createWorkReportEmailTemplate: async (_root: any, { input: emailTemplate }: any, args: any, contextValue: IUserContext) => {
+      if (!contextValue.userToken) {
+        throw new Error("Not Authorized");
+      }
       const mailRes = await sendEmail(emailTemplate);
       return mailRes;
     }
@@ -150,26 +227,52 @@ export const resolvers = {
   },
 
   Job: {
-    agency: async (job: any) => await Agency.findById(job.agencyId),
-    siteEmployees: async (job: any) => await WorksiteEmployees.findById(job.worksiteId),
+    agency: async (job: any, args: any, contextValue: IUserContext) => {
+      if (!contextValue.userToken) {
+        throw new Error("Not Authorized");
+      }
+      return await Agency.findById(job.agencyId)
+    },
+    siteEmployees: async (job: any, args: any, contextValue: IUserContext) => {
+      if (!contextValue.userToken) {
+        throw new Error("Not Authorized");
+      }
+      return await WorksiteEmployees.findById(job.worksiteId)
+    },
   },
 
   WorksiteEmployees: {
-    employees: async (worksiteData: any) => await Worker.find({ _id: { $in: worksiteData.employees } }),
+    employees: async (worksiteData: any, args: any, contextValue: IUserContext) => {
+      if (!contextValue.userToken) {
+        throw new Error("Not Authorized");
+      }
+      return await Worker.find({ _id: { $in: worksiteData.employees } })
+    },
 
-    job: async (worksiteData: any) => await Job.findById(worksiteData.jobId),
+    job: async (worksiteData: any, args: any, contextValue: IUserContext) => {
+      if (!contextValue.userToken) {
+        throw new Error("Not Authorized");
+      }
+      return await Job.findById(worksiteData.jobId)
+    },
 
-    foreman: async (worksiteData: any) => await Worker.findById(worksiteData.foremanId),
+    foreman: async (worksiteData: any, args: any, contextValue: IUserContext) => {
+      if (!contextValue.userToken) {
+        throw new Error("Not Authorized");
+      }
+      return await Worker.findById(worksiteData.foremanId)
+    },
   },
 
   Worker: {
-    // jobs: async (data: any) =>
-    //   await WorksiteEmployees.find({
-    //     foremanId: data._id,
-    //   }),
-    jobs: async (data: any) => await WorksiteEmployees.find({
-      employees: { _id: data._id }
-    })
+    jobs: async (data: any, args: any, contextValue: IUserContext) => {
+      if (!contextValue.userToken) {
+        throw new Error("Not Authorized");
+      }
+      return await WorksiteEmployees.find({
+        employees: { _id: data._id }
+      })
+    }
   },
 
 };
