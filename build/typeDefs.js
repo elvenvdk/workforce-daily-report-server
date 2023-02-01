@@ -18,12 +18,13 @@ export const typeDefs = gql `
   type Mutation {
     createAgency(input: CreateAgencyInput!): Agency
     updateAgency(input: UpdateAgencyInput!): Agency
-    deleteAgency(input: UpdateAgencyInput!): Agency
+    deleteAgency(input: ID!): Agency
     createJob(input: CreateJobInput!): Job
     updateJob(input: UpdateJobInput!): Job
     deleteJob(input: ID!): Job
     createWorker(input: CreateWorkerInput): Worker
     updateWorker(input: UpdateWorkerInput): Worker
+    deleteWorker(input: ID!): Worker
     createWorksiteEmployees(input: CreateWorksiteEmployeesInput): WorksiteEmployees
     updateWorksiteEmployees(input: UpdateWorksiteEmployeesInput): WorksiteEmployees
     createSI(input: CreateSIInput): SigninSignout

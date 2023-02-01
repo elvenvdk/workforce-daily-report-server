@@ -18,7 +18,6 @@ export const resolvers = {
     },
 
     agencies: async (_root: any, args: any, contextValue: IUserContext) => {
-      console.log(contextValue.userToken);
       if (!contextValue.userToken) {
         throw new Error("Not Authorized");
       }
@@ -84,7 +83,6 @@ export const resolvers = {
   },
 
   Mutation: {
-
     createAgency: async (_root: any, { input: agencyInput }: any, contextValue: IUserContext) => {
       if (!contextValue.userToken) {
         throw new Error("Not Authorized");
@@ -108,6 +106,14 @@ export const resolvers = {
         }
       )
       return updatedAgency;
+    },
+
+    deleteAgency: async (_root: any, { input: id }: any, contextValue: IUserContext) => {
+      if (!contextValue.userToken) {
+        throw new Error("Not Authorized");
+      }
+      const removedAgency = await Agency.deleteOne({ _id: id });
+      return removedAgency;
     },
 
     createChecklist: async (_root: any, { input: checklistInput }: any, contextValue: IUserContext) => {

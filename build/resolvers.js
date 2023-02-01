@@ -14,7 +14,6 @@ export const resolvers = {
             return await Agency.findOne({ id: agencyId });
         },
         agencies: async (_root, args, contextValue) => {
-            console.log(contextValue.userToken);
             if (!contextValue.userToken) {
                 throw new Error("Not Authorized");
             }
@@ -90,6 +89,13 @@ export const resolvers = {
                 }
             });
             return updatedAgency;
+        },
+        deleteAgency: async (_root, { input: id }, contextValue) => {
+            if (!contextValue.userToken) {
+                throw new Error("Not Authorized");
+            }
+            const removedAgency = await Agency.deleteOne({ _id: id });
+            return removedAgency;
         },
         createChecklist: async (_root, { input: checklistInput }, contextValue) => {
             if (!contextValue.userToken) {
