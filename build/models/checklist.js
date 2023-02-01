@@ -23,6 +23,9 @@ const ChecklistSchema = new Schema({
     location: {
         type: String
     },
+    reportNo: {
+        type: String
+    },
     fieldTasks: {
         type: Map,
         of: {

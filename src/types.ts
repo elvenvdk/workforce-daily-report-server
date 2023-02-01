@@ -58,6 +58,7 @@ export interface IWorker {
   level: number;
   role: string;
   email: string;
+  active: boolean
 }
 
 export interface IWorkType {
@@ -147,6 +148,7 @@ export interface ISigninSignout {
   updatedAt: Date;
   canRecall: boolean
   hasBeenRecalled: boolean
+  reportNo: string
 }
 
 export interface IProjectMgr {
@@ -168,6 +170,7 @@ export interface IJob {
   worksiteId: Types.ObjectId;
   startDate: Date;
   taskCompletionDate: Date;
+  active: boolean
 }
 
 export interface IContractRep {
@@ -204,6 +207,7 @@ export interface IChecklist {
   inspectorName: string;
   surveillanceReport: string;
   drawing: string;
+  reportNo: string
 
   additionalRemarks: {
     text: string;

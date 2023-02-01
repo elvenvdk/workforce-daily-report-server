@@ -10,6 +10,7 @@ import cors from "cors";
 import { typeDefs } from "./typeDefs.ts";
 import { resolvers } from "./resolvers.ts";
 import authRoutes from './routes/auth.ts';
+import reportRoutes from './routes/reports.ts';
 dotenv.config({ path: "./.env" });
 const PORT = process.env.PORT || 9000;
 const app = express();
@@ -38,10 +39,11 @@ app.use('/gql', express.json(), cors({
     preflightContinue: false,
     optionsSuccessStatus: 204,
 }), expressMiddleware(apolloServer, {
-    context: async ({ req, res }) => ({
-        userToken: req.headers.authorization,
-        user: req.headers.user
-    })
+    context: async ({ req, res }) => {
+        return {
+            userToken: req.headers.authorization,
+        };
+    }
 }));
 app.use(express.json());
 app.use(cookieParser());
@@ -53,5 +55,6 @@ app.use(cors({
     preflightContinue: false,
 }));
 app.use('/api/auth', authRoutes);
+app.use('/api/reports', reportRoutes);
 await new Promise(resolve => httpServer.listen({ port: PORT }, resolve));
 console.log(`🚀 Server connected at http://localhost:${PORT} - YES!`);

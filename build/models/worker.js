@@ -32,6 +32,9 @@ const workerSchema = new Schema({
     },
     email: {
         type: String
+    },
+    active: {
+        type: Boolean
     }
 }, { timestamps: true });
 export default model("Worker", workerSchema);

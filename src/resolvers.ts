@@ -18,6 +18,7 @@ export const resolvers = {
     },
 
     agencies: async (_root: any, args: any, contextValue: IUserContext) => {
+      console.log(contextValue.userToken);
       if (!contextValue.userToken) {
         throw new Error("Not Authorized");
       }
@@ -79,7 +80,7 @@ export const resolvers = {
         throw new Error("Not Authorized");
       }
       return await SigninSignout.findById(workreportId)
-    }
+    },
   },
 
   Mutation: {

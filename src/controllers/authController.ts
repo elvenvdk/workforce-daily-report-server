@@ -83,7 +83,6 @@ export const login = async (req: TypedRequestBody<RegisterUserType>, res: TypedR
 
       // Get user info
       const verifiedUser = await Worker.findOne({ _id: userAuth.user });
-      console.log('VERIFIED USER: ', verifiedUser)
       if (!verifiedPassword) {
         return res.status(404).json({ msg: 'Username or Password Incorrect' });
       }
@@ -125,7 +124,6 @@ export const login = async (req: TypedRequestBody<RegisterUserType>, res: TypedR
               level: verifiedUser.level,
               role: verifiedUser.role
             };
-            console.log('THE USER: ', user);
             // res.send(user);
             res.cookie("userToken", userToken).send({ msg: 'User successfully set', user })
           }

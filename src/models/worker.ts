@@ -35,6 +35,9 @@ const workerSchema = new Schema<IWorker>({
   },
   email: {
     type: String
+  },
+  active: {
+    type: Boolean
   }
 }, { timestamps: true });
 

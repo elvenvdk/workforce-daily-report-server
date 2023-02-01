@@ -11,6 +11,7 @@ import cors from "cors";
 import { typeDefs } from "./typeDefs.ts";
 import { resolvers } from "./resolvers.ts";
 import authRoutes from './routes/auth.ts';
+import reportRoutes from './routes/reports.ts';
 import { IUserContext } from './types.ts';
 dotenv.config({ path: "./.env" });
 
@@ -74,6 +75,9 @@ app.use(cors<cors.CorsRequest>({
 }))
 app.use('/api/auth',
   authRoutes,
+);
+app.use('/api/reports',
+  reportRoutes,
 );
 
 await new Promise<void>(resolve => httpServer.listen({ port: PORT }, resolve));

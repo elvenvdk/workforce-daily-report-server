@@ -25,18 +25,13 @@ export const typeDefs = gql`
     deleteJob(input: ID!): Job
     createWorker(input: CreateWorkerInput): Worker
     updateWorker(input: UpdateWorkerInput): Worker
-    createWorksiteEmployees(
-      input: CreateWorksiteEmployeesInput
-    ): WorksiteEmployees
-    updateWorksiteEmployees(
-      input: UpdateWorksiteEmployeesInput
-    ): WorksiteEmployees
+    createWorksiteEmployees(input: CreateWorksiteEmployeesInput): WorksiteEmployees
+    updateWorksiteEmployees(input: UpdateWorksiteEmployeesInput): WorksiteEmployees
     createSI(input: CreateSIInput): SigninSignout
     updateSI(input: UpdateSIInput): SigninSignout
     createChecklist(input: CreateChecklistInput): Checklist
     createWorkReportEmailTemplate(input: WorkreportEmailTemplateInput): WorkreportEmailTemplate
   }
-
 
   scalar GraphQLJSONObject
 
@@ -53,7 +48,12 @@ export const typeDefs = gql`
     agencyName: String
   }
 
-   type SIWorker {
+
+  type ChecklistCount {
+    count: Int
+  }
+
+  type SIWorker {
     id: ID!
     firstName: String!
     lastName: String!
@@ -66,7 +66,7 @@ export const typeDefs = gql`
     timeOutSignature: String
     doubleTime: Int
     regularTime: Int
-   }
+  }
 
   type Worker {
     id: ID!
@@ -80,6 +80,7 @@ export const typeDefs = gql`
     type: String
     email: String
     role: String
+    active: Boolean
   }
 
   type Job {
@@ -95,6 +96,7 @@ export const typeDefs = gql`
     siteEmployees: WorksiteEmployees
     startDate: Date
     taskCompletionDate: Date
+    active: Boolean
   }
 
   type WorksiteEmployees {
@@ -149,6 +151,7 @@ export const typeDefs = gql`
     updatedAt: Date
     canRecall: Boolean
     hasBeenRecalled: Boolean
+    reportNo: String
   }
 
   type SIMaterialsDesc {
@@ -203,22 +206,23 @@ export const typeDefs = gql`
     surveillanceReport: String
     drawing: String
     additionalRemarks: AdditionalRemarks
+    reportNo: String
   }
 
   type AdditionalRemarks {
-      text: String
-      name1: String
-      signature1: String
-      title1: String
-      date1: String
-      name2: String
-      signature2: String
-      title2: String
-      date2: String
-      name3: String
-      signature3: String
-      title3: String
-      date3: String
+    text: String
+    name1: String
+    signature1: String
+    title1: String
+    date1: String
+    name2: String
+    signature2: String
+    title2: String
+    date2: String
+    name3: String
+    signature3: String
+    title3: String
+    date3: String
   }
 
   input AgencyInput {
@@ -244,8 +248,8 @@ export const typeDefs = gql`
     drawing: String
     additionalRemarks: AdditionalRemarksInput
     checklistType: String
+    reportNo: String
   }
-
 
   input TaskInput {
     id: Int
@@ -254,19 +258,19 @@ export const typeDefs = gql`
   }
 
   input AdditionalRemarksInput {
-      text: String
-      name1: String
-      signature1: String
-      title1: String
-      date1: String
-      name2: String
-      signature2: String
-      title2: String
-      date2: String
-      name3: String
-      signature3: String
-      title3: String
-      date3: String
+    text: String
+    name1: String
+    signature1: String
+    title1: String
+    date1: String
+    name2: String
+    signature2: String
+    title2: String
+    date2: String
+    name3: String
+    signature3: String
+    title3: String
+    date3: String
   }
 
   input CreateAgencyInput {
@@ -289,6 +293,7 @@ export const typeDefs = gql`
     projectMgrId: String
     startDate: Date
     taskCompletionDate: Date
+    active: Boolean
   }
 
   input UpdateJobInput {
@@ -303,6 +308,7 @@ export const typeDefs = gql`
     projectMgrId: String
     startDate: Date
     taskCompletionDate: Date
+    active: Boolean
   }
 
   input CreateWorksiteEmployeesInput {
@@ -327,6 +333,7 @@ export const typeDefs = gql`
     level: Int
     role: String
     email: String
+    active: Boolean
   }
 
   input SIWorkerInput {
@@ -357,7 +364,6 @@ export const typeDefs = gql`
     timeOut: Date
   }
 
-
   input MaterialsDescInput {
     qty: String
     item: String
@@ -374,7 +380,6 @@ export const typeDefs = gql`
   # input SiteEmployeesInput {
   #   employees: [SIWorkerInput]
   # }
-
 
   input CreateSIInput {
     agency: AgencyInput
@@ -405,6 +410,7 @@ export const typeDefs = gql`
     tasks: [TaskInput]
     canRecall: Boolean
     hasBeenRecalled: Boolean
+    reportNo: String
   }
 
   input UpdateSIInput {
@@ -437,6 +443,7 @@ export const typeDefs = gql`
     tasks: [TaskInput]
     canRecall: Boolean
     hasBeenRecalled: Boolean
+    reportNo: String
   }
 
   input UpdateWorkerInput {
@@ -446,8 +453,8 @@ export const typeDefs = gql`
     middleInitial: String
     last4SSN: String
     class: String
+    active: Boolean
   }
 
   scalar Date
-
 `;

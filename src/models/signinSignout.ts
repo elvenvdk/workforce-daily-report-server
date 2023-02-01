@@ -176,6 +176,9 @@ const SigninSignoutSchema = new Schema<ISigninSignout>({
   },
   hasBeenRecalled: {
     type: Boolean
+  },
+  reportNo: {
+    type: String
   }
 }, { timestamps: true })
 
