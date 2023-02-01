@@ -81,14 +81,13 @@ export const resolvers = {
             if (!contextValue.userToken) {
                 throw new Error("Not Authorized");
             }
-            const updatedAgency = await Agency.updateOne({
-                _id: updateAgency?.id
+            return await Agency.updateOne({
+                _id: updateAgency.id
             }, {
                 $set: {
-                    updateAgency
+                    agencyName: updateAgency.agencyName
                 }
             });
-            return updatedAgency;
         },
         deleteAgency: async (_root, { input: id }, contextValue) => {
             if (!contextValue.userToken) {
