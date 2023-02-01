@@ -18,7 +18,6 @@ export const resolvers = {
     },
 
     agencies: async (_root: any, args: any, contextValue: IUserContext) => {
-      console.log(contextValue.userToken);
       if (!contextValue.userToken) {
         throw new Error("Not Authorized");
       }
@@ -84,7 +83,6 @@ export const resolvers = {
   },
 
   Mutation: {
-
     createAgency: async (_root: any, { input: agencyInput }: any, contextValue: IUserContext) => {
       if (!contextValue.userToken) {
         throw new Error("Not Authorized");
@@ -97,17 +95,23 @@ export const resolvers = {
       if (!contextValue.userToken) {
         throw new Error("Not Authorized");
       }
-      const updatedAgency = await Agency.updateOne(
+      return await Agency.updateOne(
         {
-          _id: updateAgency?.id
+          _id: updateAgency.id
         },
         {
           $set: {
-            updateAgency
+            agencyName: updateAgency.agencyName
           }
         }
       )
-      return updatedAgency;
+    },
+
+    deleteAgency: async (_root: any, { input: id }: any, contextValue: IUserContext) => {
+      if (!contextValue.userToken) {
+        throw new Error("Not Authorized");
+      }
+      return await Agency.deleteOne({ _id: id });
     },
 
     createChecklist: async (_root: any, { input: checklistInput }: any, contextValue: IUserContext) => {
@@ -178,8 +182,7 @@ export const resolvers = {
       if (!contextValue.userToken) {
         throw new Error("Not Authorized");
       }
-      const newWorker = await Worker.create(createWorkerInput);
-      return newWorker;
+      return await Worker.create(createWorkerInput);
     },
 
     updateWorker: async (_root: any, { input: updateWorkerInput }: any, contextValue: IUserContext) => {
@@ -194,6 +197,16 @@ export const resolvers = {
           $set: updateWorkerInput,
         }
       )
+    },
+
+    deleteWorker: async (_root: any, { input: id }: any, contextValue: IUserContext) => {
+      if (!contextValue.userToken) {
+        throw new Error("Not Authorized");
+      }
+      console.log('REMOVE EMPLOYEE ID: ', id);
+      return Worker.deleteOne({
+        _id: id
+      })
     },
 
     createWorksiteEmployees: async (_root: any, { input: employees }: any, contextValue: IUserContext) => {
