@@ -27,13 +27,15 @@ export const registerUser = async (req, res) => {
             const salt = await bcrypt.genSalt(10);
             const encryptedPassword = await bcrypt.hash(password, salt);
             // Create token
-            jwt.sign({ userId: existingUser.id, level: existingUser.level, role: existingUser.role }, `${process.env.TOKEN_KEY}`, { algorithm: "HS256" }, async (err, userToken) => {
+            jwt.sign({
+                userId: existingUser.id,
+                level: existingUser.level,
+                role: existingUser.role
+            }, `${process.env.TOKEN_KEY}`, { algorithm: "HS256" }, async (err, userToken) => {
                 if (err) {
                     console.log("TOKEN ERROR: ", err);
                     return res.status(400).json({ msg: err.message });
                 }
-                else
-                    console.log("THE TOKEN: ", "");
                 const newAuthRegistration = await Auth.create({
                     userName,
                     password: encryptedPassword,
