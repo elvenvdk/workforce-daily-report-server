@@ -182,8 +182,7 @@ export const resolvers = {
       if (!contextValue.userToken) {
         throw new Error("Not Authorized");
       }
-      const newWorker = await Worker.create(createWorkerInput);
-      return newWorker;
+      return await Worker.create(createWorkerInput);
     },
 
     updateWorker: async (_root: any, { input: updateWorkerInput }: any, contextValue: IUserContext) => {
@@ -204,6 +203,7 @@ export const resolvers = {
       if (!contextValue.userToken) {
         throw new Error("Not Authorized");
       }
+      console.log('REMOVE EMPLOYEE ID: ', id);
       return Worker.deleteOne({
         _id: id
       })

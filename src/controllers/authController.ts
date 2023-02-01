@@ -42,7 +42,6 @@ export const registerUser = async (req: TypedRequestBody<RegisterUserType>, res:
           user: existingUser.id,
           userToken,
         });
-        console.log("NEW AUTHORIZATI0N: ", newAuthRegistration);
         if (newAuthRegistration instanceof Auth) {
           await Worker.findOneAndUpdate(
             {
