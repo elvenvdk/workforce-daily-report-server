@@ -94,8 +94,7 @@ export const resolvers = {
             if (!contextValue.userToken) {
                 throw new Error("Not Authorized");
             }
-            const removedAgency = await Agency.deleteOne({ _id: id });
-            return removedAgency;
+            return await Agency.deleteOne({ _id: id });
         },
         createChecklist: async (_root, { input: checklistInput }, contextValue) => {
             if (!contextValue.userToken) {
@@ -163,6 +162,14 @@ export const resolvers = {
                 _id: updateWorkerInput.id,
             }, {
                 $set: updateWorkerInput,
+            });
+        },
+        deleteWorker: async (_root, { input: id }, contextValue) => {
+            if (!contextValue.userToken) {
+                throw new Error("Not Authorized");
+            }
+            return Worker.deleteOne({
+                _id: id
             });
         },
         createWorksiteEmployees: async (_root, { input: employees }, contextValue) => {
