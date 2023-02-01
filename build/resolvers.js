@@ -51,10 +51,10 @@ export const resolvers = {
             return await WorksiteEmployees.find();
         },
         worksiteEmployees: async (_root, { id: employeeId }, contextValue) => {
-            if (!contextValue.userToken) {
-                throw new Error("Not Authorized");
-            }
-            return await WorksiteEmployees.findById(employeeId);
+            // if (!contextValue.userToken) {
+            //   throw new Error("Not Authorized");
+            // }
+            return await WorksiteEmployees.find({ foremanId: employeeId });
         },
         workreportList: async (_root, args, contextValue) => {
             if (!contextValue.userToken) {
