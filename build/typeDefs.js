@@ -6,7 +6,7 @@ export const typeDefs = gql `
     jobs: [Job]
     job(id: ID!): Job
     worksiteEmployeesList: [WorksiteEmployees]
-    worksiteEmployees(id: ID!): WorksiteEmployees
+    worksiteEmployees(id: ID!): [WorksiteEmployees]
     worker(id: ID!): Worker
     workers: [Worker]
     checklists: [Checklist]
@@ -104,6 +104,8 @@ export const typeDefs = gql `
     employees: [Worker]
     foreman: Worker
     job: Job
+    jobId: String
+    foremanId: String
   }
 
   type Foreman {
