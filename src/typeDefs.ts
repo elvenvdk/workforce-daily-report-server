@@ -148,6 +148,8 @@ export const typeDefs = gql`
     forcast: String
     tasks: [SITask]
     incidentReport: String
+    incidentReportText: String
+    remarks: String
     materialsDesc: [SIMaterialsDesc]
     workDescription: String
     createdAt: Date
@@ -397,6 +399,8 @@ export const typeDefs = gql`
     workType: String
     workDescription: String
     incidentReport: String
+    incidentReportText: String
+    remarks: String
     siteEmployees: [SIWorkerInput]
     materialsDesc: [MaterialsDescInput]
     foreman: String
@@ -430,6 +434,8 @@ export const typeDefs = gql`
     workType: String
     workDescription: String
     incidentReport: String
+    incidentReportText: String
+    remarks: String
     siteEmployees: [SIWorkerInput]
     materialsDesc: [MaterialsDescInput]
     foreman: String

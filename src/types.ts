@@ -130,6 +130,8 @@ export interface ISigninSignout {
   workType: string;
   workDescription: string;
   incidentReport: string;
+  incidentReportText: string;
+  remarks: string;
   siteEmployees: ISiteEmployee[];
   materialsDesc: MaterialsType[];
   foreman: string;

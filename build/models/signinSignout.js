@@ -49,6 +49,12 @@ const SigninSignoutSchema = new Schema({
     incidentReport: {
         type: String
     },
+    incidentReportText: {
+        type: String
+    },
+    remarks: {
+        type: String
+    },
     siteEmployees: [
         {
             id: {

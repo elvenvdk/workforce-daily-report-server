@@ -51,6 +51,12 @@ const SigninSignoutSchema = new Schema<ISigninSignout>({
   incidentReport: {
     type: String
   },
+  incidentReportText: {
+    type: String
+  },
+  remarks: {
+    type: String
+  },
   siteEmployees: [
     {
       id: {
