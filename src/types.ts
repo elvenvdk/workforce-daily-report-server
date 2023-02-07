@@ -210,6 +210,8 @@ export interface IChecklist {
   surveillanceReport: string;
   drawing: string;
   reportNo: string
+  remarks: string
+  nonconformanceRemarks: string
 
   additionalRemarks: {
     text: string;

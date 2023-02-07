@@ -210,6 +210,8 @@ export const typeDefs = gql`
     inspectorName: String
     surveillanceReport: String
     drawing: String
+    remarks: String
+    nonconformanceRemarks: String
     additionalRemarks: AdditionalRemarks
     reportNo: String
   }
@@ -251,6 +253,8 @@ export const typeDefs = gql`
     inspectorName: String
     surveillanceReport: String
     drawing: String
+    remarks: String
+    nonconformanceRemarks: String
     additionalRemarks: AdditionalRemarksInput
     checklistType: String
     reportNo: String

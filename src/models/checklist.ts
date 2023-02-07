@@ -63,6 +63,12 @@ const ChecklistSchema = new Schema<IChecklist>({
   drawing: {
     type: String
   },
+  remarks: {
+    type: String
+  },
+  nonconformanceRemarks: {
+    type: String
+  },
   additionalRemarks: {
     type: Map,
     of: {
