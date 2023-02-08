@@ -236,6 +236,13 @@ export const resolvers = {
       )
     },
 
+    deleteWorksiteEmployees: async (_root: any, { input: id }: any, contextValue: IUserContext) => {
+      if (!contextValue.userToken) {
+        throw new Error("Not Authorized");
+      }
+      return await WorksiteEmployees.deleteOne({ _id: id })
+    },
+
     createWorkReportEmailTemplate: async (_root: any, { input: emailTemplate }: any, args: any, contextValue: IUserContext) => {
       if (!contextValue.userToken) {
         throw new Error("Not Authorized");

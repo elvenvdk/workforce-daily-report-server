@@ -28,6 +28,7 @@ export const typeDefs = gql`
     deleteWorker(input: ID!): Worker
     createWorksiteEmployees(input: CreateWorksiteEmployeesInput): WorksiteEmployees
     updateWorksiteEmployees(input: UpdateWorksiteEmployeesInput): WorksiteEmployees
+    deleteWorksiteEmployees(input: ID!): WorksiteEmployees
     createSI(input: CreateSIInput): SigninSignout
     updateSI(input: UpdateSIInput): SigninSignout
     createChecklist(input: CreateChecklistInput): Checklist
@@ -307,6 +308,7 @@ export const typeDefs = gql`
 
   input UpdateJobInput {
     id: ID!
+    worksiteId: String
     jobName: String
     location: String
     contractNo: String
