@@ -87,7 +87,8 @@ export const resolvers = {
       if (!contextValue.userToken) {
         throw new Error("Not Authorized");
       }
-      const newAgency = await Agency.create(agencyInput);
+      const newAgency = new Agency(agencyInput);
+      await newAgency.save();
       return newAgency;
     },
 
@@ -154,7 +155,9 @@ export const resolvers = {
       if (!contextValue.userToken) {
         throw new Error("Not Authorized");
       }
-      return await Job.create(jobInput)
+      const newJob = new Job(jobInput)
+      await newJob.save();
+      return newJob;
     },
 
     updateJob: async (_root: any, { input: jobInput }: any, contextValue: IUserContext) => {
@@ -182,7 +185,9 @@ export const resolvers = {
       if (!contextValue.userToken) {
         throw new Error("Not Authorized");
       }
-      return await Worker.create(createWorkerInput);
+      const newWorker = new Worker(createWorkerInput);
+      await newWorker.save();
+      return newWorker;
     },
 
     updateWorker: async (_root: any, { input: updateWorkerInput }: any, contextValue: IUserContext) => {
@@ -203,7 +208,6 @@ export const resolvers = {
       if (!contextValue.userToken) {
         throw new Error("Not Authorized");
       }
-      console.log('REMOVE EMPLOYEE ID: ', id);
       return Worker.deleteOne({
         _id: id
       })
@@ -213,7 +217,9 @@ export const resolvers = {
       if (!contextValue.userToken) {
         throw new Error("Not Authorized");
       }
-      await WorksiteEmployees.create(employees)
+      const newWorksiteEmployees = new WorksiteEmployees(employees)
+      await newWorksiteEmployees.save();
+      return newWorksiteEmployees;
     },
 
     updateWorksiteEmployees: async (_root: any, { input: employeeData }: any, contextValue: IUserContext) => {
