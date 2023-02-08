@@ -158,6 +158,7 @@ export const typeDefs = gql`
     canRecall: Boolean
     hasBeenRecalled: Boolean
     reportNo: String
+    titleOfChangeOrder: String
   }
 
   type SIMaterialsDesc {
@@ -424,6 +425,7 @@ export const typeDefs = gql`
     canRecall: Boolean
     hasBeenRecalled: Boolean
     reportNo: String
+    titleOfChangeOrder: String
   }
 
   input UpdateSIInput {
@@ -459,6 +461,7 @@ export const typeDefs = gql`
     canRecall: Boolean
     hasBeenRecalled: Boolean
     reportNo: String
+    titleOfChangeOrder: String
   }
 
   input UpdateWorkerInput {

@@ -151,6 +151,7 @@ export interface ISigninSignout {
   canRecall: boolean
   hasBeenRecalled: boolean
   reportNo: string
+  titleOfChangeOrder: string
 }
 
 export interface IProjectMgr {

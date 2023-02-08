@@ -185,6 +185,9 @@ const SigninSignoutSchema = new Schema<ISigninSignout>({
   },
   reportNo: {
     type: String
+  },
+  titleOfChangeOrder: {
+    type: String
   }
 }, { timestamps: true })
 
