@@ -80,6 +80,20 @@ export const resolvers = {
       }
       return await SigninSignout.findById(workreportId)
     },
+
+    checklists: async (_root: any, args: any, contextValue: IUserContext) => {
+      if (!contextValue.userToken) {
+        throw new Error("Not Authorized");
+      }
+      return await Checklist.find();
+    },
+
+    checklist: async (_root: any, { id: checklistId }: any, contextValue: IUserContext) => {
+      if (!contextValue.userToken) {
+        throw new Error("Not Authorized");
+      }
+      return await Checklist.findById(checklistId)
+    },
   },
 
   Mutation: {

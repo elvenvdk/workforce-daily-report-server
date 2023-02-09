@@ -11,6 +11,7 @@ export const typeDefs = gql`
     worker(id: ID!): Worker
     workers: [Worker]
     checklists: [Checklist]
+    checklist(id: ID!): Checklist
     foreman(id: ID!): Foreman
     workreportList: [SigninSignout]
     workreport(id: ID!): SigninSignout
@@ -216,6 +217,8 @@ export const typeDefs = gql`
     nonconformanceRemarks: String
     additionalRemarks: AdditionalRemarks
     reportNo: String
+    createdAt: Date
+    updatedAt: Date
   }
 
   type AdditionalRemarks {
