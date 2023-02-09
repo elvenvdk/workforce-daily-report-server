@@ -137,7 +137,7 @@ export const resolvers = {
       if (!contextValue.userToken) {
         throw new Error("Not Authorized");
       }
-      const updatedSI = await SigninSignout.updateOne(
+      return await SigninSignout.updateOne(
         {
           _id: updateSIInput.id
         },
@@ -147,8 +147,6 @@ export const resolvers = {
           }
         },
       )
-      return updatedSI;
-
     },
 
     createJob: async (_root: any, { input: jobInput }: any, contextValue: IUserContext) => {
