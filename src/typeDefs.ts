@@ -276,15 +276,15 @@ export const typeDefs = gql`
     name1: String
     signature1: String
     title1: String
-    date1: String
+    date1: Date
     name2: String
     signature2: String
     title2: String
-    date2: String
+    date2: Date
     name3: String
     signature3: String
     title3: String
-    date3: String
+    date3: Date
   }
 
   input CreateAgencyInput {

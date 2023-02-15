@@ -219,15 +219,15 @@ export interface IChecklist {
     name1: string;
     signature1: string;
     title1: string;
-    date1: string;
+    date1: Date;
     name2: string;
     signature2: string;
     title2: string;
-    date2: string;
+    date2: Date;
     name3: string;
     signature3: string;
     title3: string;
-    date3: string;
+    date3: Date;
   },
 }
 
