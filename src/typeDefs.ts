@@ -201,6 +201,7 @@ export const typeDefs = gql`
     id: ID
     agency: Agency
     type: String
+    checklistType: String
     fieldTasks: Task
     contractNo: String
     description: String
