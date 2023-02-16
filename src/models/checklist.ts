@@ -28,14 +28,21 @@ const ChecklistSchema = new Schema<IChecklist>({
   reportNo: {
     type: String
   },
-  fieldTasks: {
-    type: Map,
-    of: {
+  // fieldTasks: {
+  //   type: Map,
+  //   of: {
+  //     id: String,
+  //     question: String,
+  //     answer: String
+  //   }
+  // },
+  fieldTasks: [
+    {
       id: String,
       question: String,
       answer: String
     }
-  },
+  ],
   contractNo: {
     type: String
   },

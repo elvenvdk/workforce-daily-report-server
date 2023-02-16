@@ -38,6 +38,7 @@ export const typeDefs = gql`
 
   scalar GraphQLJSONObject
 
+
   type WorkreportEmailTemplate {
     email: String
   }
@@ -197,12 +198,17 @@ export const typeDefs = gql`
     answer: String
   }
 
+  type TaskKeyValuePair {
+    key:String
+    value:Task
+}
+
   type Checklist {
     id: ID
     agency: Agency
     type: String
     checklistType: String
-    fieldTasks: Task
+    fieldTasks: [Task]
     contractNo: String
     description: String
     contractor: String
@@ -221,6 +227,8 @@ export const typeDefs = gql`
     createdAt: Date
     updatedAt: Date
   }
+
+  scalar JSON
 
   type AdditionalRemarks {
     text: String
@@ -247,7 +255,8 @@ export const typeDefs = gql`
     id: ID
     agency: AgencyInput
     type: String
-    fieldTasks: GraphQLJSONObject
+    # fieldTasks: GraphQLJSONObject
+    fieldTasks: [TaskInput]
     contractNo: String
     description: String
     contractor: String
