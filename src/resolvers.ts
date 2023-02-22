@@ -151,13 +151,21 @@ export const resolvers = {
       if (!contextValue.userToken) {
         throw new Error("Not Authorized");
       }
+      console.log('TRYING TO UPDATE SI: ', updateSIInput);
       return await SigninSignout.updateOne(
         {
           _id: updateSIInput.id
         },
         {
           $set: {
-            updateSIInput,
+            canRecall: updateSIInput.canRecall,
+            titleOfChangeOrder: updateSIInput.titleOfChangeOrder,
+            workDescription: updateSIInput.workDescription,
+            materialsDesc: updateSIInput.materialsDesc,
+            incidentReport: updateSIInput.incidentReport,
+            incidentReportText: updateSIInput.incidentReportText,
+            tasks: updateSIInput.tasks,
+            remarks: updateSIInput.remarks
           }
         },
       )

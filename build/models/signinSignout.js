@@ -181,6 +181,9 @@ const SigninSignoutSchema = new Schema({
     },
     reportNo: {
         type: String
+    },
+    titleOfChangeOrder: {
+        type: String
     }
 }, { timestamps: true });
 export default model("SigninSignout", SigninSignoutSchema);

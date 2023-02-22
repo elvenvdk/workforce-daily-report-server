@@ -68,13 +68,26 @@ export const resolvers = {
             }
             return await SigninSignout.findById(workreportId);
         },
+        checklists: async (_root, args, contextValue) => {
+            if (!contextValue.userToken) {
+                throw new Error("Not Authorized");
+            }
+            return await Checklist.find();
+        },
+        checklist: async (_root, { id: checklistId }, contextValue) => {
+            if (!contextValue.userToken) {
+                throw new Error("Not Authorized");
+            }
+            return await Checklist.findById(checklistId);
+        },
     },
     Mutation: {
         createAgency: async (_root, { input: agencyInput }, contextValue) => {
             if (!contextValue.userToken) {
                 throw new Error("Not Authorized");
             }
-            const newAgency = await Agency.create(agencyInput);
+            const newAgency = new Agency(agencyInput);
+            await newAgency.save();
             return newAgency;
         },
         updateAgency: async (_root, { input: updateAgency }, contextValue) => {
@@ -115,20 +128,21 @@ export const resolvers = {
             if (!contextValue.userToken) {
                 throw new Error("Not Authorized");
             }
-            const updatedSI = await SigninSignout.updateOne({
+            return await SigninSignout.updateOne({
                 _id: updateSIInput.id
             }, {
                 $set: {
                     updateSIInput,
                 }
             });
-            return updatedSI;
         },
         createJob: async (_root, { input: jobInput }, contextValue) => {
             if (!contextValue.userToken) {
                 throw new Error("Not Authorized");
             }
-            return await Job.create(jobInput);
+            const newJob = new Job(jobInput);
+            await newJob.save();
+            return newJob;
         },
         updateJob: async (_root, { input: jobInput }, contextValue) => {
             if (!contextValue.userToken) {
@@ -150,7 +164,9 @@ export const resolvers = {
             if (!contextValue.userToken) {
                 throw new Error("Not Authorized");
             }
-            return await Worker.create(createWorkerInput);
+            const newWorker = new Worker(createWorkerInput);
+            await newWorker.save();
+            return newWorker;
         },
         updateWorker: async (_root, { input: updateWorkerInput }, contextValue) => {
             if (!contextValue.userToken) {
@@ -166,7 +182,6 @@ export const resolvers = {
             if (!contextValue.userToken) {
                 throw new Error("Not Authorized");
             }
-            console.log('REMOVE EMPLOYEE ID: ', id);
             return Worker.deleteOne({
                 _id: id
             });
@@ -175,7 +190,9 @@ export const resolvers = {
             if (!contextValue.userToken) {
                 throw new Error("Not Authorized");
             }
-            await WorksiteEmployees.create(employees);
+            const newWorksiteEmployees = new WorksiteEmployees(employees);
+            await newWorksiteEmployees.save();
+            return newWorksiteEmployees;
         },
         updateWorksiteEmployees: async (_root, { input: employeeData }, contextValue) => {
             if (!contextValue.userToken) {
@@ -186,6 +203,12 @@ export const resolvers = {
             }, {
                 $set: employeeData,
             });
+        },
+        deleteWorksiteEmployees: async (_root, { input: id }, contextValue) => {
+            if (!contextValue.userToken) {
+                throw new Error("Not Authorized");
+            }
+            return await WorksiteEmployees.deleteOne({ _id: id });
         },
         createWorkReportEmailTemplate: async (_root, { input: emailTemplate }, args, contextValue) => {
             if (!contextValue.userToken) {

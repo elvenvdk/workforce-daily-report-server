@@ -26,14 +26,21 @@ const ChecklistSchema = new Schema({
     reportNo: {
         type: String
     },
-    fieldTasks: {
-        type: Map,
-        of: {
+    // fieldTasks: {
+    //   type: Map,
+    //   of: {
+    //     id: String,
+    //     question: String,
+    //     answer: String
+    //   }
+    // },
+    fieldTasks: [
+        {
             id: String,
             question: String,
             answer: String
         }
-    },
+    ],
     contractNo: {
         type: String
     },
@@ -61,23 +68,26 @@ const ChecklistSchema = new Schema({
     drawing: {
         type: String
     },
+    remarks: {
+        type: String
+    },
+    nonconformanceRemarks: {
+        type: String
+    },
     additionalRemarks: {
-        type: Map,
-        of: {
-            text: { type: String },
-            name1: { type: String },
-            signature1: { type: String },
-            title1: { type: String },
-            date1: { type: String },
-            name2: { type: String },
-            signature2: { type: String },
-            title2: { type: String },
-            date2: { type: String },
-            name3: { type: String },
-            signature3: { type: String },
-            title3: { type: String },
-            date3: { type: String },
-        }
+        text: { type: String },
+        name1: { type: String },
+        signature1: { type: String },
+        title1: { type: String },
+        date1: { type: Date },
+        name2: { type: String },
+        signature2: { type: String },
+        title2: { type: String },
+        date2: { type: Date },
+        name3: { type: String },
+        signature3: { type: String },
+        title3: { type: String },
+        date3: { type: Date },
     }
 }, { timestamps: true });
 export default model("Checklist", ChecklistSchema);
