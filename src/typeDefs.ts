@@ -68,8 +68,8 @@ export const typeDefs = gql`
     timeOut: Date
     timeInSignature: String
     timeOutSignature: String
-    doubleTime: Int
-    regularTime: Int
+    doubleTime: Float
+    regularTime: Float
   }
 
   type Worker {
@@ -377,8 +377,8 @@ export const typeDefs = gql`
     timeOutSignature: String
     imageCapture: String
     notes: String
-    doubleTime: Int
-    regularTime: Int
+    doubleTime: Float
+    regularTime: Float
   }
 
   input UpdateSIWorker {
