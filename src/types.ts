@@ -173,7 +173,8 @@ export interface IJob {
   worksiteId: Types.ObjectId;
   startDate: Date;
   taskCompletionDate: Date;
-  active: boolean
+  active: boolean;
+  docPrefix: string;
 }
 
 export interface IContractRep {

@@ -101,6 +101,7 @@ export const typeDefs = gql`
     startDate: Date
     taskCompletionDate: Date
     active: Boolean
+    docPrefix: String
   }
 
   type WorksiteEmployees {
@@ -318,6 +319,7 @@ export const typeDefs = gql`
     startDate: Date
     taskCompletionDate: Date
     active: Boolean
+    docPrefix: String
   }
 
   input UpdateJobInput {
@@ -334,6 +336,7 @@ export const typeDefs = gql`
     startDate: Date
     taskCompletionDate: Date
     active: Boolean
+    docPrefix: String
   }
 
   input CreateWorksiteEmployeesInput {

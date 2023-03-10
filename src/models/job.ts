@@ -39,6 +39,9 @@ const JobSchema = new Schema<IJob>({
   },
   taskCompletionDate: {
     type: Date
+  },
+  docPrefix: {
+    type: String
   }
 });
 
