@@ -441,6 +441,7 @@ export const typeDefs = gql`
     canRecall: Boolean
     hasBeenRecalled: Boolean
     reportNo: String
+    docPrefix: String
     titleOfChangeOrder: String
   }
 
@@ -477,6 +478,7 @@ export const typeDefs = gql`
     canRecall: Boolean
     hasBeenRecalled: Boolean
     reportNo: String
+    CreateSIInput: String
     titleOfChangeOrder: String
   }
 
