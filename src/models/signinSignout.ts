@@ -153,10 +153,19 @@ const SigninSignoutSchema = new Schema<ISigninSignout>({
   materialsDesc: [
     {
       qty: {
-        type: String
+        type: Number
       },
       item: {
         type: String
+      },
+      um: {
+        type: String
+      },
+      unitCost: {
+        type: Number
+      },
+      totalCost: {
+        type: Number
       },
       description: {
         type: String

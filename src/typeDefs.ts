@@ -165,7 +165,10 @@ export const typeDefs = gql`
   }
 
   type SIMaterialsDesc {
-    qty: String
+    qty: Int
+    um: String
+    unitCost: Float
+    totalCost: Float
     item: String
     description: String
   }
@@ -393,7 +396,10 @@ export const typeDefs = gql`
   }
 
   input MaterialsDescInput {
-    qty: String
+    qty: Int
+    um: String
+    unitCost: Float
+    totalCost: Float
     item: String
     description: String
   }

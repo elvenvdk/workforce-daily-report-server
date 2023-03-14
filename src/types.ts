@@ -95,9 +95,12 @@ export interface ISiteEmployee {
 }
 
 export type MaterialsType = {
-  qty: string,
-  item: string,
-  description: string
+  qty: number;
+  um: string;
+  unitCost: number;
+  totalCost: number;
+  item: string;
+  description: string;
 };
 
 
