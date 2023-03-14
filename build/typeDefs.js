@@ -1,5 +1,5 @@
 import gql from "graphql-tag";
-export const typeDefs = gql `
+export const typeDefs = gql`
   type Query {
     agencies: [Agency]
     agency(id: ID!): Agency
