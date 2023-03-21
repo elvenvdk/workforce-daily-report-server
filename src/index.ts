@@ -48,7 +48,8 @@ await apolloServer.start();
 // MIDDLEWARE
 app.use(
   '/gql',
-  express.json(),
+  express.json({ limit: '10mb' }),
+  express.urlencoded({ limit: '10mb' }),
   cors<cors.CorsRequest>({
     origin: ['http://localhost:3000', 'http://workforce-daily-report.com', 'https://studio.apollographql.com'],
     credentials: true,
@@ -64,7 +65,8 @@ app.use(
     }
   }),
 )
-app.use(express.json());
+app.use(express.json({ limit: '10mb' }));
+app.use(express.urlencoded({ limit: '10mb' }));
 app.use(cookieParser());
 app.use(cors<cors.CorsRequest>({
   origin: ['http://localhost:3000', 'http://workforce-daily-report.com',],
