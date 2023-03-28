@@ -70,6 +70,7 @@ export const typeDefs = gql`
     timeOutSignature: String
     doubleTime: Float
     regularTime: Float
+    notes: String
   }
 
   type Worker {
