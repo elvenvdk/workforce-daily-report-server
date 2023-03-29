@@ -180,6 +180,9 @@ const SigninSignoutSchema = new Schema<ISigninSignout>({
       progress: {
         type: String
       },
+      status: {
+        type: String
+      },
       title: {
         type: String
       }
