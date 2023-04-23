@@ -4,6 +4,7 @@ import Worker from "./models/worker.ts";
 import WorksiteEmployees from "./models/worksiteEmployees.ts";
 import SigninSignout from "./models/signinSignout.ts";
 import Checklist from "./models/checklist.ts";
+import ChecklistCreator from "./models/checklistCreator.ts";
 import { sendEmail } from "./aws/emailService.ts"
 import { IUserContext } from './types';
 
@@ -94,6 +95,20 @@ export const resolvers = {
       }
       return await Checklist.findById(checklistId)
     },
+
+    checklistCreators: async (_root: any, args: any, contextValue: IUserContext) => {
+      if (!contextValue.userToken) {
+        throw new Error("Not Authorized");
+      }
+      return await ChecklistCreator.find();
+    },
+
+    checklistCreator: async (_root: any, { id: checklistCreatorId }: any, contextValue: IUserContext) => {
+      if (!contextValue.userToken) {
+        throw new Error("Not Authorized");
+      }
+      return await ChecklistCreator.findById(checklistCreatorId)
+    },
   },
 
   Mutation: {
@@ -133,9 +148,18 @@ export const resolvers = {
       if (!contextValue.userToken) {
         throw new Error("Not Authorized");
       }
-      const newChecklist = await new Checklist(checklistInput);
+      const newChecklist = await new ChecklistCreator(checklistInput);
       await newChecklist.save();
       return newChecklist;
+    },
+
+    createChecklistCreator: async (_root: any, { input: ChecklistCreatorInput }: any, contextValue: IUserContext) => {
+      if (!contextValue.userToken) {
+        throw new Error("Not Authorized");
+      }
+      const newChecklistCreator = await new ChecklistCreator(ChecklistCreatorInput);
+      await newChecklistCreator.save();
+      return newChecklistCreator;
     },
 
     createSI: async (_root: any, { input: createSIInput }: any, contextValue: IUserContext) => {

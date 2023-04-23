@@ -12,6 +12,8 @@ export const typeDefs = gql`
     workers: [Worker]
     checklists: [Checklist]
     checklist(id: ID!): Checklist
+    checklistCreators: [ChecklistCreator]
+    checklistCreator(id: ID!): ChecklistCreator
     foreman(id: ID!): Foreman
     workreportList: [SigninSignout]
     workreport(id: ID!): SigninSignout
@@ -34,10 +36,10 @@ export const typeDefs = gql`
     updateSI(input: UpdateSIInput): SigninSignout
     createChecklist(input: CreateChecklistInput): Checklist
     createWorkReportEmailTemplate(input: WorkreportEmailTemplateInput): WorkreportEmailTemplate
+    createChecklistCreator(input: ChecklistCreatorInput): ChecklistCreator
   }
 
   scalar GraphQLJSONObject
-
 
   type WorkreportEmailTemplate {
     email: String
@@ -51,7 +53,6 @@ export const typeDefs = gql`
     id: ID!
     agencyName: String
   }
-
 
   type ChecklistCount {
     count: Int
@@ -204,9 +205,31 @@ export const typeDefs = gql`
   }
 
   type TaskKeyValuePair {
-    key:String
-    value:Task
-}
+    key: String
+    value: Task
+  }
+
+  type ChecklistCreatorQuestions {
+    id: ID
+    question: String
+  }
+
+  type ChecklistCreator {
+    id: ID
+    name: String
+    questions: [ChecklistCreatorQuestions]
+  }
+
+  input ChecklistCreatorQuestionsInput {
+    id: ID
+    question: String
+  }
+
+  input ChecklistCreatorInput {
+    id: ID
+    name: String
+    questions: [ChecklistCreatorQuestionsInput]
+  }
 
   type Checklist {
     id: ID
