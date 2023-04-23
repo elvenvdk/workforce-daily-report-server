@@ -235,13 +235,13 @@ export interface IChecklist {
   },
 }
 
-export type ChecklistQuestions = {
+export type ChecklistQuestion = {
   question: string;
 }
 
 export interface IChecklistCreator {
   name: string;
-  questions: ChecklistQuestions
+  questions: ChecklistQuestion
 }
 
 
