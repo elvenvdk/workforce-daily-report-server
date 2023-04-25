@@ -148,7 +148,7 @@ export const resolvers = {
       if (!contextValue.userToken) {
         throw new Error("Not Authorized");
       }
-      const newChecklist = await new ChecklistCreator(checklistInput);
+      const newChecklist = await new Checklist(checklistInput);
       await newChecklist.save();
       return newChecklist;
     },
