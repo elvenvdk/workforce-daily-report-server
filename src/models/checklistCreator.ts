@@ -2,10 +2,10 @@ import { Schema, model } from "mongoose";
 import { IChecklistCreator } from "../types.ts";
 
 const ChecklistCreatorSchema = new Schema<IChecklistCreator>({
-  name: {
+  type: {
     type: String
   },
-  questions: [
+  fieldTasks: [
     {
       id: {
         type: Number

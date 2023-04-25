@@ -210,15 +210,16 @@ export const typeDefs = gql`
     value: Task
   }
 
-  type ChecklistCreatorQuestions {
+  type ChecklistCreatorFieldTasks {
     id: ID
     question: String
+    answer: String
   }
 
   type ChecklistCreator {
     id: ID
-    name: String
-    questions: [ChecklistCreatorQuestions]
+    type: String
+    fieldTasks: [ChecklistCreatorFieldTasks]
   }
 
   input ChecklistCreatorQuestionsInput {
@@ -229,8 +230,8 @@ export const typeDefs = gql`
 
   input ChecklistCreatorInput {
     id: ID
-    name: String
-    questions: [ChecklistCreatorQuestionsInput]
+    type: String
+    fieldTasks: [ChecklistCreatorQuestionsInput]
   }
 
   type Checklist {

@@ -242,8 +242,8 @@ export type ChecklistQuestion = {
 }
 
 export interface IChecklistCreator {
-  name: string;
-  questions: ChecklistQuestion
+  type: string;
+  fieldTasks: ChecklistQuestion
 }
 
 
