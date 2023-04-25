@@ -35,6 +35,7 @@ export const typeDefs = gql`
     createSI(input: CreateSIInput): SigninSignout
     updateSI(input: UpdateSIInput): SigninSignout
     createChecklist(input: CreateChecklistInput): Checklist
+    updateChecklist(input: CreateChecklistInput): Checklist
     createWorkReportEmailTemplate(input: WorkreportEmailTemplateInput): WorkreportEmailTemplate
     createChecklistCreator(input: ChecklistCreatorInput): ChecklistCreator
   }
@@ -223,6 +224,7 @@ export const typeDefs = gql`
   input ChecklistCreatorQuestionsInput {
     id: ID
     question: String
+    answer: String
   }
 
   input ChecklistCreatorInput {

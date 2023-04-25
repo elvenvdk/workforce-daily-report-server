@@ -162,6 +162,23 @@ export const resolvers = {
       return newChecklistCreator;
     },
 
+    updateChecklist: async (_root: any, { input: CreateChecklistInput }: any, contextValue: IUserContext) => {
+      if (!contextValue.userToken) {
+        throw new Error("Not Authorized");
+      }
+      let updatedSIWR = await Checklist.updateOne(
+        {
+          _id: CreateChecklistInput.id
+        },
+        {
+          $set: {
+            fieldTasks: CreateChecklistInput.fieldTasks,
+          }
+        },
+      )
+      return updatedSIWR;
+    },
+
     createSI: async (_root: any, { input: createSIInput }: any, contextValue: IUserContext) => {
       if (!contextValue.userToken) {
         throw new Error("Not Authorized");

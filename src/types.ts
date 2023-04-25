@@ -236,7 +236,9 @@ export interface IChecklist {
 }
 
 export type ChecklistQuestion = {
+  id: number;
   question: string;
+  answer: string;
 }
 
 export interface IChecklistCreator {

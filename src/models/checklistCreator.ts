@@ -7,7 +7,13 @@ const ChecklistCreatorSchema = new Schema<IChecklistCreator>({
   },
   questions: [
     {
+      id: {
+        type: Number
+      },
       question: {
+        type: String
+      },
+      answer: {
         type: String
       }
     }
