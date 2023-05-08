@@ -1,4 +1,5 @@
-import { TypedRequestBody, TypedResponse, RegisterUserType, RegisterUserResponseType } from "../types.ts";
+import { TypedRequestBody, TypedResponse, RegisterUserType, EmailChecklistType, RegisterUserResponseType } from "../types.ts";
+import { sendEmailWithAttachment } from "../aws/emailService";
 import SigninSignout from "../models/signinSignout.ts";
 import Checklist from "../models/checklist.ts";
 
@@ -20,5 +21,17 @@ export const getChecklistCount = async (req: TypedRequestBody<RegisterUserType>,
   }
   catch (error) {
     res.send(error);
+  }
+}
+
+
+const emailChecklistReport = async (req: TypedRequestBody<EmailChecklistType>, res: TypedResponse<RegisterUserResponseType>) => {
+  try {
+    const { email, attachment, recipient } = req.body;
+  }
+  catch (error) {
+    if (error) {
+      console.log('CHECKLIST REPORT EMAIL ERROR: ', error);
+    }
   }
 }

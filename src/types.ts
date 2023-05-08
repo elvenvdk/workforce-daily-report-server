@@ -32,6 +32,13 @@ export type RegisterUserType = {
 
 }
 
+export type EmailChecklistType = {
+  email: string;
+  recipient: string;
+  attachment: {};
+
+}
+
 export type RegisterUserResponseType = {
   msg?: string;
   data?: object;
