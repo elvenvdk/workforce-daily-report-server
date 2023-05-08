@@ -11,6 +11,7 @@ import cors from "cors";
 import { typeDefs } from "./typeDefs.ts";
 import { resolvers } from "./resolvers.ts";
 import authRoutes from './routes/auth.ts';
+import pdfRoutes from './routes/pdf.ts';
 import reportRoutes from './routes/reports.ts';
 import { IUserContext } from './types.ts';
 dotenv.config({ path: "./.env" });
@@ -80,6 +81,9 @@ app.use('/api/auth',
 );
 app.use('/api/reports',
   reportRoutes,
+);
+app.use('/api/pdf',
+  pdfRoutes,
 );
 
 await new Promise<void>(resolve => httpServer.listen({ port: PORT }, resolve));
