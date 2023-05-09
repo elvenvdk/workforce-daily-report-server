@@ -1,9 +1,13 @@
 import AWS, { AWSError } from "aws-sdk";
 import { SendRawEmailResponse } from "aws-sdk/clients/ses";
+import nodemailer from 'nodemailer';
 import mimemessage from 'mimemessage';
 import fs from 'fs';
 
 AWS.config.update({ region: "us-east-1" });
+const mailer = nodemailer.createTransport({
+  SES: new AWS.SES()
+})
 
 const namesArr = ["alvin", "fedner", "margaret", "lilly"];
 
@@ -73,12 +77,13 @@ export const sendEmail = async (body: any) => {
   console.log("SEND EMAIL DATA: ", data);
 };
 
-export const sendEmailWithAttachment = async (body: any, messageRecipent?: string) => {
+export const sendEmailWithAttachment = async (body: string, messageRecipent: string) => {
   const ses = new AWS.SES({ apiVersion: "2010-12-01" });
   const mailContent = mimemessage.factory({ contentType: 'multipart/mixed', body: [] });
 
-  mailContent.header('From', 'Bissetta & List <notifications.workforce-daily-report.com');
-  mailContent.header('To', `${'vanderkuech@icloud.com'}`);
+
+  mailContent.header('From', 'Bissetta & List <notifications.mail@workforce-daily-report.com>');
+  mailContent.header('To', `${messageRecipent}`);
   mailContent.header('Subject', 'Checklist Report');
 
   const alternateEntity = mimemessage.factory({
@@ -105,13 +110,15 @@ export const sendEmailWithAttachment = async (body: any, messageRecipent?: strin
 
   mailContent.body.push(alternateEntity);
 
-  let data = fs.readFileSync('checklistreport.txt');
+  // let data = fs.readFileSync('checklistreport.txt');
+  let data = body;
   const attachmentEntity = mimemessage.factory({
     contentType: 'text/plain',
     contentTransferEncoding: 'base64',
-    body: data.toString('base64').replace(/([^\0]{76})/g, "$1\n")
+    // body: data.toString('base64').replace(/([^\0]{76})/g, "$1\n")
+    body: Buffer.from(data).toString('base64').replace(/([^\0]{76})/g, "$1\n")
   });
-  attachmentEntity.header('Content-Disposition', 'attachment ;filename="checklistreport.txt"');
+  attachmentEntity.header('Content-Disposition', 'attachment ; filename="checklistreport.pdf"');
 
   mailContent.body.push(attachmentEntity);
 
@@ -120,12 +127,15 @@ export const sendEmailWithAttachment = async (body: any, messageRecipent?: strin
   }, (err: AWSError, sesdata: SendRawEmailResponse) => {
     if (err) {
       console.log('AWS RAW EMAIL ERROR: ', err);
+      return err;
     }
     else {
-      console.log('SES DATA RESPONSE: ', sesdata);
+      // console.log('SES DATA RESPONSE: ', sesdata);
+      return sesdata;
     }
   });
 }
+
 
 
 
