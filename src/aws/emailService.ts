@@ -130,7 +130,7 @@ export const sendEmailWithAttachment = async (body: string, messageRecipent: str
       return err;
     }
     else {
-      // console.log('SES DATA RESPONSE: ', sesdata);
+      console.log('SES DATA: ', sesdata);
       return sesdata;
     }
   });
