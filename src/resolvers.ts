@@ -183,7 +183,9 @@ export const resolvers = {
       if (!contextValue.userToken) {
         throw new Error("Not Authorized");
       }
+      console.log('CREATE SI INPUT: ', createSIInput);
       const newSI = new SigninSignout(createSIInput);
+      console.log('NEW SI: ', newSI);
       await newSI.save();
       return newSI;
     },
@@ -203,6 +205,7 @@ export const resolvers = {
             workDescription: updateSIInput.workDescription,
             materialsDesc: updateSIInput.materialsDesc,
             incidentReport: updateSIInput.incidentReport,
+            workLocation: updateSIInput.workLocation,
             incidentReportText: updateSIInput.incidentReportText,
             tasks: updateSIInput.tasks,
             remarks: updateSIInput.remarks,

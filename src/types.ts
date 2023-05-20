@@ -127,6 +127,10 @@ export type TaskType = {
   title: string;
 }
 
+export type WorksiteLocation = {
+  name: string;
+}
+
 export interface ISigninSignout {
   agency: IAgency;
   contractNo: string;
@@ -137,6 +141,7 @@ export interface ISigninSignout {
   laborTicketAvb: string;
   jobName: string;
   location: string;
+  workLocation: WorksiteLocation[];
   workType: string;
   workDescription: string;
   incidentReport: string;

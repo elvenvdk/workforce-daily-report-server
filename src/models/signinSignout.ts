@@ -39,8 +39,15 @@ const SigninSignoutSchema = new Schema<ISigninSignout>({
     // required: true,
   },
   location: {
-    type: String,
+    type: String
   },
+  workLocation: [
+    {
+      name: {
+        type: String
+      }
+    }
+  ],
   workType: {
     type: String,
     // required: true,

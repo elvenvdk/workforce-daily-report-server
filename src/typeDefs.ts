@@ -130,6 +130,10 @@ export const typeDefs = gql`
     typeExtraWork: String
   }
 
+  type WorksiteLocation {
+    name: String
+  }
+
   type SigninSignout {
     id: ID!
     agency: Agency
@@ -140,6 +144,7 @@ export const typeDefs = gql`
     taskCompletionDate: Date
     jobName: String
     location: String
+    workLocation: [WorksiteLocation]
     workType: String
     siteEmployees: [SIWorker]
     foreman: String
@@ -438,6 +443,10 @@ export const typeDefs = gql`
     title: String
   }
 
+  input WorksiteLocationInput {
+    name: String
+  }
+
   # input SiteEmployeesInput {
   #   employees: [SIWorkerInput]
   # }
@@ -452,6 +461,7 @@ export const typeDefs = gql`
     laborTicketAbv: String
     jobName: String
     location: String
+    workLocation: [WorksiteLocationInput]
     workType: String
     workDescription: String
     incidentReport: String
@@ -489,6 +499,7 @@ export const typeDefs = gql`
     laborTicketAbv: String
     jobName: String
     location: String
+    workLocation: [WorksiteLocationInput]
     workType: String
     workDescription: String
     incidentReport: String
