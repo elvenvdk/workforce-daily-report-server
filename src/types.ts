@@ -36,7 +36,7 @@ export type EmailChecklistType = {
   email: string;
   recipient: string;
   attachment: string;
-
+  emailBody: string;
 }
 
 export type RegisterUserResponseType = {

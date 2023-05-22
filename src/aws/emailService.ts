@@ -77,13 +77,16 @@ export const sendEmail = async (body: any) => {
   console.log("SEND EMAIL DATA: ", data);
 };
 
-export const sendEmailWithAttachment = async (body: string, messageRecipent: string) => {
+export const sendEmailWithAttachment = async (body: string, emailBody: string, messageRecipent: string) => {
   const ses = new AWS.SES({ apiVersion: "2010-12-01" });
   const mailContent = mimemessage.factory({ contentType: 'multipart/mixed', body: [] });
 
+  const mailRecipients = messageRecipent.split(',').join(', ');
+  console.log('MAIL RECIPIENTS: ', mailRecipients);
 
   mailContent.header('From', 'Bissetta & List <notifications.mail@workforce-daily-report.com>');
-  mailContent.header('To', `${messageRecipent}`);
+  // mailContent.header('To', `${messageRecipent}`);
+  mailContent.header('To', mailRecipients);
   mailContent.header('Subject', 'Checklist Report');
 
   const alternateEntity = mimemessage.factory({
@@ -97,6 +100,7 @@ export const sendEmailWithAttachment = async (body: string, messageRecipent: str
       '   <head></head>  ' +
       '   <body>  ' +
       '   <h1>Hello!</h1>  ' +
+      `<p>${emailBody}</p>` +
       '   <p>Please see the attached file for a list of    customers to contact.</p>  ' +
       '   </body>  ' +
       '  </html>  '
