@@ -260,6 +260,7 @@ export const typeDefs = gql`
     nonconformanceRemarks: String
     additionalRemarks: AdditionalRemarks
     reportNo: String
+    specificationsNo: String
     createdAt: Date
     updatedAt: Date
   }
@@ -309,6 +310,7 @@ export const typeDefs = gql`
     additionalRemarks: AdditionalRemarksInput
     checklistType: String
     reportNo: String
+    specificationsNo: String
   }
 
   input TaskInput {

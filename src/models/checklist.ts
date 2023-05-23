@@ -46,6 +46,9 @@ const ChecklistSchema = new Schema<IChecklist>({
   contractNo: {
     type: String
   },
+  specificationsNo: {
+    type: String
+  },
   description: {
     type: String
   },

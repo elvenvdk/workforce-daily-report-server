@@ -227,6 +227,7 @@ export interface IChecklist {
   surveillanceReport: string;
   drawing: string;
   reportNo: string
+  specificationsNo: string
   remarks: string
   nonconformanceRemarks: string
 
