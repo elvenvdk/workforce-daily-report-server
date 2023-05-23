@@ -82,7 +82,6 @@ export const sendEmailWithAttachment = async (body: string, emailBody: string, m
   const mailContent = mimemessage.factory({ contentType: 'multipart/mixed', body: [] });
 
   const mailRecipients = messageRecipent.split(',').join(', ');
-  console.log('MAIL RECIPIENTS: ', mailRecipients);
 
   mailContent.header('From', 'Bissetta & List <notifications.mail@workforce-daily-report.com>');
   // mailContent.header('To', `${messageRecipent}`);
@@ -99,17 +98,20 @@ export const sendEmailWithAttachment = async (body: string, emailBody: string, m
     body: '   <html>  ' +
       '   <head></head>  ' +
       '   <body>  ' +
-      '   <h1>Hello!</h1>  ' +
+      '   <h4>Hello</h4>  ' +
       `<p>${emailBody}</p>` +
-      '   <p>Please see the attached file for a list of    customers to contact.</p>  ' +
+      '   <p>Please see the attached Checklist PDF.</p>  ' +
+      '   <p>BISSETTA & LIST, INC.</p>  ' +
+      '   <p>420 WEST 49th STREET</p>  ' +
+      '   <p>NEW YORK, NY 10019</p>  ' +
       '   </body>  ' +
       '  </html>  '
   });
-  const plainEntity = mimemessage.factory({
-    body: 'Please see the attached file for a list of    customers to contact.'
-  });
+  // const plainEntity = mimemessage.factory({
+  //   body: 'Please see the attached file for a list of    customers to contact.'
+  // });
 
-  alternateEntity.body.push(plainEntity);
+  // alternateEntity.body.push(plainEntity);
   alternateEntity.body.push(htmlEntity);
 
   mailContent.body.push(alternateEntity);
