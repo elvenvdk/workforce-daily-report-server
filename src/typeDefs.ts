@@ -73,6 +73,7 @@ export const typeDefs = gql`
     doubleTime: Float
     regularTime: Float
     notes: String
+    costcode: String
   }
 
   type Worker {
@@ -88,6 +89,7 @@ export const typeDefs = gql`
     email: String
     role: String
     active: Boolean
+    costcode: String
   }
 
   type Job {
@@ -416,6 +418,7 @@ export const typeDefs = gql`
     notes: String
     doubleTime: Float
     regularTime: Float
+    costcode: String
   }
 
   input UpdateSIWorker {
@@ -427,6 +430,7 @@ export const typeDefs = gql`
     class: String
     timeIn: Date
     timeOut: Date
+    costcode: String
   }
 
   input MaterialsDescInput {
@@ -536,6 +540,7 @@ export const typeDefs = gql`
     last4SSN: String
     class: String
     active: Boolean
+    costcode: String
   }
 
   scalar Date

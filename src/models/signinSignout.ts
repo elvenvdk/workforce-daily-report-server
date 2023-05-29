@@ -119,6 +119,9 @@ const SigninSignoutSchema = new Schema<ISigninSignout>({
       notes: {
         type: String,
       },
+      costcode: {
+        type: String
+      }
     },
   ],
 

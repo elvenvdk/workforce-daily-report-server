@@ -209,7 +209,8 @@ export const resolvers = {
             incidentReportText: updateSIInput.incidentReportText,
             tasks: updateSIInput.tasks,
             remarks: updateSIInput.remarks,
-            hasBeenRecalled: updateSIInput.hasBeenRecalled
+            hasBeenRecalled: updateSIInput.hasBeenRecalled,
+            costcode: updateSIInput.costcode
           }
         },
       )

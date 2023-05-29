@@ -99,6 +99,7 @@ export interface ISiteEmployee {
   doubleTime: number;
   regularTime: number;
   doubletimeSignature: string;
+  costcode: string
 }
 
 export type MaterialsType = {
