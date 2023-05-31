@@ -78,6 +78,7 @@ export const sendEmail = async (body: any) => {
 };
 
 export const sendEmailWithAttachment = async (body: string, emailBody: string, messageRecipent: string) => {
+  console.log('SENDING EMAIL WITH ATTACHMENT: ', { body, emailBody, messageRecipent });
   const ses = new AWS.SES({ apiVersion: "2010-12-01" });
   const mailContent = mimemessage.factory({ contentType: 'multipart/mixed', body: [] });
 
