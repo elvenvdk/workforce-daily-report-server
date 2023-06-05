@@ -1,6 +1,7 @@
 import { ApolloServer } from "@apollo/server";
 import { expressMiddleware } from "@apollo/server/express4";
 import { ApolloServerPluginDrainHttpServer } from "@apollo/server/plugin/drainHttpServer";
+import AWS from 'aws-sdk';
 import { TypedRequestBody, TypedResponse, RegisterUserType, RegisterUserResponseType } from "./types";
 import http from 'http';
 import dotenv from "dotenv";

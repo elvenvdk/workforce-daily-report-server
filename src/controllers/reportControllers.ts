@@ -29,7 +29,7 @@ export const getChecklistCount = async (req: TypedRequestBody<RegisterUserType>,
 export const emailChecklistReport = async (req: TypedRequestBody<EmailChecklistType>, res: TypedResponse<RegisterUserResponseType>) => {
   try {
     const { attachment, emailBody, recipient } = req.body;
-    console.log('EMAIL BODY: ', emailBody, 'RECIPIENT: ', recipient)
+    console.log('EMAIL BODY: ', emailBody, 'RECIPIENT: ', recipient);
     const emailRes = await sendEmailWithAttachment(attachment, emailBody, recipient);
     console.log('EMAIL RES: ', emailRes);
     res.send(emailRes);
