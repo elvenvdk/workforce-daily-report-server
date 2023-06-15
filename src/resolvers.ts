@@ -90,9 +90,9 @@ export const resolvers = {
     },
 
     checklist: async (_root: any, { id: checklistId }: any, contextValue: IUserContext) => {
-      if (!contextValue.userToken) {
-        throw new Error("Not Authorized");
-      }
+      // if (!contextValue.userToken) {
+      //   throw new Error("Not Authorized");
+      // }
       return await Checklist.findById(checklistId)
     },
 
