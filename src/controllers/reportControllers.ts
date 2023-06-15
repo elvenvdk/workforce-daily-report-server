@@ -1,4 +1,4 @@
-import { TypedRequestBody, TypedResponse, RegisterUserType, EmailChecklistType, RegisterUserResponseType } from "../types.ts";
+import { TypedRequestBody, TypedResponse, RegisterUserType, EmailChecklistType, EmailChecklistLinkType, RegisterUserResponseType } from "../types.ts";
 import { sendEmailWithAttachment } from "../aws/emailService.ts";
 import SigninSignout from "../models/signinSignout.ts";
 import Checklist from "../models/checklist.ts";
@@ -28,9 +28,10 @@ export const getChecklistCount = async (req: TypedRequestBody<RegisterUserType>,
 
 export const emailChecklistReport = async (req: TypedRequestBody<EmailChecklistType>, res: TypedResponse<RegisterUserResponseType>) => {
   try {
+
     const { attachment, emailBody, recipient } = req.body;
-    console.log('EMAIL BODY: ', emailBody, 'RECIPIENT: ', recipient);
-    const emailRes = await sendEmailWithAttachment(attachment, emailBody, recipient);
+    console.log('EMAIL BODY: ', emailBody, 'RECIPIENT: ', recipient,);
+    const emailRes = await sendEmailWithAttachment(await attachment, emailBody, recipient);
     console.log('EMAIL RES: ', emailRes);
     res.send(emailRes);
   }
@@ -41,3 +42,22 @@ export const emailChecklistReport = async (req: TypedRequestBody<EmailChecklistT
     }
   }
 }
+
+export const emailChecklistReportLink = async (req: TypedRequestBody<EmailChecklistLinkType>, res: TypedResponse<RegisterUserResponseType>) => {
+  try {
+
+    const { attachment, emailBody, link, recipient } = req.body;
+    console.log('EMAIL BODY: ', emailBody, 'RECIPIENT: ', recipient, 'LINK: ', link);
+    const emailRes = await sendEmailWithAttachment(await attachment, emailBody, recipient, link);
+    console.log('EMAIL RES: ', emailRes);
+    res.send(emailRes);
+  }
+  catch (error) {
+    if (error) {
+      console.log('CHECKLIST REPORT EMAIL ERROR: ', error);
+
+    }
+  }
+}
+
+

@@ -40,7 +40,7 @@ const params = {
   Source: "no-reply@notifications.workforce-daily-report.com",
 };
 
-export const sendEmail = async (body: any) => {
+export const sendEmail = async (body: any, messageRecipent: string) => {
   console.log('BODY: ', body);
   console.log('HELLO THIS IS GETTING THERE...')
   const params = {
@@ -77,8 +77,8 @@ export const sendEmail = async (body: any) => {
   console.log("SEND EMAIL DATA: ", data);
 };
 
-export const sendEmailWithAttachment = async (body: string, emailBody: string, messageRecipent: string) => {
-
+export const sendEmailWithAttachment = async (body: string, emailBody: string, messageRecipent: string, link?: URL) => {
+  console.log('THE LINK: ', link);
   const ses = new AWS.SES({ apiVersion: "2010-12-01" });
   const mailContent = mimemessage.factory({ contentType: 'multipart/mixed', body: [] });
 
@@ -101,7 +101,8 @@ export const sendEmailWithAttachment = async (body: string, emailBody: string, m
       '   <body>  ' +
       '   <h4>Hello</h4>  ' +
       `<p>${emailBody}</p>` +
-      '   <p>Please see the attached Checklist PDF.</p>  ' +
+      '   <p>Please click this link to view and download the <a href=${link}>Checklist PDF</a>.</p>  ' +
+      `<a href=${link}>Checklist PDF</a>` +
       '   <p>BISSETTA & LIST, INC.</p>  ' +
       '   <p>420 WEST 49th STREET</p>  ' +
       '   <p>NEW YORK, NY 10019</p>  ' +
@@ -124,6 +125,7 @@ export const sendEmailWithAttachment = async (body: string, emailBody: string, m
     contentTransferEncoding: 'base64',
     // body: data.toString('base64').replace(/([^\0]{76})/g, "$1\n")
     body: Buffer.from(data).toString('base64').replace(/([^\0]{76})/g, "$1\n")
+    // body: Buffer.from(data).toString('base64')
   });
   attachmentEntity.header('Content-Disposition', 'attachment ; filename="checklistreport.pdf"');
 

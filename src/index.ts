@@ -67,8 +67,8 @@ app.use(
     }
   }),
 )
-app.use(express.json({ limit: '10mb' }));
-app.use(express.urlencoded({ limit: '10mb' }));
+app.use(express.json({ limit: '100mb' }));
+app.use(express.urlencoded({ limit: '100mb' }));
 app.use(cookieParser());
 app.use(cors<cors.CorsRequest>({
   origin: ['http://localhost:3000', 'http://workforce-daily-report.com',],
