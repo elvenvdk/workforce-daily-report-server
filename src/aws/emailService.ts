@@ -101,7 +101,7 @@ export const sendEmailWithAttachment = async (body: string, emailBody: string, m
       '   <body>  ' +
       '   <h4>Hello</h4>  ' +
       `<p>${emailBody}</p>` +
-      `   <p>Please click this link to view and download the <a href=${link}>Checklist PDF</a>.</p>  ` +
+      `   <p>Please click this link to view, print, and save the <a href=${link}>Checklist PDF</a>.</p>  ` +
       `<a href=${link}>Checklist PDF</a>` +
       '   <p>BISSETTA & LIST, INC.</p>  ' +
       '   <p>420 WEST 49th STREET</p>  ' +
@@ -129,7 +129,7 @@ export const sendEmailWithAttachment = async (body: string, emailBody: string, m
   });
   attachmentEntity.header('Content-Disposition', 'attachment ; filename="checklistreport.pdf"');
 
-  mailContent.body.push(attachmentEntity);
+  // mailContent.body.push(attachmentEntity);
 
   ses.sendRawEmail({
     RawMessage: { Data: mailContent.toString() }
