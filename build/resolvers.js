@@ -4,6 +4,8 @@ import Worker from "./models/worker.ts";
 import WorksiteEmployees from "./models/worksiteEmployees.ts";
 import SigninSignout from "./models/signinSignout.ts";
 import Checklist from "./models/checklist.ts";
+import CostCodes from "./models/costCodes.ts";
+import ChecklistCreator from "./models/checklistCreator.ts";
 import { sendEmail } from "./aws/emailService.ts";
 export const resolvers = {
     Query: {
@@ -75,11 +77,29 @@ export const resolvers = {
             return await Checklist.find();
         },
         checklist: async (_root, { id: checklistId }, contextValue) => {
+            // if (!contextValue.userToken) {
+            //   throw new Error("Not Authorized");
+            // }
+            return await Checklist.findById(checklistId);
+        },
+        checklistCreators: async (_root, args, contextValue) => {
             if (!contextValue.userToken) {
                 throw new Error("Not Authorized");
             }
-            return await Checklist.findById(checklistId);
+            return await ChecklistCreator.find();
         },
+        checklistCreator: async (_root, { id: checklistCreatorId }, contextValue) => {
+            if (!contextValue.userToken) {
+                throw new Error("Not Authorized");
+            }
+            return await ChecklistCreator.findById(checklistCreatorId);
+        },
+        costCodes: async (_root, args, contextValue) => {
+            if (!contextValue.userToken) {
+                throw new Error("Not Authorized");
+            }
+            return await CostCodes.find();
+        }
     },
     Mutation: {
         createAgency: async (_root, { input: agencyInput }, contextValue) => {
@@ -89,6 +109,14 @@ export const resolvers = {
             const newAgency = new Agency(agencyInput);
             await newAgency.save();
             return newAgency;
+        },
+        createCostCodes: async (_root, { input: CostCodeInput }, contextValue) => {
+            if (!contextValue.userToken) {
+                throw new Error("Not Authorized");
+            }
+            const newCostCode = new CostCodes(CostCodeInput);
+            await newCostCode.save();
+            return newCostCode;
         },
         updateAgency: async (_root, { input: updateAgency }, contextValue) => {
             if (!contextValue.userToken) {
@@ -116,11 +144,33 @@ export const resolvers = {
             await newChecklist.save();
             return newChecklist;
         },
+        createChecklistCreator: async (_root, { input: ChecklistCreatorInput }, contextValue) => {
+            if (!contextValue.userToken) {
+                throw new Error("Not Authorized");
+            }
+            const newChecklistCreator = await new ChecklistCreator(ChecklistCreatorInput);
+            await newChecklistCreator.save();
+            return newChecklistCreator;
+        },
+        updateChecklist: async (_root, { input: CreateChecklistInput }, contextValue) => {
+            if (!contextValue.userToken) {
+                throw new Error("Not Authorized");
+            }
+            let updatedSIWR = await Checklist.updateOne({
+                _id: CreateChecklistInput.id
+            }, {
+                $set: {
+                    fieldTasks: CreateChecklistInput.fieldTasks,
+                }
+            });
+            return updatedSIWR;
+        },
         createSI: async (_root, { input: createSIInput }, contextValue) => {
             if (!contextValue.userToken) {
                 throw new Error("Not Authorized");
             }
             const newSI = new SigninSignout(createSIInput);
+            console.log('NEW SI: ', newSI);
             await newSI.save();
             return newSI;
         },
@@ -128,13 +178,24 @@ export const resolvers = {
             if (!contextValue.userToken) {
                 throw new Error("Not Authorized");
             }
-            return await SigninSignout.updateOne({
+            let updatedSIWR = await SigninSignout.updateOne({
                 _id: updateSIInput.id
             }, {
                 $set: {
-                    updateSIInput,
+                    canRecall: updateSIInput.canRecall,
+                    titleOfChangeOrder: updateSIInput.titleOfChangeOrder,
+                    workDescription: updateSIInput.workDescription,
+                    materialsDesc: updateSIInput.materialsDesc,
+                    incidentReport: updateSIInput.incidentReport,
+                    workLocation: updateSIInput.workLocation,
+                    incidentReportText: updateSIInput.incidentReportText,
+                    tasks: updateSIInput.tasks,
+                    remarks: updateSIInput.remarks,
+                    hasBeenRecalled: updateSIInput.hasBeenRecalled,
+                    costcode: updateSIInput.costcode
                 }
             });
+            return updatedSIWR;
         },
         createJob: async (_root, { input: jobInput }, contextValue) => {
             if (!contextValue.userToken) {

@@ -37,8 +37,15 @@ const SigninSignoutSchema = new Schema({
         // required: true,
     },
     location: {
-        type: String,
+        type: String
     },
+    workLocation: [
+        {
+            name: {
+                type: String
+            }
+        }
+    ],
     workType: {
         type: String,
         // required: true,
@@ -110,6 +117,9 @@ const SigninSignoutSchema = new Schema({
             notes: {
                 type: String,
             },
+            costcode: {
+                type: String
+            }
         },
     ],
     foreman: {
@@ -150,10 +160,19 @@ const SigninSignoutSchema = new Schema({
     materialsDesc: [
         {
             qty: {
-                type: String
+                type: Number
             },
             item: {
                 type: String
+            },
+            um: {
+                type: String
+            },
+            unitCost: {
+                type: Number
+            },
+            totalCost: {
+                type: Number
             },
             description: {
                 type: String
@@ -166,6 +185,9 @@ const SigninSignoutSchema = new Schema({
                 type: String
             },
             progress: {
+                type: String
+            },
+            status: {
                 type: String
             },
             title: {

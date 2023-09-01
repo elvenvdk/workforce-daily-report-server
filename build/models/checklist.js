@@ -44,6 +44,9 @@ const ChecklistSchema = new Schema({
     contractNo: {
         type: String
     },
+    specificationsNo: {
+        type: String
+    },
     description: {
         type: String
     },
