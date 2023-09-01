@@ -268,4 +268,10 @@ export interface IChecklistCreator {
   fieldTasks: ChecklistQuestion
 }
 
+export interface ICostCodes {
+  laborCode: number;
+  costCode: number;
+  description: string;
+}
+
 

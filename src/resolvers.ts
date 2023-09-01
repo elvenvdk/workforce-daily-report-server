@@ -4,6 +4,7 @@ import Worker from "./models/worker.ts";
 import WorksiteEmployees from "./models/worksiteEmployees.ts";
 import SigninSignout from "./models/signinSignout.ts";
 import Checklist from "./models/checklist.ts";
+import CostCodes from "./models/costCodes.ts";
 import ChecklistCreator from "./models/checklistCreator.ts";
 import { sendEmail } from "./aws/emailService.ts"
 import { IUserContext } from './types';
@@ -109,6 +110,13 @@ export const resolvers = {
       }
       return await ChecklistCreator.findById(checklistCreatorId)
     },
+
+    costCodes: async (_root: any, args: any, contextValue: IUserContext) => {
+      if (!contextValue.userToken) {
+        throw new Error("Not Authorized");
+      }
+      return await CostCodes.find();
+    }
   },
 
   Mutation: {
@@ -119,6 +127,17 @@ export const resolvers = {
       const newAgency = new Agency(agencyInput);
       await newAgency.save();
       return newAgency;
+    },
+
+    createCostCodes: async (_root: any, { input: CostCodeInput }: any, contextValue: IUserContext) => {
+      if (!contextValue.userToken) {
+        throw new Error("Not Authorized");
+      }
+      console.log('COST CODE INPUT: ', CostCodeInput);
+      const newCostCode = new CostCodes(CostCodeInput);
+      await newCostCode.save();
+      return newCostCode;
+
     },
 
     updateAgency: async (_root: any, { input: updateAgency }: any, contextValue: IUserContext) => {
