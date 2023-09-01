@@ -37,6 +37,9 @@ const JobSchema = new Schema({
     },
     taskCompletionDate: {
         type: Date
+    },
+    docPrefix: {
+        type: String
     }
 });
 export default model("Job", JobSchema);

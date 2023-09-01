@@ -133,7 +133,6 @@ export const resolvers = {
       if (!contextValue.userToken) {
         throw new Error("Not Authorized");
       }
-      console.log('COST CODE INPUT: ', CostCodeInput);
       const newCostCode = new CostCodes(CostCodeInput);
       await newCostCode.save();
       return newCostCode;
@@ -202,7 +201,6 @@ export const resolvers = {
       if (!contextValue.userToken) {
         throw new Error("Not Authorized");
       }
-      console.log('CREATE SI INPUT: ', createSIInput);
       const newSI = new SigninSignout(createSIInput);
       console.log('NEW SI: ', newSI);
       await newSI.save();

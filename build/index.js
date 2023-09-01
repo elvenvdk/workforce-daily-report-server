@@ -10,6 +10,7 @@ import cors from "cors";
 import { typeDefs } from "./typeDefs.ts";
 import { resolvers } from "./resolvers.ts";
 import authRoutes from './routes/auth.ts';
+import pdfRoutes from './routes/pdf.ts';
 import reportRoutes from './routes/reports.ts';
 dotenv.config({ path: "./.env" });
 const PORT = process.env.PORT || 9000;
@@ -32,7 +33,7 @@ const apolloServer = new ApolloServer({
 });
 await apolloServer.start();
 // MIDDLEWARE
-app.use('/gql', express.json(), cors({
+app.use('/gql', express.json({ limit: '10mb' }), express.urlencoded({ limit: '10mb' }), cors({
     origin: ['http://localhost:3000', 'http://workforce-daily-report.com', 'https://studio.apollographql.com'],
     credentials: true,
     methods: "GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS",
@@ -45,7 +46,8 @@ app.use('/gql', express.json(), cors({
         };
     }
 }));
-app.use(express.json());
+app.use(express.json({ limit: '100mb' }));
+app.use(express.urlencoded({ limit: '100mb' }));
 app.use(cookieParser());
 app.use(cors({
     origin: ['http://localhost:3000', 'http://workforce-daily-report.com',],
@@ -56,5 +58,6 @@ app.use(cors({
 }));
 app.use('/api/auth', authRoutes);
 app.use('/api/reports', reportRoutes);
+app.use('/api/pdf', pdfRoutes);
 await new Promise(resolve => httpServer.listen({ port: PORT }, resolve));
 console.log(`🚀 Server connected at http://localhost:${PORT} - YES!`);
