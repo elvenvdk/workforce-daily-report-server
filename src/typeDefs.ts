@@ -17,6 +17,7 @@ export const typeDefs = gql`
     foreman(id: ID!): Foreman
     workreportList: [SigninSignout]
     workreport(id: ID!): SigninSignout
+    costCodes: [CostCode]
   }
 
   type Mutation {
@@ -38,6 +39,7 @@ export const typeDefs = gql`
     updateChecklist(input: CreateChecklistInput): Checklist
     createWorkReportEmailTemplate(input: WorkreportEmailTemplateInput): WorkreportEmailTemplate
     createChecklistCreator(input: ChecklistCreatorInput): ChecklistCreator
+    createCostCodes(input: CostCodeInput): CostCode
   }
 
   scalar GraphQLJSONObject
@@ -130,6 +132,19 @@ export const typeDefs = gql`
     typeChangeOrder: String
     typeTandM: String
     typeExtraWork: String
+  }
+
+  type CostCode {
+    id: ID
+    laborCode: Int
+    costCode: Int
+    description: String
+  }
+
+  input CostCodeInput {
+    laborCode: Int
+    costCode: Int
+    description: String
   }
 
   type WorksiteLocation {
