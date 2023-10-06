@@ -4,7 +4,7 @@ import Worker from "./models/worker.ts";
 import WorksiteEmployees from "./models/worksiteEmployees.ts";
 import SigninSignout from "./models/signinSignout.ts";
 import Checklist from "./models/checklist.ts";
-import CostCodes from "./models/costCodes.js";
+import CostCodes from "./models/costCodes.ts";
 import ChecklistCreator from "./models/checklistCreator.ts";
 import { sendEmail } from "./aws/emailService.ts"
 import { IUserContext } from './types';
