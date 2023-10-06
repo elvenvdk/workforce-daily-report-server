@@ -1,12 +1,12 @@
 import { Schema, model } from "mongoose";
-import { ICostCodes } from "../types.ts";
+import { ICostCodes } from "../types.js";
 
 const CostCodeSchema = new Schema<ICostCodes>({
   laborCode: {
-    type: Number
+    type: String
   },
   costCode: {
-    type: Number
+    type: String
   },
   description: {
     type: String
