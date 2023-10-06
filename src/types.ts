@@ -269,8 +269,8 @@ export interface IChecklistCreator {
 }
 
 export interface ICostCodes {
-  laborCode: number;
-  costCode: number;
+  laborCode: string;
+  costCode: string;
   description: string;
 }
 

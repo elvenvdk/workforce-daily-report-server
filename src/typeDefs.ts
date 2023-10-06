@@ -136,14 +136,14 @@ export const typeDefs = gql`
 
   type CostCode {
     id: ID
-    laborCode: Int
-    costCode: Int
+    laborCode: String
+    costCode: String
     description: String
   }
 
   input CostCodeInput {
-    laborCode: Int
-    costCode: Int
+    laborCode: String
+    costCode: String
     description: String
   }
 
