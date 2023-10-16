@@ -40,6 +40,7 @@ export const typeDefs = gql`
     createWorkReportEmailTemplate(input: WorkreportEmailTemplateInput): WorkreportEmailTemplate
     createChecklistCreator(input: ChecklistCreatorInput): ChecklistCreator
     createCostCodes(input: CostCodeInput): CostCode
+    createCostCodesFromXLSX(input: xlInput2): XLSX2
   }
 
   scalar GraphQLJSONObject
@@ -139,6 +140,32 @@ export const typeDefs = gql`
     laborCode: String
     costCode: String
     description: String
+  }
+
+  type XLSX {
+    lastModified: Float
+    lastModifiedDate: Date
+    name: String
+    size: Int
+    type: String
+    webkitRelativePath: String
+  }
+
+  type XLSX2 {
+    file: String
+  }
+
+  input xlInput {
+    lastModified: Float
+    lastModifiedDate: Date
+    name: String
+    size: Int
+    type: String
+    webkitRelativePath: String
+  }
+
+  input xlInput2 {
+    file: String
   }
 
   input CostCodeInput {

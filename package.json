@@ -45,6 +45,7 @@
     "mimemessage": "^1.0.5",
     "mongoose": "^6.4.4",
     "nodemailer": "^6.9.1",
-    "puppeteer": "^19.11.1"
+    "puppeteer": "^19.11.1",
+    "xlsx": "^0.18.5"
   }
 }

@@ -8,6 +8,8 @@ import CostCodes from "./models/costCodes.ts";
 import ChecklistCreator from "./models/checklistCreator.ts";
 import { sendEmail } from "./aws/emailService.ts"
 import { IUserContext } from './types';
+import * as XLSX from 'xlsx/xlsx.mjs';
+import * as fs from 'fs';
 
 
 export const resolvers = {
@@ -134,6 +136,27 @@ export const resolvers = {
         throw new Error("Not Authorized");
       }
       const newCostCode = new CostCodes(CostCodeInput);
+      await newCostCode.save();
+      return newCostCode;
+
+    },
+
+    createCostCodesFromXLSX: async (_root: any, { input: xlInput }: any, contextValue: IUserContext) => {
+      if (!contextValue.userToken) {
+        throw new Error("Not Authorized");
+      }
+      console.log('THIS IS WORKING AT POINT 1', xlInput);
+      const workbook = XLSX.read(xlInput, { type: "binary" });
+      // const workbook = XLSX.read(xlInput.file, { raw: false })
+      // XLSX.set_fs(fs);
+      // const workbook = XLSX.readFile(xlInput2);
+      console.log('THIS IS WORKING AT POINT 2', workbook);
+      const sheetName = workbook.SheetNames[0];
+      const sheet = workbook.Sheets[sheetName];
+      console.log('THIS IS WORKING AT POINT 3');
+      const parsedData = XLSX.utils.sheet_to_json(sheet);
+      console.log('COST CODE XL PARSED DATA: ', parsedData);
+      const newCostCode = new CostCodes(parsedData);
       await newCostCode.save();
       return newCostCode;
 
