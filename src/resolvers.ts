@@ -139,6 +139,32 @@ export const resolvers = {
 
     },
 
+    updateCostCode: async (_root: any, { input: UpdateCostCodeInput }: any, contextValue: IUserContext) => {
+      if (!contextValue.userToken) {
+        throw new Error("Not Authorized");
+      }
+      await CostCodes.updateOne(
+        {
+          _id: UpdateCostCodeInput.id
+        },
+        {
+          $set: {
+            laborCode: UpdateCostCodeInput.laborCode,
+            costCode: UpdateCostCodeInput.costCode,
+            description: UpdateCostCodeInput.description
+          }
+        }
+      )
+
+    },
+
+    deleteCostCodes: async (_root: any, { input: DeleteCostCodesInput }: any, contextValue: IUserContext) => {
+      if (!contextValue.userToken) {
+        throw new Error("Not Authorized");
+      }
+      return await CostCodes.deleteMany({ _id: { $in: [...DeleteCostCodesInput.id] } })
+    },
+
     updateAgency: async (_root: any, { input: updateAgency }: any, contextValue: IUserContext) => {
       if (!contextValue.userToken) {
         throw new Error("Not Authorized");

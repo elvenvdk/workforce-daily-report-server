@@ -40,6 +40,8 @@ export const typeDefs = gql`
     createWorkReportEmailTemplate(input: WorkreportEmailTemplateInput): WorkreportEmailTemplate
     createChecklistCreator(input: ChecklistCreatorInput): ChecklistCreator
     createCostCodes(input: CostCodeInput): CostCode
+    deleteCostCodes(input: DeleteCostCodesInput): CostCode
+    updateCostCode(input: UpdateCostCodeInput): CostCode
   }
 
   scalar GraphQLJSONObject
@@ -145,6 +147,16 @@ export const typeDefs = gql`
     laborCode: String
     costCode: String
     description: String
+  }
+
+  input UpdateCostCodeInput {
+    laborCode: String
+    costCode: String
+    description: String
+  }
+
+  input DeleteCostCodesInput {
+    id: [String]
   }
 
   type WorksiteLocation {
