@@ -150,6 +150,7 @@ export const typeDefs = gql`
   }
 
   input UpdateCostCodeInput {
+    id: ID!
     laborCode: String
     costCode: String
     description: String
