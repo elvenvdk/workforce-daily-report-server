@@ -274,4 +274,17 @@ export interface ICostCodes {
   description: string;
 }
 
+export type employeeRate = {
+  employee: string;
+  stPay: number;
+  dtPay: number;
+}
+
+export interface IEmployeeRates {
+  jobName: string;
+  jobId: Types.ObjectId;
+  date: Date;
+  employeeRates: employeeRate[]
+}
+
 

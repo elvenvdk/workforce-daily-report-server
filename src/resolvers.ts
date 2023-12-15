@@ -5,6 +5,7 @@ import WorksiteEmployees from "./models/worksiteEmployees.ts";
 import SigninSignout from "./models/signinSignout.ts";
 import Checklist from "./models/checklist.ts";
 import CostCodes from "./models/costcodes.ts";
+import EmployeeRates from "./models/employeeRates.ts";
 import ChecklistCreator from "./models/checklistCreator.ts";
 import { sendEmail } from "./aws/emailService.ts"
 import { IUserContext } from './types';
@@ -116,6 +117,13 @@ export const resolvers = {
         throw new Error("Not Authorized");
       }
       return await CostCodes.find();
+    },
+
+    employeeRates: async (_root: any, args: any, contextValue: IUserContext) => {
+      // if (!contextValue.userToken) {
+      //   throw new Error("Not Authorized");
+      // }
+      return await EmployeeRates.find();
     }
   },
 
@@ -128,6 +136,58 @@ export const resolvers = {
       await newAgency.save();
       return newAgency;
     },
+
+    createEmployeeRates: async (
+      _root: any,
+      { input: EmployeeRatesInput }: any,
+      contextValue: IUserContext
+    ) => {
+      if (!contextValue.userToken) {
+        throw new Error("Not Authorized");
+      }
+      const newRates = new EmployeeRates(EmployeeRatesInput);
+      await newRates.save();
+      return newRates;
+    },
+
+    updateEmployeeRates: async (
+      _root: any,
+      { input: EmployeeRatesUpdate }: any,
+      contextValue: IUserContext
+    ) => {
+      if (!contextValue.userToken) {
+        throw new Error("Not Authorized");
+      }
+      if (EmployeeRatesUpdate.jobName) {
+      }
+      const updatedRates = await EmployeeRates.updateOne(
+
+        {
+          _id: EmployeeRatesUpdate.id
+        },
+        {
+          $set: {
+            jobName: EmployeeRatesUpdate.jobName,
+            jobId: EmployeeRatesUpdate.jobId,
+            employeeRates: EmployeeRatesUpdate.employeeRates
+          }
+        }
+      )
+      return updatedRates;
+    },
+
+    deleteJobRates: async (
+      _root: any,
+      { input: id }: any,
+      contextValue: IUserContext
+    ) => {
+      if (!contextValue.userToken) {
+        throw new Error("Not Authorized");
+      }
+      const deletedJobRates = await EmployeeRates.deleteOne({ _id: id })
+      return deletedJobRates;
+    },
+
 
     createCostCodes: async (_root: any, { input: CostCodeInput }: any, contextValue: IUserContext) => {
       if (!contextValue.userToken) {

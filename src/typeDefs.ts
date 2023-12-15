@@ -18,6 +18,7 @@ export const typeDefs = gql`
     workreportList: [SigninSignout]
     workreport(id: ID!): SigninSignout
     costCodes: [CostCode]
+    employeeRates: [EmployeeRates]
   }
 
   type Mutation {
@@ -42,12 +43,59 @@ export const typeDefs = gql`
     createCostCodes(input: CostCodeInput): CostCode
     deleteCostCodes(input: DeleteCostCodesInput): CostCode
     updateCostCode(input: UpdateCostCodeInput): CostCode
+    createEmployeeRates(input: EmployeeRatesInput): EmployeeRates
+    updateEmployeeRates(input: EmployeeRatesUpdate): EmployeeRates
+    deleteJobRates(input: ID!): EmployeeRates
   }
 
   scalar GraphQLJSONObject
 
   type WorkreportEmailTemplate {
     email: String
+  }
+
+  type EmployeeJobRate {
+    employee: String
+    employeeId: String
+    stPay: Float
+    dtPay: Float
+  }
+
+  type EmployeeRates {
+    id: ID!
+    jobName: String
+    jobId: String
+    employeeRates: [EmployeeJobRate]
+    date: Date
+  }
+
+  input EmployeeJobRateInput {
+    employee: String
+    employeeId: String
+    stPay: Float
+    dtPay: Float
+  }
+
+  input EmployeeRatesInput {
+    jobName: String
+    jobId: String
+    employeeRates: [EmployeeJobRateInput]
+    date: Date
+  }
+
+  input EmployeeJobRateUpdate {
+    employee: String
+    employeeId: String
+    stPay: Float
+    dtPay: Float
+  }
+
+  input EmployeeRatesUpdate {
+    id: ID!
+    jobName: String
+    jobId: String
+    employeeRates: [EmployeeJobRateUpdate]
+    date: Dates
   }
 
   input WorkreportEmailTemplateInput {
