@@ -95,7 +95,7 @@ export const typeDefs = gql`
     jobName: String
     jobId: String
     employeeRates: [EmployeeJobRateUpdate]
-    date: Dates
+    date: Date
   }
 
   input WorkreportEmailTemplateInput {
@@ -304,7 +304,7 @@ export const typeDefs = gql`
     type: String
     fieldTasks: [ChecklistCreatorFieldTasks]
   }
- 
+
   input ChecklistCreatorQuestionsInput {
     id: Int
     question: String
