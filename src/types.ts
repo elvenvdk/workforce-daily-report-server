@@ -1,10 +1,10 @@
-import { Types } from 'mongoose';
+import { Types } from "mongoose";
 
-import * as Express from 'express';
-import { Send } from 'express-serve-static-core';
+import * as Express from "express";
+import { Send } from "express-serve-static-core";
 
 export interface TypedRequestBody<T> extends Express.Request {
-  body: T
+  body: T;
 }
 export interface TypedResponse<ResBody> extends Express.Response {
   json: Send<ResBody, this>;
@@ -29,28 +29,27 @@ export type RegisterUserType = {
   userName: string;
   password: string;
   user: string;
-
-}
+};
 
 export type EmailChecklistType = {
   email: string;
   recipient: string;
   attachment: any;
   emailBody: string;
-}
+};
 
 export type EmailChecklistLinkType = {
   email: string;
   recipient: string;
   attachment: string;
   emailBody: string;
-  link: URL
-}
+  link: URL;
+};
 
 export type RegisterUserResponseType = {
   msg?: string;
   data?: object;
-}
+};
 
 export interface IAuth {
   userName: string;
@@ -73,7 +72,7 @@ export interface IWorker {
   level: number;
   role: string;
   email: string;
-  active: boolean
+  active: boolean;
 }
 
 export interface IWorkType {
@@ -106,8 +105,8 @@ export interface ISiteEmployee {
   notes: string;
   doubleTime: number;
   regularTime: number;
-  doubletimeSignature: string;
-  costcode: string
+  costcode: string;
+  laborcode: string;
 }
 
 export type MaterialsType = {
@@ -118,7 +117,6 @@ export type MaterialsType = {
   item: string;
   description: string;
 };
-
 
 // export interface ISiteEmployees {
 //   employees: ISiteEmployee[];
@@ -134,11 +132,11 @@ export type TaskType = {
   progress: string;
   status: string;
   title: string;
-}
+};
 
 export type WorksiteLocation = {
   name: string;
-}
+};
 
 export interface ISigninSignout {
   agency: IAgency;
@@ -172,10 +170,10 @@ export interface ISigninSignout {
   tasks: TaskType[];
   createdAt: Date;
   updatedAt: Date;
-  canRecall: boolean
-  hasBeenRecalled: boolean
-  reportNo: string
-  titleOfChangeOrder: string
+  canRecall: boolean;
+  hasBeenRecalled: boolean;
+  reportNo: string;
+  titleOfChangeOrder: string;
 }
 
 export interface IProjectMgr {
@@ -183,6 +181,34 @@ export interface IProjectMgr {
   lastName: string;
   signature: string;
   job: Types.ObjectId;
+}
+
+export type workerHours = {
+  name: string;
+  id: Types.ObjectId;
+  laborCode: number;
+  costCode: number;
+  regHours: number;
+  otHours: number;
+  regRate: number;
+  otRate: number;
+  regWages: number;
+  otWages: number;
+  workerClass: string;
+  percentage: number;
+  subtotal: number;
+  wagesOP: number;
+  wagesTotal: number;
+  date: Date;
+};
+
+export interface ITimesheet {
+  jobName: string;
+  jobId: Types.ObjectId;
+  weekEnding: Date;
+  reportDate: Date;
+  reportHours: workerHours[];
+  reportNumber: string;
 }
 
 export interface IJob {
@@ -211,8 +237,8 @@ export interface IContractRep {
 export type ChecklistTaskType = {
   id: number;
   question: string;
-  answer: string
-}
+  answer: string;
+};
 
 export interface ITasks {
   [key: string]: ChecklistTaskType;
@@ -235,10 +261,10 @@ export interface IChecklist {
   inspectorName: string;
   surveillanceReport: string;
   drawing: string;
-  reportNo: string
-  specificationsNo: string
-  remarks: string
-  nonconformanceRemarks: string
+  reportNo: string;
+  specificationsNo: string;
+  remarks: string;
+  nonconformanceRemarks: string;
 
   additionalRemarks: {
     text: string;
@@ -254,18 +280,18 @@ export interface IChecklist {
     signature3: string;
     title3: string;
     date3: Date;
-  },
+  };
 }
 
 export type ChecklistQuestion = {
   id: number;
   question: string;
   answer: string;
-}
+};
 
 export interface IChecklistCreator {
   type: string;
-  fieldTasks: ChecklistQuestion
+  fieldTasks: ChecklistQuestion;
 }
 
 export interface ICostCodes {
@@ -278,13 +304,11 @@ export type employeeRate = {
   employee: string;
   stPay: number;
   dtPay: number;
-}
+};
 
 export interface IEmployeeRates {
   jobName: string;
   jobId: Types.ObjectId;
   date: Date;
-  employeeRates: employeeRate[]
+  employeeRates: employeeRate[];
 }
-
-

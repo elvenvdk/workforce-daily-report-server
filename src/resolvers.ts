@@ -5,6 +5,7 @@ import WorksiteEmployees from "./models/worksiteEmployees.ts";
 import SigninSignout from "./models/signinSignout.ts";
 import Checklist from "./models/checklist.ts";
 import CostCodes from "./models/costcodes.ts";
+import Timesheet from "./models/timesheet.ts";
 import EmployeeRates from "./models/employeeRates.ts";
 import ChecklistCreator from "./models/checklistCreator.ts";
 import { sendEmail } from "./aws/emailService.ts";
@@ -189,6 +190,16 @@ export const resolvers = {
       return deletedJobRates;
     },
 
+    createTimesheet: async (_root: any, { input: TimesheetInput }: any, contextValue: IUserContext) => {
+      if (!contextValue.userToken) {
+        throw new Error("Not Authorized");
+      }
+      const jobPercentage = 0.08;
+      // const employeeJobRates =
+      const newTimesheet = new Timesheet(TimesheetInput);
+      return await newTimesheet.save();
+    },
+
     createCostCodes: async (_root: any, { input: CostCodeInput }: any, contextValue: IUserContext) => {
       if (!contextValue.userToken) {
         throw new Error("Not Authorized");
@@ -285,6 +296,27 @@ export const resolvers = {
       if (!contextValue.userToken) {
         throw new Error("Not Authorized");
       }
+      // console.log("Creating new timesheet...", createSIInput);
+      // const workerHrsArr: any[] = [];
+      // createSIInput.siteEmployees.forEach((employee: any) => {
+      //   workerHrsArr.push({
+      //     name: `${employee.firstName} ${employee.lastName}`,
+      //     regHours: employee.regularTime,
+      //     otHours: !employee.doubleTime && employee.regHours === 7 ? 0.5 : employee.doubleTime,
+      //     laborCode: employee.laborCode,
+      //   });
+      // });
+      // const newTimesheet = new Timesheet({
+      //   week: {
+      //     jobName: createSIInput.jobName,
+      //     weekEnding: createSIInput.taskCompletionDate,
+      //     reportNumber: createSIInput.reportNo,
+      //     reportHours: workerHrsArr,
+      //   },
+      // });
+      // console.log("new timesheet...", newTimesheet);
+      // await newTimesheet.save();
+
       const newSI = new SigninSignout(createSIInput);
       console.log("NEW SI: ", newSI);
       await newSI.save();

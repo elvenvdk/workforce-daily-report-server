@@ -19,6 +19,8 @@ export const typeDefs = gql`
     workreport(id: ID!): SigninSignout
     costCodes: [CostCode]
     employeeRates: [EmployeeRates]
+    timesheet(id: ID!): Timesheet
+    timesheets: [Timesheet]
   }
 
   type Mutation {
@@ -46,6 +48,7 @@ export const typeDefs = gql`
     createEmployeeRates(input: EmployeeRatesInput): EmployeeRates
     updateEmployeeRates(input: EmployeeRatesUpdate): EmployeeRates
     deleteJobRates(input: ID!): EmployeeRates
+    createTimesheet(input: TimesheetInput): Timesheet
   }
 
   scalar GraphQLJSONObject
@@ -98,6 +101,62 @@ export const typeDefs = gql`
     date: Date
   }
 
+  type employeeHrs {
+    name: String
+    id: String
+    laborCode: String
+    costCode: String
+    regHours: Float
+    otHours: Float
+    regRate: Float
+    otRate: Float
+    regWages: Float
+    otWages: Float
+    workerClass: String
+    percentage: Float
+    subtotal: Float
+    wagesOP: Float
+    wagesTotal: Float
+    date: Date
+  }
+
+  type Timesheet {
+    id: ID!
+    jobName: String
+    jobId: String
+    weekEnding: Date
+    reportDate: Date
+    reportHours: [employeeHrs]
+  }
+
+  input employeeHrsInput {
+    name: String
+    id: String
+    laborCode: String
+    costCode: String
+    regHours: Float
+    otHours: Float
+    regRate: Float
+    otRate: Float
+    regWages: Float
+    otWages: Float
+    workerClass: String
+    percentage: Float
+    subtotal: Float
+    wagesOP: Float
+    wagesTotal: Float
+    date: Date
+  }
+
+  input TimesheetInput {
+    jobName: String
+    jobId: String
+    weekEnding: Date
+    reportDate: Date
+    reportNumber: String
+    reportHours: [employeeHrsInput]
+  }
+
   input WorkreportEmailTemplateInput {
     email: String
   }
@@ -126,6 +185,7 @@ export const typeDefs = gql`
     regularTime: Float
     notes: String
     costcode: String
+    laborcode: String
   }
 
   type Worker {
@@ -142,6 +202,7 @@ export const typeDefs = gql`
     role: String
     active: Boolean
     costcode: String
+    laborCode: String
   }
 
   type Job {
@@ -495,6 +556,7 @@ export const typeDefs = gql`
     doubleTime: Float
     regularTime: Float
     costcode: String
+    laborCode: String
   }
 
   input UpdateSIWorker {
