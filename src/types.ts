@@ -186,8 +186,8 @@ export interface IProjectMgr {
 export type workerHours = {
   name: string;
   id: Types.ObjectId;
-  laborCode: number;
-  costCode: number;
+  laborCode: string;
+  costCode: string;
   regHours: number;
   otHours: number;
   regRate: number;
@@ -196,9 +196,10 @@ export type workerHours = {
   otWages: number;
   workerClass: string;
   percentage: number;
-  subtotal: number;
-  wagesOP: number;
-  wagesTotal: number;
+  wagesOAndPOT: number;
+  wagesOAndPRT: number;
+  wagesTotalRT: number;
+  wagesTotalOT: number;
   date: Date;
 };
 

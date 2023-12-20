@@ -138,9 +138,9 @@ export const resolvers = {
     },
 
     createEmployeeRates: async (_root: any, { input: EmployeeRatesInput }: any, contextValue: IUserContext) => {
-      // if (!contextValue.userToken) {
-      //   throw new Error("Not Authorized");
-      // }
+      if (!contextValue.userToken) {
+        throw new Error("Not Authorized");
+      }
       const existingRates = await EmployeeRates.findOne({
         jobId: EmployeeRatesInput.jobId,
       });
@@ -151,7 +151,7 @@ export const resolvers = {
           },
           {
             $set: {
-              employeeRates: EmployeeRatesInput.employeeRates,
+              employeeRates: [EmployeeRatesInput.employeeRates],
             },
           }
         );
@@ -164,9 +164,9 @@ export const resolvers = {
     },
 
     updateEmployeeRates: async (_root: any, { input: EmployeeRatesUpdate }: any, contextValue: IUserContext) => {
-      // if (!contextValue.userToken) {
-      //   throw new Error("Not Authorized");
-      // }
+      if (!contextValue.userToken) {
+        throw new Error("Not Authorized");
+      }
       const updatedRates = await EmployeeRates.updateOne(
         {
           _id: EmployeeRatesUpdate.id,
@@ -194,8 +194,7 @@ export const resolvers = {
       if (!contextValue.userToken) {
         throw new Error("Not Authorized");
       }
-      const jobPercentage = 0.08;
-      // const employeeJobRates =
+
       const newTimesheet = new Timesheet(TimesheetInput);
       return await newTimesheet.save();
     },
@@ -296,26 +295,59 @@ export const resolvers = {
       if (!contextValue.userToken) {
         throw new Error("Not Authorized");
       }
-      // console.log("Creating new timesheet...", createSIInput);
-      // const workerHrsArr: any[] = [];
-      // createSIInput.siteEmployees.forEach((employee: any) => {
-      //   workerHrsArr.push({
-      //     name: `${employee.firstName} ${employee.lastName}`,
-      //     regHours: employee.regularTime,
-      //     otHours: !employee.doubleTime && employee.regHours === 7 ? 0.5 : employee.doubleTime,
-      //     laborCode: employee.laborCode,
-      //   });
-      // });
-      // const newTimesheet = new Timesheet({
-      //   week: {
-      //     jobName: createSIInput.jobName,
-      //     weekEnding: createSIInput.taskCompletionDate,
-      //     reportNumber: createSIInput.reportNo,
-      //     reportHours: workerHrsArr,
-      //   },
-      // });
-      // console.log("new timesheet...", newTimesheet);
-      // await newTimesheet.save();
+
+      const job = await Job.findOne({
+        jobName: createSIInput.jobName,
+      });
+
+      const employeeJobRates = await EmployeeRates.findOne({
+        jobId: job?._id,
+      });
+      const employeeRatesArr = employeeJobRates?.employeeRates;
+      const percentage = 0.08;
+
+      const workerHrsArr: any[] = [];
+      createSIInput.siteEmployees.forEach(async (employee: any) => {
+        const empRates = employeeRatesArr?.find((emp: any) => emp.employee === `${employee.firstName} ${employee.lastName}`);
+        const employeeRT = Number.isNaN(employee.regularTime) ? 0 : employee?.regularTime;
+        const employeeDT = Number.isNaN(employee.doubleTime) ? 0.5 : employee?.doubleTime;
+        const regRate = empRates?.stPay;
+        const otRate = empRates?.dtPay;
+        const regWages = employeeRT * regRate!;
+        const otWages = otRate ? employeeDT * otRate! : 0;
+        const wagesOAndPRT = employeeRT * percentage;
+        const wagesOAndPOT = employeeDT * percentage;
+        const wagesTotalRT = regWages + wagesOAndPRT;
+        const wagesTotalOT = otWages + wagesOAndPOT;
+
+        workerHrsArr.push({
+          name: `${employee.firstName} ${employee.lastName}`,
+          id: employee.id,
+          workerClass: employee.class,
+          regHours: employeeRT,
+          otHours: employeeDT && employeeRT === 7 ? 0.5 : employeeDT,
+          laborCode: employee.laborCode,
+          costCode: employee.costcode,
+          regRate,
+          otRate,
+          regWages,
+          otWages,
+          percentage,
+          wagesOAndPRT,
+          wagesOAndPOT,
+          wagesTotalRT,
+          wagesTotalOT,
+        });
+      });
+      console.log("WORKERS HOURS: ", workerHrsArr);
+      const newTimesheet = new Timesheet({
+        jobName: createSIInput.jobName,
+        jobId: job?._id,
+        reportDate: createSIInput.taskCompletionDate,
+        reportNumber: createSIInput.reportNo,
+        reportHours: workerHrsArr,
+      });
+      await newTimesheet.save();
 
       const newSI = new SigninSignout(createSIInput);
       console.log("NEW SI: ", newSI);

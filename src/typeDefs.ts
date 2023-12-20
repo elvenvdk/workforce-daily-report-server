@@ -114,9 +114,10 @@ export const typeDefs = gql`
     otWages: Float
     workerClass: String
     percentage: Float
-    subtotal: Float
-    wagesOP: Float
-    wagesTotal: Float
+    wagesOAndPOT: Float
+    wagesOAndPRT: Float
+    wagesTotalRT: Float
+    wagesTotalOT: Float
     date: Date
   }
 
@@ -142,9 +143,10 @@ export const typeDefs = gql`
     otWages: Float
     workerClass: String
     percentage: Float
-    subtotal: Float
-    wagesOP: Float
-    wagesTotal: Float
+    wagesOPOT: Float
+    wagesOPRT: Float
+    wagesTotalRT: Float
+    wagesTotalOT: Float
     date: Date
   }
 
@@ -679,6 +681,7 @@ export const typeDefs = gql`
     class: String
     active: Boolean
     costcode: String
+    email: String
   }
 
   scalar Date

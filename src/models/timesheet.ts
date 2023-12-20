@@ -48,18 +48,21 @@ const TimesheetSchema = new Schema<ITimesheet>(
           type: Number,
         },
         workerClass: {
-          type: Number,
+          type: String,
         },
         percentage: {
           type: Number,
         },
-        subtotal: {
+        wagesOAndPOT: {
           type: Number,
         },
-        wagesOP: {
+        wagesOAndPRT: {
           type: Number,
         },
-        wagesTotal: {
+        wagesTotalRT: {
+          type: Number,
+        },
+        wagesTotalOT: {
           type: Number,
         },
         date: {
