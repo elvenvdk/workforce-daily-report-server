@@ -11,11 +11,14 @@ const JobSchema = new Schema({
         type: String,
     },
     contractStartDate: {
-        type: Date
+        type: Date,
     },
     agencyId: {
         type: Schema.Types.ObjectId,
         ref: "Agency",
+    },
+    percentage: {
+        type: Number,
     },
     laborTicketAbv: {
         type: String,
@@ -30,16 +33,16 @@ const JobSchema = new Schema({
     },
     worksiteId: {
         type: Schema.Types.ObjectId,
-        ref: 'WorksiteEmployees'
+        ref: "WorksiteEmployees",
     },
     startDate: {
-        type: Date
+        type: Date,
     },
     taskCompletionDate: {
-        type: Date
+        type: Date,
     },
     docPrefix: {
-        type: String
-    }
+        type: String,
+    },
 });
 export default model("Job", JobSchema);

@@ -4,7 +4,9 @@ import Worker from "./models/worker.ts";
 import WorksiteEmployees from "./models/worksiteEmployees.ts";
 import SigninSignout from "./models/signinSignout.ts";
 import Checklist from "./models/checklist.ts";
-import CostCodes from "./models/costCodes.ts";
+import CostCodes from "./models/costcodes.ts";
+import Timesheet from "./models/timesheet.ts";
+import EmployeeRates from "./models/employeeRates.ts";
 import ChecklistCreator from "./models/checklistCreator.ts";
 import { sendEmail } from "./aws/emailService.ts";
 export const resolvers = {
@@ -99,7 +101,27 @@ export const resolvers = {
                 throw new Error("Not Authorized");
             }
             return await CostCodes.find();
-        }
+        },
+        employeeRates: async (_root, args, contextValue) => {
+            if (!contextValue.userToken) {
+                throw new Error("Not Authorized");
+            }
+            return await EmployeeRates.find();
+        },
+        timesheets: async (_root, args, contextValue) => {
+            // if (!contextValue.userToken) {
+            //   throw new Error("Not Authorized");
+            // }
+            return await Timesheet.find();
+        },
+        jobTimesheets: async (_root, { id: jobId }, contextValue) => {
+            // if (!contextValue.userToken) {
+            //   throw new Error("Not Authorized");
+            // }
+            const jobs = await Timesheet.find({ jobId });
+            console.log("JOBS: ", jobs);
+            return jobs;
+        },
     },
     Mutation: {
         createAgency: async (_root, { input: agencyInput }, contextValue) => {
@@ -110,6 +132,58 @@ export const resolvers = {
             await newAgency.save();
             return newAgency;
         },
+        createEmployeeRates: async (_root, { input: EmployeeRatesInput }, contextValue) => {
+            if (!contextValue.userToken) {
+                throw new Error("Not Authorized");
+            }
+            const existingRates = await EmployeeRates.findOne({
+                jobId: EmployeeRatesInput.jobId,
+            });
+            if (existingRates) {
+                const updatedRates = await EmployeeRates.updateOne({
+                    jobId: EmployeeRatesInput.jobId,
+                }, {
+                    $set: {
+                        employeeRates: [EmployeeRatesInput.employeeRates],
+                    },
+                });
+                return updatedRates;
+            }
+            else {
+                const newRates = new EmployeeRates(EmployeeRatesInput);
+                await newRates.save();
+                return newRates;
+            }
+        },
+        updateEmployeeRates: async (_root, { input: EmployeeRatesUpdate }, contextValue) => {
+            if (!contextValue.userToken) {
+                throw new Error("Not Authorized");
+            }
+            const updatedRates = await EmployeeRates.updateOne({
+                _id: EmployeeRatesUpdate.id,
+            }, {
+                $set: {
+                    jobName: EmployeeRatesUpdate.jobName,
+                    jobId: EmployeeRatesUpdate.jobId,
+                    employeeRates: EmployeeRatesUpdate.employeeRates,
+                },
+            });
+            return updatedRates;
+        },
+        deleteJobRates: async (_root, { input: id }, contextValue) => {
+            if (!contextValue.userToken) {
+                throw new Error("Not Authorized");
+            }
+            const deletedJobRates = await EmployeeRates.deleteOne({ _id: id });
+            return deletedJobRates;
+        },
+        createTimesheet: async (_root, { input: TimesheetInput }, contextValue) => {
+            if (!contextValue.userToken) {
+                throw new Error("Not Authorized");
+            }
+            const newTimesheet = new Timesheet(TimesheetInput);
+            return await newTimesheet.save();
+        },
         createCostCodes: async (_root, { input: CostCodeInput }, contextValue) => {
             if (!contextValue.userToken) {
                 throw new Error("Not Authorized");
@@ -118,16 +192,36 @@ export const resolvers = {
             await newCostCode.save();
             return newCostCode;
         },
+        updateCostCode: async (_root, { input: UpdateCostCodeInput }, contextValue) => {
+            if (!contextValue.userToken) {
+                throw new Error("Not Authorized");
+            }
+            await CostCodes.updateOne({
+                _id: UpdateCostCodeInput.id,
+            }, {
+                $set: {
+                    laborCode: UpdateCostCodeInput.laborCode,
+                    costCode: UpdateCostCodeInput.costCode,
+                    description: UpdateCostCodeInput.description,
+                },
+            });
+        },
+        deleteCostCodes: async (_root, { input: DeleteCostCodesInput }, contextValue) => {
+            if (!contextValue.userToken) {
+                throw new Error("Not Authorized");
+            }
+            return await CostCodes.deleteMany({ _id: { $in: [...DeleteCostCodesInput.id] } });
+        },
         updateAgency: async (_root, { input: updateAgency }, contextValue) => {
             if (!contextValue.userToken) {
                 throw new Error("Not Authorized");
             }
             return await Agency.updateOne({
-                _id: updateAgency.id
+                _id: updateAgency.id,
             }, {
                 $set: {
-                    agencyName: updateAgency.agencyName
-                }
+                    agencyName: updateAgency.agencyName,
+                },
             });
         },
         deleteAgency: async (_root, { input: id }, contextValue) => {
@@ -157,11 +251,11 @@ export const resolvers = {
                 throw new Error("Not Authorized");
             }
             let updatedSIWR = await Checklist.updateOne({
-                _id: CreateChecklistInput.id
+                _id: CreateChecklistInput.id,
             }, {
                 $set: {
                     fieldTasks: CreateChecklistInput.fieldTasks,
-                }
+                },
             });
             return updatedSIWR;
         },
@@ -169,8 +263,59 @@ export const resolvers = {
             if (!contextValue.userToken) {
                 throw new Error("Not Authorized");
             }
+            const job = await Job.findOne({
+                jobName: createSIInput.jobName,
+            });
+            const employeeJobRates = await EmployeeRates.findOne({
+                jobId: job?._id,
+            });
+            const employeeRatesArr = employeeJobRates?.employeeRates;
+            const percentage = 8;
+            const workerHrsArr = [];
+            createSIInput.siteEmployees.forEach(async (employee) => {
+                const empRates = employeeRatesArr?.find((emp) => emp.employee === `${employee.firstName} ${employee.lastName}`);
+                const employeeRT = employee?.regularTime;
+                const employeeDT = employee?.doubleTime;
+                const regRate = empRates?.stPay;
+                const otRate = empRates?.dtPay;
+                const regWages = employeeRT * regRate;
+                const otWages = otRate ? employeeDT * otRate : 0;
+                const wagesOAndPRT = employeeRT * (percentage / 100);
+                const wagesOAndPOT = employeeDT * (percentage / 100);
+                const wagesTotalRT = regWages + wagesOAndPRT;
+                const wagesTotalOT = otWages + wagesOAndPOT;
+                const total = wagesTotalRT + wagesTotalOT;
+                workerHrsArr.push({
+                    name: `${employee.firstName} ${employee.lastName}`,
+                    id: employee.id,
+                    workerClass: employee.class,
+                    regHours: employeeRT,
+                    otHours: employeeDT,
+                    laborCode: employee.laborCode,
+                    costCode: employee.costcode,
+                    regRate,
+                    otRate,
+                    regWages,
+                    otWages,
+                    percentage,
+                    wagesOAndPRT,
+                    wagesOAndPOT,
+                    wagesTotalRT,
+                    wagesTotalOT,
+                    total,
+                });
+            });
+            // console.log("WORKERS HOURS: ", workerHrsArr);
+            const newTimesheet = new Timesheet({
+                jobName: createSIInput.jobName,
+                jobId: job?._id,
+                reportDate: createSIInput.taskCompletionDate,
+                reportNumber: createSIInput.reportNo,
+                reportHours: workerHrsArr,
+            });
+            await newTimesheet.save();
             const newSI = new SigninSignout(createSIInput);
-            console.log('NEW SI: ', newSI);
+            // console.log("NEW SI: ", newSI);
             await newSI.save();
             return newSI;
         },
@@ -179,7 +324,7 @@ export const resolvers = {
                 throw new Error("Not Authorized");
             }
             let updatedSIWR = await SigninSignout.updateOne({
-                _id: updateSIInput.id
+                _id: updateSIInput.id,
             }, {
                 $set: {
                     canRecall: updateSIInput.canRecall,
@@ -192,8 +337,8 @@ export const resolvers = {
                     tasks: updateSIInput.tasks,
                     remarks: updateSIInput.remarks,
                     hasBeenRecalled: updateSIInput.hasBeenRecalled,
-                    costcode: updateSIInput.costcode
-                }
+                    costcode: updateSIInput.costcode,
+                },
             });
             return updatedSIWR;
         },
@@ -244,7 +389,7 @@ export const resolvers = {
                 throw new Error("Not Authorized");
             }
             return Worker.deleteOne({
-                _id: id
+                _id: id,
             });
         },
         createWorksiteEmployees: async (_root, { input: employees }, contextValue) => {
@@ -277,7 +422,7 @@ export const resolvers = {
             }
             const mailRes = await sendEmail(emailTemplate);
             return mailRes;
-        }
+        },
     },
     Job: {
         agency: async (job, args, contextValue) => {
@@ -319,8 +464,8 @@ export const resolvers = {
                 throw new Error("Not Authorized");
             }
             return await WorksiteEmployees.find({
-                employees: { _id: data._id }
+                employees: { _id: data._id },
             });
-        }
+        },
     },
 };

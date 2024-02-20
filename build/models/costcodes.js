@@ -1,10 +1,10 @@
 import { Schema, model } from "mongoose";
 const CostCodeSchema = new Schema({
     laborCode: {
-        type: Number
+        type: String
     },
     costCode: {
-        type: Number
+        type: String
     },
     description: {
         type: String

@@ -3,11 +3,11 @@ const SigninSignoutSchema = new Schema({
     agency: {
         id: {
             type: Schema.Types.ObjectId,
-            ref: "Agency"
+            ref: "Agency",
         },
         agencyName: {
             type: String,
-        }
+        },
     },
     contractNo: {
         type: String,
@@ -30,43 +30,43 @@ const SigninSignoutSchema = new Schema({
         // required: true,
     },
     laborTicketAvb: {
-        type: String
+        type: String,
     },
     jobName: {
         type: String,
         // required: true,
     },
     location: {
-        type: String
+        type: String,
     },
     workLocation: [
         {
             name: {
-                type: String
-            }
-        }
+                type: String,
+            },
+        },
     ],
     workType: {
         type: String,
         // required: true,
     },
     workDescription: {
-        type: String
+        type: String,
     },
     incidentReport: {
-        type: String
+        type: String,
     },
     incidentReportText: {
-        type: String
+        type: String,
     },
     remarks: {
-        type: String
+        type: String,
     },
     siteEmployees: [
         {
             id: {
                 type: Schema.Types.ObjectId,
-                ref: "Worker"
+                ref: "Worker",
             },
             firstName: {
                 type: String,
@@ -84,7 +84,7 @@ const SigninSignoutSchema = new Schema({
                 // required: true,
             },
             class: {
-                type: String
+                type: String,
             },
             timeIn: {
                 type: Date,
@@ -103,13 +103,13 @@ const SigninSignoutSchema = new Schema({
                 // required: true,
             },
             regularTime: {
-                type: Number
+                type: Number,
             },
             doubleTime: {
-                type: Number
+                type: Number,
             },
             doubletimeSignature: {
-                type: Number
+                type: Number,
             },
             imageCapture: {
                 type: String,
@@ -118,8 +118,11 @@ const SigninSignoutSchema = new Schema({
                 type: String,
             },
             costcode: {
-                type: String
-            }
+                type: String,
+            },
+            laborcode: {
+                type: String,
+            },
         },
     ],
     foreman: {
@@ -160,52 +163,52 @@ const SigninSignoutSchema = new Schema({
     materialsDesc: [
         {
             qty: {
-                type: Number
+                type: Number,
             },
             item: {
-                type: String
+                type: String,
             },
             um: {
-                type: String
+                type: String,
             },
             unitCost: {
-                type: Number
+                type: Number,
             },
             totalCost: {
-                type: Number
+                type: Number,
             },
             description: {
-                type: String
-            }
-        }
+                type: String,
+            },
+        },
     ],
     tasks: [
         {
             details: {
-                type: String
+                type: String,
             },
             progress: {
-                type: String
+                type: String,
             },
             status: {
-                type: String
+                type: String,
             },
             title: {
-                type: String
-            }
+                type: String,
+            },
         },
     ],
     canRecall: {
-        type: Boolean
+        type: Boolean,
     },
     hasBeenRecalled: {
-        type: Boolean
+        type: Boolean,
     },
     reportNo: {
-        type: String
+        type: String,
     },
     titleOfChangeOrder: {
-        type: String
-    }
+        type: String,
+    },
 }, { timestamps: true });
 export default model("SigninSignout", SigninSignoutSchema);

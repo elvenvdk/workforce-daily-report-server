@@ -17,6 +17,11 @@ export const typeDefs = gql `
     workreportList: [SigninSignout]
     workreport(id: ID!): SigninSignout
     costCodes: [CostCode]
+    employeeRates: [EmployeeRates]
+    timesheet(id: ID!): Timesheet
+    timesheets: [Timesheet]
+    jobTimesheets(id: ID!): [Timesheet]
+    costSummaries: [CostSummary]
   }
 
   type Mutation {
@@ -39,12 +44,150 @@ export const typeDefs = gql `
     createWorkReportEmailTemplate(input: WorkreportEmailTemplateInput): WorkreportEmailTemplate
     createChecklistCreator(input: ChecklistCreatorInput): ChecklistCreator
     createCostCodes(input: CostCodeInput): CostCode
+    deleteCostCodes(input: DeleteCostCodesInput): CostCode
+    updateCostCode(input: UpdateCostCodeInput): CostCode
+    createEmployeeRates(input: EmployeeRatesInput): EmployeeRates
+    updateEmployeeRates(input: EmployeeRatesUpdate): EmployeeRates
+    deleteJobRates(input: ID!): EmployeeRates
+    createTimesheet(input: TimesheetInput): Timesheet
+    updateCostSummary(input: CostCodeInput): CostSummary
+    createCostSummary(input: CostSummaryInput): CostSummary
   }
 
   scalar GraphQLJSONObject
 
   type WorkreportEmailTemplate {
     email: String
+  }
+
+  type EmployeeJobRate {
+    employee: String
+    employeeId: String
+    stPay: Float
+    dtPay: Float
+  }
+
+  type EmployeeRates {
+    id: ID!
+    jobName: String
+    jobId: String
+    employeeRates: [EmployeeJobRate]
+    date: Date
+  }
+
+  input EmployeeJobRateInput {
+    employee: String
+    employeeId: String
+    stPay: Float
+    dtPay: Float
+  }
+
+  input EmployeeRatesInput {
+    jobName: String
+    jobId: String
+    employeeRates: [EmployeeJobRateInput]
+    date: Date
+  }
+
+  input EmployeeJobRateUpdate {
+    employee: String
+    employeeId: String
+    stPay: Float
+    dtPay: Float
+  }
+
+  input EmployeeRatesUpdate {
+    id: ID!
+    jobName: String
+    jobId: String
+    employeeRates: [EmployeeJobRateUpdate]
+    date: Date
+  }
+
+  type employeeHrs {
+    name: String
+    id: String
+    laborCode: String
+    costCode: String
+    regHours: Float
+    otHours: Float
+    regRate: Float
+    otRate: Float
+    regWages: Float
+    otWages: Float
+    workerClass: String
+    percentage: Int
+    wagesOAndPOT: Float
+    wagesOAndPRT: Float
+    wagesTotalRT: Float
+    wagesTotalOT: Float
+    total: Float
+    date: Date
+  }
+
+  type Timesheet {
+    id: ID!
+    jobName: String
+    jobId: String
+    weekEnding: Date
+    reportDate: Date
+    reportHours: [employeeHrs]
+  }
+
+  input employeeHrsInput {
+    name: String
+    id: String
+    laborCode: String
+    costCode: String
+    regHours: Float
+    otHours: Float
+    regRate: Float
+    otRate: Float
+    regWages: Float
+    otWages: Float
+    workerClass: String
+    percentage: Int
+    wagesOPOT: Float
+    wagesOPRT: Float
+    wagesTotalRT: Float
+    wagesTotalOT: Float
+    total: Float
+    date: Date
+  }
+
+  input TimesheetInput {
+    jobName: String
+    jobId: String
+    weekEnding: Date
+    reportDate: Date
+    reportNumber: String
+    reportHours: [employeeHrsInput]
+  }
+
+  type CostSummary {
+    id: ID!
+    laborCode: String
+    costCode: String
+    totalHours: Float
+    totalAmount: Float
+    jobId: String
+  }
+
+  input CostSummaryInput {
+    laborCode: String
+    costCode: String
+    totalHours: Float
+    totalAmount: Float
+    jobId: String
+  }
+
+  input CostSummaryUpdate {
+    id: ID!
+    laborCode: String
+    costCode: String
+    totalHours: Float
+    totalAmount: Float
+    jobId: String
   }
 
   input WorkreportEmailTemplateInput {
@@ -75,6 +218,7 @@ export const typeDefs = gql `
     regularTime: Float
     notes: String
     costcode: String
+    laborcode: String
   }
 
   type Worker {
@@ -91,6 +235,7 @@ export const typeDefs = gql `
     role: String
     active: Boolean
     costcode: String
+    laborCode: String
   }
 
   type Job {
@@ -108,6 +253,7 @@ export const typeDefs = gql `
     taskCompletionDate: Date
     active: Boolean
     docPrefix: String
+    percentage: Int
   }
 
   type WorksiteEmployees {
@@ -135,15 +281,26 @@ export const typeDefs = gql `
 
   type CostCode {
     id: ID
-    laborCode: Int
-    costCode: Int
+    laborCode: String
+    costCode: String
     description: String
   }
 
   input CostCodeInput {
-    laborCode: Int
-    costCode: Int
+    laborCode: String
+    costCode: String
     description: String
+  }
+
+  input UpdateCostCodeInput {
+    id: ID!
+    laborCode: String
+    costCode: String
+    description: String
+  }
+
+  input DeleteCostCodesInput {
+    id: [String]
   }
 
   type WorksiteLocation {
@@ -242,7 +399,7 @@ export const typeDefs = gql `
     type: String
     fieldTasks: [ChecklistCreatorFieldTasks]
   }
- 
+
   input ChecklistCreatorQuestionsInput {
     id: Int
     question: String
@@ -373,6 +530,7 @@ export const typeDefs = gql `
     taskCompletionDate: Date
     active: Boolean
     docPrefix: String
+    percentage: Int
   }
 
   input UpdateJobInput {
@@ -390,6 +548,7 @@ export const typeDefs = gql `
     taskCompletionDate: Date
     active: Boolean
     docPrefix: String
+    percentage: Int
   }
 
   input CreateWorksiteEmployeesInput {
@@ -433,6 +592,7 @@ export const typeDefs = gql `
     doubleTime: Float
     regularTime: Float
     costcode: String
+    laborCode: String
   }
 
   input UpdateSIWorker {
@@ -555,6 +715,7 @@ export const typeDefs = gql `
     class: String
     active: Boolean
     costcode: String
+    email: String
   }
 
   scalar Date

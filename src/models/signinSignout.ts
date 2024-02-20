@@ -65,6 +65,9 @@ const SigninSignoutSchema = new Schema<ISigninSignout>(
     remarks: {
       type: String,
     },
+    percentage: {
+      type: Number,
+    },
     siteEmployees: [
       {
         id: {

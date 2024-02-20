@@ -120,10 +120,70 @@ export const resolvers = {
     },
 
     employeeRates: async (_root: any, args: any, contextValue: IUserContext) => {
-      // if (!contextValue.userToken) {
-      //   throw new Error("Not Authorized");
-      // }
-      return await EmployeeRates.find();
+      if (!contextValue.userToken) {
+        throw new Error("Not Authorized");
+      }
+      const rates = await EmployeeRates.find();
+      return await rates;
+    },
+
+    timesheets: async (_root: any, args: any, contextValue: IUserContext) => {
+      if (!contextValue.userToken) {
+        throw new Error("Not Authorized");
+      }
+      return await Timesheet.find();
+    },
+
+    jobTimesheets: async (_root: any, { id: jobId }: any, contextValue: IUserContext) => {
+      if (!contextValue.userToken) {
+        throw new Error("Not Authorized");
+      }
+      const jobs = await Timesheet.find({ jobId });
+      console.log("JOBS: ", jobs);
+      return jobs;
+    },
+
+    costSummaries: async (_root: any, args: any, contextValue: IUserContext) => {
+      let summaries: any[] = [];
+      let tempTimesheets: any[] = [];
+      let tempLaborCodes: any[] = [];
+      let start,
+        end,
+        count = 0;
+      let timesheets = await Timesheet.find({ jobId: "657b2c4a4ac907edbadd0a6e" });
+      if (timesheets) {
+        tempTimesheets = [...timesheets];
+        for (let i = 0; i < tempTimesheets.length; i++) {
+          const hours = tempTimesheets[i].reportHours.reduce((acc: any, val: any) => acc + (val.wagesTotalRT + val.wagesTotalOT), 0);
+          console.log("TIMESHEET HOURS: ", hours);
+          for (let j = 0; j < tempTimesheets[i].reportHours.length; j++) {
+            // console.log("REPORT HOURS: ", tempTimesheets[i].reportHours);
+          }
+        }
+      }
+
+      const arr1 = [
+        { id: 11, num: 1 },
+        { id: 11, num: 2 },
+        { id: 11, num: 3 },
+        { id: 12, num: 4 },
+        { id: 12, num: 5 },
+        { id: 12, num: 6 },
+        { id: 13, num: 7 },
+        { id: 13, num: 8 },
+        { id: 14, num: 9 },
+        { id: 14, num: 10 },
+      ];
+
+      const removeDupes = arr1.reduce((acc: any, val: any) => {
+        if (acc.indexOf(val.id) < 0) acc.push(val.id);
+        return acc;
+      }, []);
+
+      const initVal = 0;
+      const arrSum = arr1.reduce((a: any, b: any) => a + b.num, initVal);
+
+      console.log("REMOVE DUPES: ", removeDupes, "SUM: ", arrSum);
     },
   },
 
@@ -142,20 +202,10 @@ export const resolvers = {
         throw new Error("Not Authorized");
       }
       const existingRates = await EmployeeRates.findOne({
-        jobId: EmployeeRatesInput.jobId,
+        employeeId: EmployeeRatesInput.employeeId,
       });
       if (existingRates) {
-        const updatedRates = await EmployeeRates.updateOne(
-          {
-            jobId: EmployeeRatesInput.jobId,
-          },
-          {
-            $set: {
-              employeeRates: [EmployeeRatesInput.employeeRates],
-            },
-          }
-        );
-        return updatedRates;
+        throw new Error("Employee already exists");
       } else {
         const newRates = new EmployeeRates(EmployeeRatesInput);
         await newRates.save();
@@ -173,9 +223,10 @@ export const resolvers = {
         },
         {
           $set: {
-            jobName: EmployeeRatesUpdate.jobName,
-            jobId: EmployeeRatesUpdate.jobId,
-            employeeRates: EmployeeRatesUpdate.employeeRates,
+            employee: EmployeeRatesUpdate.employee,
+            employeeId: EmployeeRatesUpdate.employeeId,
+            stPay: EmployeeRatesUpdate.stPay,
+            dtPay: EmployeeRatesUpdate.dtPay,
           },
         }
       );
@@ -300,32 +351,33 @@ export const resolvers = {
         jobName: createSIInput.jobName,
       });
 
-      const employeeJobRates = await EmployeeRates.findOne({
-        jobId: job?._id,
-      });
-      const employeeRatesArr = employeeJobRates?.employeeRates;
-      const percentage = 0.08;
-
+      const employeeJobRates = await EmployeeRates.find();
+      const employeeRatesArr = employeeJobRates;
+      const percentage = createSIInput.percentage / 100;
+      console.log("EMPLOYEE RATES: ", employeeJobRates);
       const workerHrsArr: any[] = [];
+
       createSIInput.siteEmployees.forEach(async (employee: any) => {
         const empRates = employeeRatesArr?.find((emp: any) => emp.employee === `${employee.firstName} ${employee.lastName}`);
-        const employeeRT = Number.isNaN(employee.regularTime) ? 0 : employee?.regularTime;
-        const employeeDT = Number.isNaN(employee.doubleTime) ? 0.5 : employee?.doubleTime;
+
+        const employeeRT = employee?.regularTime;
+        const employeeDT = employee?.doubleTime;
         const regRate = empRates?.stPay;
         const otRate = empRates?.dtPay;
         const regWages = employeeRT * regRate!;
         const otWages = otRate ? employeeDT * otRate! : 0;
-        const wagesOAndPRT = employeeRT * percentage;
-        const wagesOAndPOT = employeeDT * percentage;
+        const wagesOAndPRT = regWages * percentage;
+        const wagesOAndPOT = otWages * percentage;
         const wagesTotalRT = regWages + wagesOAndPRT;
         const wagesTotalOT = otWages + wagesOAndPOT;
+        const total = wagesTotalRT + wagesTotalOT;
 
         workerHrsArr.push({
           name: `${employee.firstName} ${employee.lastName}`,
           id: employee.id,
           workerClass: employee.class,
           regHours: employeeRT,
-          otHours: employeeDT && employeeRT === 7 ? 0.5 : employeeDT,
+          otHours: employeeDT,
           laborCode: employee.laborCode,
           costCode: employee.costcode,
           regRate,
@@ -337,6 +389,7 @@ export const resolvers = {
           wagesOAndPOT,
           wagesTotalRT,
           wagesTotalOT,
+          total,
         });
       });
       console.log("WORKERS HOURS: ", workerHrsArr);
@@ -350,7 +403,7 @@ export const resolvers = {
       await newTimesheet.save();
 
       const newSI = new SigninSignout(createSIInput);
-      console.log("NEW SI: ", newSI);
+      // console.log("NEW SI: ", newSI);
       await newSI.save();
       return newSI;
     },

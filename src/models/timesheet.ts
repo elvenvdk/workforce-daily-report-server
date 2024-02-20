@@ -8,6 +8,7 @@ const TimesheetSchema = new Schema<ITimesheet>(
     },
     jobId: {
       type: Schema.Types.ObjectId,
+      ref: "Job",
     },
     weekEnding: {
       type: Date,
@@ -25,6 +26,7 @@ const TimesheetSchema = new Schema<ITimesheet>(
         },
         id: {
           type: Schema.Types.ObjectId,
+          ref: "Worker",
         },
         laborCode: {
           type: String,
@@ -33,6 +35,9 @@ const TimesheetSchema = new Schema<ITimesheet>(
           type: String,
         },
         regHours: {
+          type: Number,
+        },
+        otHours: {
           type: Number,
         },
         regRate: {
@@ -63,6 +68,9 @@ const TimesheetSchema = new Schema<ITimesheet>(
           type: Number,
         },
         wagesTotalOT: {
+          type: Number,
+        },
+        total: {
           type: Number,
         },
         date: {

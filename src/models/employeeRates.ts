@@ -1,32 +1,23 @@
 import { Schema, model } from "mongoose";
-import { IEmployeeRates } from "../types.js";
+import { IEmployeeRates } from "../types.ts";
 
-const EmployeeRatesSchema = new Schema<IEmployeeRates>({
-  jobName: {
-    type: String
+const EmployeeRatesSchema = new Schema<IEmployeeRates>(
+  {
+    employee: {
+      type: String,
+    },
+    employeeId: {
+      type: Schema.Types.ObjectId,
+      ref: "Worker",
+    },
+    stPay: {
+      type: Number,
+    },
+    dtPay: {
+      type: Number,
+    },
   },
-  jobId: {
-    type: Schema.Types.ObjectId
-  },
-  date: {
-    type: Date
-  },
-  employeeRates: [
-    {
-      employee: {
-        type: String
-      },
-      employeeId: {
-        type: Schema.Types.ObjectId
-      },
-      stPay: {
-        type: Number
-      },
-      dtPay: {
-        type: Number
-      }
-    }
-  ]
-}, { timestamps: true });
+  { timestamps: true }
+);
 
 export default model<IEmployeeRates>("EmployeeRates", EmployeeRatesSchema);

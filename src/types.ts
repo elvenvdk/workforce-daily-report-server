@@ -174,6 +174,7 @@ export interface ISigninSignout {
   hasBeenRecalled: boolean;
   reportNo: string;
   titleOfChangeOrder: string;
+  percentage: number;
 }
 
 export interface IProjectMgr {
@@ -200,6 +201,7 @@ export type workerHours = {
   wagesOAndPRT: number;
   wagesTotalRT: number;
   wagesTotalOT: number;
+  total: number;
   date: Date;
 };
 
@@ -226,6 +228,7 @@ export interface IJob {
   taskCompletionDate: Date;
   active: boolean;
   docPrefix: string;
+  percentage: number;
 }
 
 export interface IContractRep {
@@ -301,15 +304,17 @@ export interface ICostCodes {
   description: string;
 }
 
-export type employeeRate = {
+export interface IEmployeeRates {
   employee: string;
+  employeeId: Types.ObjectId;
   stPay: number;
   dtPay: number;
-};
+}
 
-export interface IEmployeeRates {
-  jobName: string;
+export interface ICostSummary {
+  laborCode: String;
+  costCode: String;
+  totalHours: Number;
+  totalAmount: Number;
   jobId: Types.ObjectId;
-  date: Date;
-  employeeRates: employeeRate[];
 }
