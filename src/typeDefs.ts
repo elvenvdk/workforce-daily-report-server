@@ -262,12 +262,14 @@ export const typeDefs = gql`
 
   type CostCode {
     id: ID
+    budget: Float
     laborCode: String
     costCode: String
     description: String
   }
 
   input CostCodeInput {
+    budget: Float
     laborCode: String
     costCode: String
     description: String
@@ -275,6 +277,7 @@ export const typeDefs = gql`
 
   input UpdateCostCodeInput {
     id: ID!
+    budget: Float
     laborCode: String
     costCode: String
     description: String

@@ -1,7 +1,6 @@
 import { Schema, model } from "mongoose";
 import { IProjectMgr } from "../types.ts";
 
-
 const ProjectMgrSchema = new Schema<IProjectMgr>({
   firstName: {
     type: String,

@@ -299,6 +299,7 @@ export interface IChecklistCreator {
 }
 
 export interface ICostCodes {
+  budget: number;
   laborCode: string;
   costCode: string;
   description: string;

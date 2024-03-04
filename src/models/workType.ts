@@ -1,7 +1,6 @@
 import { Schema, model } from "mongoose";
 import { IWorkType } from "../types.ts";
 
-
 const WorkTypeSchema = new Schema<IWorkType>({
   typeContract: {
     type: String,
