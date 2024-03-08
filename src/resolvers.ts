@@ -269,6 +269,7 @@ export const resolvers = {
         },
         {
           $set: {
+            budget: UpdateCostCodeInput.budget,
             laborCode: UpdateCostCodeInput.laborCode,
             costCode: UpdateCostCodeInput.costCode,
             description: UpdateCostCodeInput.description,

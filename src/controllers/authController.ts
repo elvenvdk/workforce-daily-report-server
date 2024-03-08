@@ -31,11 +31,12 @@ export const registerUser = async (req: TypedRequestBody<RegisterUserType>, res:
       const encryptedPassword = await bcrypt.hash(password, salt);
 
       // Create token
-      jwt.sign({
-        userId: existingUser.id,
-        level: existingUser.level,
-        role: existingUser.role
-      },
+      jwt.sign(
+        {
+          userId: existingUser.id,
+          level: existingUser.level,
+          role: existingUser.role,
+        },
         `${process.env.TOKEN_KEY}`,
         { algorithm: "HS256" },
         async (err, userToken) => {
@@ -65,7 +66,8 @@ export const registerUser = async (req: TypedRequestBody<RegisterUserType>, res:
           } else {
             return res.status(500).json({ msg: "There was an error updating the user" });
           }
-        });
+        }
+      );
     } else {
       return res.status(400).json({ msg: "Please enter user's profile before registering or updating their username and password" });
     }
@@ -91,7 +93,7 @@ export const login = async (req: TypedRequestBody<RegisterUserType>, res: TypedR
       // Get user info
       const verifiedUser = await Worker.findOne({ _id: userAuth.user });
       if (!verifiedPassword) {
-        return res.status(404).json({ msg: 'Username or Password Incorrect' });
+        return res.status(404).json({ msg: "Username or Password Incorrect" });
       }
       if (verifiedUser) {
         // Mark user as active
@@ -129,10 +131,10 @@ export const login = async (req: TypedRequestBody<RegisterUserType>, res: TypedR
               middleInitial: verifiedUser.middleInitial ? verifiedUser.middleInitial : null,
               class: verifiedUser.class,
               level: verifiedUser.level,
-              role: verifiedUser.role
+              role: verifiedUser.role,
             };
             // res.send(user);
-            res.cookie("userToken", userToken).send({ msg: 'User successfully set', user })
+            res.cookie("userToken", userToken).send({ msg: "User successfully set", user });
           }
         });
       } else {
