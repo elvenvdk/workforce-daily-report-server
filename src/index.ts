@@ -2,7 +2,7 @@ import { ApolloServer } from "@apollo/server";
 import { expressMiddleware } from "@apollo/server/express4";
 import { ApolloServerPluginDrainHttpServer } from "@apollo/server/plugin/drainHttpServer";
 import AWS from "aws-sdk";
-import { TypedRequestBody, TypedResponse, RegisterUserType, RegisterUserResponseType } from "./types";
+import multer from "multer";
 import http from "http";
 import dotenv from "dotenv";
 import express from "express";
@@ -14,7 +14,11 @@ import { resolvers } from "./resolvers.ts";
 import authRoutes from "./routes/auth.ts";
 import pdfRoutes from "./routes/pdf.ts";
 import reportRoutes from "./routes/reports.ts";
+import imagesRoutes from "./routes/images.js";
 import { IUserContext } from "./types.ts";
+import morgan from "morgan";
+import path from "path";
+import { fileURLToPath } from "url";
 dotenv.config({ path: "./.env" });
 
 const PORT = process.env.PORT || 9000;
@@ -34,6 +38,16 @@ const mainDbConnection = async () => {
 
 mainDbConnection().catch(err => console.log(err));
 
+// IMAGE STORAGE
+const storage = multer.diskStorage({
+  destination: function (req, file, callback) {
+    callback(null, "/src/job-images");
+  },
+  filename: function (req, file, callback) {
+    callback(null, file.fieldname);
+  },
+});
+const upload = multer({ dest: "uploads/" });
 // GRAPHQL
 
 const apolloServer = new ApolloServer<IUserContext>({
@@ -56,7 +70,7 @@ app.use(
     optionsSuccessStatus: 204,
   }),
   expressMiddleware(apolloServer, {
-    context: async ({ req, res }) => {
+    context: async ({ req }) => {
       return {
         userToken: req.headers.authorization,
       };
@@ -64,20 +78,30 @@ app.use(
   })
 );
 app.use(express.json({ limit: "100mb" }));
-app.use(express.urlencoded({ limit: "100mb" }));
+app.use(express.urlencoded({ limit: "100mb", extended: true }));
+app.use(morgan("dev"));
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+app.use(express.static(path.join(__dirname, "public")));
 app.use(cookieParser());
-app.use(
-  cors<cors.CorsRequest>({
-    origin: ["http://localhost:3000", "http://workforce-daily-report.com"],
-    optionsSuccessStatus: 204,
-    credentials: true,
-    methods: "GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS",
-    preflightContinue: false,
-  })
-);
+app
+  .use(
+    cors<cors.CorsRequest>({
+      origin: ["http://localhost:3000", "http://workforce-daily-report.com"],
+      optionsSuccessStatus: 204,
+      credentials: true,
+      methods: "GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS",
+      preflightContinue: true,
+    })
+  )
+  .options("*", function (req, res) {
+    res.set("X-Preflight-Response", "true").end();
+  });
+
 app.use("/api/auth", authRoutes);
 app.use("/api/reports", reportRoutes);
 app.use("/api/pdf", pdfRoutes);
+app.use("/api/job-images", imagesRoutes);
 
 await new Promise<void>(resolve => httpServer.listen({ port: PORT }, resolve));
 console.log(`🚀 Server connected at http://localhost:${PORT} - YES!`);
