@@ -15,6 +15,23 @@ export interface IUserContext {
   userRole: string;
 }
 
+export type TJobImage = {
+  date: Date;
+  imgName: string;
+  imgUri: string;
+  imgBuffer: Buffer;
+  imgString: string;
+  txt: string;
+};
+
+export interface IJobImages {
+  job: string;
+  shift: number;
+  date: string;
+  foreman: string;
+  details: TJobImage;
+}
+
 export interface IUserContextUser {
   firstName: string;
   lastName: string;

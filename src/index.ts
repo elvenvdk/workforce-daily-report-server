@@ -39,15 +39,15 @@ const mainDbConnection = async () => {
 mainDbConnection().catch(err => console.log(err));
 
 // IMAGE STORAGE
-const storage = multer.diskStorage({
-  destination: function (req, file, callback) {
-    callback(null, "/src/job-images");
-  },
-  filename: function (req, file, callback) {
-    callback(null, file.fieldname);
-  },
-});
-const upload = multer({ dest: "uploads/" });
+// const storage = multer.diskStorage({
+//   destination: function (req, file, callback) {
+//     callback(null, "/src/job-images");
+//   },
+//   filename: function (req, file, callback) {
+//     callback(null, file.fieldname);
+//   },
+// });
+// const upload = multer({ dest: "uploads/" });
 // GRAPHQL
 
 const apolloServer = new ApolloServer<IUserContext>({
