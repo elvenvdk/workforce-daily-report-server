@@ -3,6 +3,8 @@ import jwt from "jsonwebtoken";
 import bcrypt from "bcryptjs";
 import Auth from "../models/auth.ts";
 import Worker from "../models/worker.ts";
+import { sendEmail } from "../aws/emailService.ts";
+import fs from "fs";
 
 const verifyPassword = async (currentPassword: string, userPassword: string) => await bcrypt.compare(currentPassword, userPassword);
 
@@ -209,5 +211,50 @@ export const updatePassword = async (req: TypedRequestBody<RegisterUserType>, re
     res.status(201).json({ msg: ", Username successfully updated" });
   } catch (error) {
     console.log(error);
+  }
+};
+
+const getRandomInt = (min: number, max: number) => {
+  const minCeiled = Math.ceil(min);
+  const maxFloored = Math.floor(max);
+  return Math.floor(Math.random() * (maxFloored - minCeiled) + minCeiled);
+};
+
+const setIntSixCodes = () => {
+  const randSix: number[] = [];
+  Array.from({ length: 6 }, (r: any, idx: number) => {
+    randSix.push(getRandomInt(1, 9));
+  });
+  const time = 60000;
+  setInterval(() => {
+    fs.writeFileSync("./tempAuthCode.txt", getRandomInt(1, 9).toString());
+  }, time);
+};
+
+export const confirmationEmail = async (req: TypedRequestBody<any>, res: TypedResponse<RegisterUserResponseType>) => {
+  const randSix: number[] = [];
+  Array.from({ length: 6 }, (r: any, idx: number) => {
+    randSix.push(getRandomInt(1, 9));
+  });
+  const { body } = req;
+  body.code = randSix;
+
+  try {
+    fs.writeFileSync("./tempAuthCode.txt", body.code.toString());
+    const emailRes = await sendEmail(body, "vanderkuech@icloud.com");
+    res.send(emailRes);
+  } catch (error) {
+    console.log("SEND MAIL ERROR: ", error);
+  }
+};
+
+export const getIntCode = async (req: TypedRequestBody<any>, res: TypedResponse<RegisterUserResponseType>) => {
+  setIntSixCodes();
+  try {
+    const authIntCode = fs.readFileSync("./tempAuthCode.txt").toString();
+    console.log("AUTH INT CODE: ", authIntCode);
+    res.send(authIntCode);
+  } catch (error) {
+    console.log("SEND MAIL ERROR: ", error);
   }
 };
