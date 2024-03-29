@@ -41,7 +41,7 @@ const params = {
 };
 
 const devMailUrl = "http://localhost:3000";
-const prodMailUrl = "http://server.workforce-daily-report.com:9000";
+const prodMailUrl = "http://workforce-daily-report.com";
 
 export const sendEmail = async (body: any, messageRecipent: string) => {
   console.log("BODY: ", body);
