@@ -225,23 +225,30 @@ const setIntSixCodes = () => {
   Array.from({ length: 6 }, (r: any, idx: number) => {
     randSix.push(getRandomInt(1, 9));
   });
-  const time = 60000;
+  const time = 600000;
   setInterval(() => {
-    fs.writeFileSync("./tempAuthCode.txt", getRandomInt(1, 9).toString());
+    fs.writeFileSync("./tempAuthCode.txt", randSix.toString());
   }, time);
 };
 
+const getIntSixCodes = () => {
+  return fs.readFileSync("./tempAuthCode.txt");
+};
+
 export const confirmationEmail = async (req: TypedRequestBody<any>, res: TypedResponse<RegisterUserResponseType>) => {
-  const randSix: number[] = [];
-  Array.from({ length: 6 }, (r: any, idx: number) => {
-    randSix.push(getRandomInt(1, 9));
-  });
+  // const randSix: number[] = [];
+  // Array.from({ length: 6 }, (r: any, idx: number) => {
+  //   randSix.push(getRandomInt(1, 9));
+  // });
+  setIntSixCodes();
+  console.log("GET RAND SIX: ", getIntSixCodes().toString());
   const { body } = req;
-  body.code = randSix;
+  body.code = getIntSixCodes().toString();
+  body.text = "Please click the link and enter the 6 digit code below";
 
   try {
-    fs.writeFileSync("./tempAuthCode.txt", body.code.toString());
-    const emailRes = await sendEmail(body, "vanderkuech@icloud.com");
+    fs.writeFileSync("./tempAuthCode.txt", body.code);
+    const emailRes = await sendEmail(body, body.email);
     res.send(emailRes);
   } catch (error) {
     console.log("SEND MAIL ERROR: ", error);
@@ -251,8 +258,7 @@ export const confirmationEmail = async (req: TypedRequestBody<any>, res: TypedRe
 export const getIntCode = async (req: TypedRequestBody<any>, res: TypedResponse<RegisterUserResponseType>) => {
   setIntSixCodes();
   try {
-    const authIntCode = fs.readFileSync("./tempAuthCode.txt").toString();
-    console.log("AUTH INT CODE: ", authIntCode);
+    const authIntCode = getIntSixCodes();
     res.send(authIntCode);
   } catch (error) {
     console.log("SEND MAIL ERROR: ", error);

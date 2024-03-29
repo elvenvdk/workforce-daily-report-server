@@ -40,8 +40,10 @@ const params = {
   Source: "no-reply@notifications.workforce-daily-report.com",
 };
 
+const devMailUrl = "http://localhost:9000";
+const prodMailUrl = "http://server.workforce-daily-report.com:9000";
+
 export const sendEmail = async (body: any, messageRecipent: string) => {
-  console.log("BODY: ", body);
   const params = {
     Destination: {
       ToAddresses: [
@@ -57,12 +59,13 @@ export const sendEmail = async (body: any, messageRecipent: string) => {
           Charset: "UTF-8",
           Data: `
           <div>
-          <h1>This is a test</h1>
-          <a href="http://localhost:3000/user-confirmation" />
+          <h1>Bissetta & List</h1>
+          <h2>Workforce Daily Report Authorization</h2>
+          <a href=${prodMailUrl}/user-confirmation />
           ${body?.text}
           <br />
           <br />
-          <p style="'text-align': 'center'">${body.code.join(" ")}</p>
+          <p style="'text-align': 'center'">${body.code}</p>
           </div>`,
         },
       },
