@@ -44,15 +44,10 @@ const devMailUrl = "http://localhost:3000";
 const prodMailUrl = "http://server.workforce-daily-report.com:9000";
 
 export const sendEmail = async (body: any, messageRecipent: string) => {
-  console.log("BODY: ", body);
+  console.log("BODY: ", body.code.toString()[0]);
   const params = {
     Destination: {
-      ToAddresses: [
-        // "vanderkuech@icloud.com",
-        // "annecyops@gmail.com",
-        messageRecipent,
-        // 'fedner@bissettalist.com'
-      ],
+      ToAddresses: [messageRecipent],
     },
     Message: {
       Body: {
@@ -60,13 +55,20 @@ export const sendEmail = async (body: any, messageRecipent: string) => {
           Charset: "UTF-8",
           Data: `
           <div>
-          <h1>Bissetta & List</h1>
-          <h2>Workforce Daily Report Authorization</h2>
-          <a href="${prodMailUrl}/user-confirmation" />
-          ${body?.text}
-          <br />
-          <br />
-          <p style="'text-align': 'center'">${body.code}</p>
+            <h1>Bissetta & List</h1>
+            <h2>Workforce Daily Report Authorization</h2>
+            <a href="${devMailUrl}/user-confirmation" />
+            ${body?.text}
+            <br />
+            <br />
+            <div>
+              <p style="'text-align': 'center'">${body.code.toString()[0]}</p>
+              <p style="'text-align': 'center'">${body.code.toString()[1]}</p>
+              <p style="'text-align': 'center'">${body.code.toString()[2]}</p>
+              <p style="'text-align': 'center'">${body.code.toString()[3]}</p>
+              <p style="'text-align': 'center'">${body.code.toString()[4]}</p>
+              <p style="'text-align': 'center'">${body.code.toString()[5]}</p>
+            </div>
           </div>`,
         },
       },
@@ -75,8 +77,8 @@ export const sendEmail = async (body: any, messageRecipent: string) => {
         Data: "Test email",
       },
     },
-    // Source: "no-reply@notifications.workforce-daily-report.com",
-    Source: "vanderkuech@icloud.com",
+    Source: "no-reply@workforce-daily-report.com",
+    // Source: "vanderkuech@icloud.com",
   };
   const sendPromise = new AWS.SES({ apiVersion: "2010-12-01" }).sendEmail(params).promise();
 
