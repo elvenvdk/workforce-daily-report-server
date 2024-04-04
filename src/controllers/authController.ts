@@ -222,7 +222,6 @@ const getRandomInt = (min: number, max: number) => {
 
 const setIntSixCodes = () => {
   const randSix = Array.from({ length: 6 }, (r: any, idx: number) => getRandomInt(1, 9));
-  console.log("SET RAND SIX: ", randSix);
   const time = 600000;
   fs.writeFileSync("./tempAuthCode.txt", randSix.toString());
   setInterval(() => {
