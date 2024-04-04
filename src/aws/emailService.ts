@@ -2,7 +2,7 @@ import AWS, { AWSError } from "aws-sdk";
 import { SendRawEmailResponse } from "aws-sdk/clients/ses";
 import nodemailer from "nodemailer";
 import mimemessage from "mimemessage";
-import fs from "fs";
+import type * as CSS from "csstype";
 
 AWS.config.update({ region: "us-east-1" });
 const mailer = nodemailer.createTransport({
@@ -43,6 +43,13 @@ const params = {
 const devMailUrl = "http://localhost:3000";
 const prodMailUrl = "http://server.workforce-daily-report.com:9000";
 
+const style: CSS.Properties<string | number> = {
+  position: "relative",
+  display: "flex",
+  flexDirection: "row",
+  fontSize: "15px",
+};
+
 export const sendEmail = async (body: any, messageRecipent: string) => {
   console.log("BODY: ", body.code.toString()[0]);
   const params = {
@@ -61,13 +68,13 @@ export const sendEmail = async (body: any, messageRecipent: string) => {
             ${body?.text}
             <br />
             <br />
-            <div>
-              <p style="'text-align': 'center'">${body.code.toString()[0]}</p>
-              <p style="'text-align': 'center'">${body.code.toString()[1]}</p>
-              <p style="'text-align': 'center'">${body.code.toString()[2]}</p>
-              <p style="'text-align': 'center'">${body.code.toString()[3]}</p>
-              <p style="'text-align': 'center'">${body.code.toString()[4]}</p>
-              <p style="'text-align': 'center'">${body.code.toString()[5]}</p>
+            <div style="${style}">
+              <span style="'text-decoration': 'none'">${body.code.toString()[0]}</span>
+              <span style="'text-decoration': 'none'">${body.code.toString()[2]}</span>
+              <span style="'text-decoration': 'none'">${body.code.toString()[4]}</span>
+              <span style="'text-decoration': 'none'">${body.code.toString()[6]}</span>
+              <span style="'text-decoration': 'none'">${body.code.toString()[8]}</span>
+              <span style="'text-decoration': 'none'">${body.code.toString()[10]}</span>
             </div>
           </div>`,
         },
