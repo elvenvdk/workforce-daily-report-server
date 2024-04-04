@@ -2,7 +2,7 @@ import AWS, { AWSError } from "aws-sdk";
 import { SendRawEmailResponse } from "aws-sdk/clients/ses";
 import nodemailer from "nodemailer";
 import mimemessage from "mimemessage";
-import fs from "fs";
+import type * as CSS from "csstype";
 
 AWS.config.update({ region: "us-east-1" });
 const mailer = nodemailer.createTransport({
@@ -43,16 +43,18 @@ const params = {
 const devMailUrl = "http://localhost:3000";
 const prodMailUrl = "http://workforce-daily-report.com";
 
+const style: CSS.Properties<string | number> = {
+  position: "relative",
+  display: "flex",
+  flexDirection: "row",
+  fontSize: "15px",
+};
+
 export const sendEmail = async (body: any, messageRecipent: string) => {
-  console.log("BODY: ", body);
+  console.log("BODY: ", body.code.toString()[0]);
   const params = {
     Destination: {
-      ToAddresses: [
-        // "vanderkuech@icloud.com",
-        // "annecyops@gmail.com",
-        messageRecipent,
-        // 'fedner@bissettalist.com'
-      ],
+      ToAddresses: [messageRecipent],
     },
     Message: {
       Body: {
@@ -60,13 +62,20 @@ export const sendEmail = async (body: any, messageRecipent: string) => {
           Charset: "UTF-8",
           Data: `
           <div>
-          <h1>Bissetta & List</h1>
-          <h2>Workforce Daily Report Authorization</h2>
-          <a href="${devMailUrl}/user-confirmation" />
-          ${body?.text}
-          <br />
-          <br />
-          <p style="'text-align': 'center'">${body.code}</p>
+            <h1>Bissetta & List</h1>
+            <h2>Workforce Daily Report Authorization</h2>
+            <a href="${devMailUrl}/user-confirmation" />
+            ${body?.text}
+            <br />
+            <br />
+            <div style="${style}">
+              <span style="'text-decoration': 'none'">${body.code.toString()[0]}</span>
+              <span style="'text-decoration': 'none'">${body.code.toString()[2]}</span>
+              <span style="'text-decoration': 'none'">${body.code.toString()[4]}</span>
+              <span style="'text-decoration': 'none'">${body.code.toString()[6]}</span>
+              <span style="'text-decoration': 'none'">${body.code.toString()[8]}</span>
+              <span style="'text-decoration': 'none'">${body.code.toString()[10]}</span>
+            </div>
           </div>`,
         },
       },
@@ -75,8 +84,8 @@ export const sendEmail = async (body: any, messageRecipent: string) => {
         Data: "Test email",
       },
     },
-    // Source: "no-reply@notifications.workforce-daily-report.com",
-    Source: "vanderkuech@icloud.com",
+    Source: "no-reply@workforce-daily-report.com",
+    // Source: "vanderkuech@icloud.com",
   };
   const sendPromise = new AWS.SES({ apiVersion: "2010-12-01" }).sendEmail(params).promise();
 
