@@ -90,6 +90,7 @@ export interface IWorker {
   role: string;
   email: string;
   active: boolean;
+  phone: string;
 }
 
 export interface IWorkType {

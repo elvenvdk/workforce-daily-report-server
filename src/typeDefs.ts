@@ -217,6 +217,7 @@ export const typeDefs = gql`
     active: Boolean
     costcode: String
     laborCode: String
+    phone: String
   }
 
   type Job {
@@ -559,6 +560,7 @@ export const typeDefs = gql`
     role: String
     email: String
     active: Boolean
+    phone: String
   }
 
   input SIWorkerInput {
@@ -703,6 +705,7 @@ export const typeDefs = gql`
     active: Boolean
     costcode: String
     email: String
+    phone: String
   }
 
   scalar Date
