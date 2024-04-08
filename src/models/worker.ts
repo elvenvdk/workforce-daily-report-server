@@ -1,44 +1,49 @@
 import { Schema, model } from "mongoose";
 import { IWorker } from "../types.ts";
 
-
-const workerSchema = new Schema<IWorker>({
-  firstName: {
-    type: String,
-    required: true,
+const workerSchema = new Schema<IWorker>(
+  {
+    firstName: {
+      type: String,
+      required: true,
+    },
+    lastName: {
+      type: String,
+      required: true,
+    },
+    middleInitial: {
+      type: String,
+    },
+    last4SSN: {
+      type: String,
+    },
+    class: {
+      type: String,
+    },
+    userToken: {
+      type: String || null,
+    },
+    authorization: {
+      type: Schema.Types.ObjectId,
+      ref: "Auth",
+    },
+    level: {
+      type: Number,
+    },
+    role: {
+      type: String,
+    },
+    email: {
+      type: String,
+    },
+    active: {
+      type: Boolean,
+    },
+    phone: {
+      type: String,
+    },
   },
-  lastName: {
-    type: String,
-    required: true,
-  },
-  middleInitial: {
-    type: String,
-  },
-  last4SSN: {
-    type: String,
-  },
-  class: {
-    type: String,
-  },
-  userToken: {
-    type: String || null
-  },
-  authorization: {
-    type: Schema.Types.ObjectId,
-    ref: 'Auth'
-  },
-  level: {
-    type: Number
-  },
-  role: {
-    type: String
-  },
-  email: {
-    type: String
-  },
-  active: {
-    type: Boolean
-  }
-}, { timestamps: true });
+  { timestamps: true }
+);
 
 export default model<IWorker>("Worker", workerSchema);
