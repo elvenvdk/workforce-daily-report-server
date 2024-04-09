@@ -60,22 +60,8 @@ export const typeDefs = gql `
     email: String
   }
 
-  type EmployeeJobRate {
-    employee: String
-    employeeId: String
-    stPay: Float
-    dtPay: Float
-  }
-
   type EmployeeRates {
     id: ID!
-    jobName: String
-    jobId: String
-    employeeRates: [EmployeeJobRate]
-    date: Date
-  }
-
-  input EmployeeJobRateInput {
     employee: String
     employeeId: String
     stPay: Float
@@ -83,13 +69,6 @@ export const typeDefs = gql `
   }
 
   input EmployeeRatesInput {
-    jobName: String
-    jobId: String
-    employeeRates: [EmployeeJobRateInput]
-    date: Date
-  }
-
-  input EmployeeJobRateUpdate {
     employee: String
     employeeId: String
     stPay: Float
@@ -97,11 +76,10 @@ export const typeDefs = gql `
   }
 
   input EmployeeRatesUpdate {
-    id: ID!
-    jobName: String
-    jobId: String
-    employeeRates: [EmployeeJobRateUpdate]
-    date: Date
+    employee: String
+    employeeId: String
+    stPay: Float
+    dtPay: Float
   }
 
   type employeeHrs {
@@ -116,7 +94,7 @@ export const typeDefs = gql `
     regWages: Float
     otWages: Float
     workerClass: String
-    percentage: Int
+    percentage: Float
     wagesOAndPOT: Float
     wagesOAndPRT: Float
     wagesTotalRT: Float
@@ -146,7 +124,7 @@ export const typeDefs = gql `
     regWages: Float
     otWages: Float
     workerClass: String
-    percentage: Int
+    percentage: Float
     wagesOPOT: Float
     wagesOPRT: Float
     wagesTotalRT: Float
@@ -171,6 +149,7 @@ export const typeDefs = gql `
     totalHours: Float
     totalAmount: Float
     jobId: String
+    jobDate: Date
   }
 
   input CostSummaryInput {
@@ -179,6 +158,7 @@ export const typeDefs = gql `
     totalHours: Float
     totalAmount: Float
     jobId: String
+    jobDate: Date
   }
 
   input CostSummaryUpdate {
@@ -236,6 +216,7 @@ export const typeDefs = gql `
     active: Boolean
     costcode: String
     laborCode: String
+    phone: String
   }
 
   type Job {
@@ -253,7 +234,7 @@ export const typeDefs = gql `
     taskCompletionDate: Date
     active: Boolean
     docPrefix: String
-    percentage: Int
+    percentage: Float
   }
 
   type WorksiteEmployees {
@@ -281,12 +262,14 @@ export const typeDefs = gql `
 
   type CostCode {
     id: ID
+    budget: Float
     laborCode: String
     costCode: String
     description: String
   }
 
   input CostCodeInput {
+    budget: Float
     laborCode: String
     costCode: String
     description: String
@@ -294,6 +277,7 @@ export const typeDefs = gql `
 
   input UpdateCostCodeInput {
     id: ID!
+    budget: Float
     laborCode: String
     costCode: String
     description: String
@@ -343,6 +327,7 @@ export const typeDefs = gql `
     hasBeenRecalled: Boolean
     reportNo: String
     titleOfChangeOrder: String
+    percentage: Float
   }
 
   type SIMaterialsDesc {
@@ -530,7 +515,7 @@ export const typeDefs = gql `
     taskCompletionDate: Date
     active: Boolean
     docPrefix: String
-    percentage: Int
+    percentage: Float
   }
 
   input UpdateJobInput {
@@ -548,7 +533,7 @@ export const typeDefs = gql `
     taskCompletionDate: Date
     active: Boolean
     docPrefix: String
-    percentage: Int
+    percentage: Float
   }
 
   input CreateWorksiteEmployeesInput {
@@ -574,6 +559,7 @@ export const typeDefs = gql `
     role: String
     email: String
     active: Boolean
+    phone: String
   }
 
   input SIWorkerInput {
@@ -666,6 +652,7 @@ export const typeDefs = gql `
     reportNo: String
     docPrefix: String
     titleOfChangeOrder: String
+    percentage: Float
   }
 
   input UpdateSIInput {
@@ -704,6 +691,7 @@ export const typeDefs = gql `
     reportNo: String
     CreateSIInput: String
     titleOfChangeOrder: String
+    percentage: Float
   }
 
   input UpdateWorkerInput {
@@ -716,6 +704,7 @@ export const typeDefs = gql `
     active: Boolean
     costcode: String
     email: String
+    phone: String
   }
 
   scalar Date

@@ -1,30 +1,30 @@
 import { Schema, model } from "mongoose";
 const ChecklistSchema = new Schema({
     type: {
-        type: String
+        type: String,
     },
     checklistType: {
-        type: String
+        type: String,
     },
     agency: {
         id: {
-            type: String
+            type: String,
         },
         agencyName: {
-            type: String
-        }
+            type: String,
+        },
     },
     date: {
-        type: String
+        type: String,
     },
     datePrepared: {
-        type: String
+        type: String,
     },
     location: {
-        type: String
+        type: String,
     },
     reportNo: {
-        type: String
+        type: String,
     },
     // fieldTasks: {
     //   type: Map,
@@ -38,44 +38,44 @@ const ChecklistSchema = new Schema({
         {
             id: String,
             question: String,
-            answer: String
-        }
+            answer: String,
+        },
     ],
     contractNo: {
-        type: String
+        type: String,
     },
     specificationsNo: {
-        type: String
+        type: String,
     },
     description: {
-        type: String
+        type: String,
     },
     contractor: {
-        type: String
+        type: String,
     },
     sub_contractor: {
-        type: String
+        type: String,
     },
     locationOfWork: {
-        type: String
+        type: String,
     },
     preparedBy: {
-        type: String
+        type: String,
     },
     inspectorName: {
-        type: String
+        type: String,
     },
     surveillanceReport: {
-        type: String
+        type: String,
     },
     drawing: {
-        type: String
+        type: String,
     },
     remarks: {
-        type: String
+        type: String,
     },
     nonconformanceRemarks: {
-        type: String
+        type: String,
     },
     additionalRemarks: {
         text: { type: String },
@@ -91,6 +91,6 @@ const ChecklistSchema = new Schema({
         signature3: { type: String },
         title3: { type: String },
         date3: { type: Date },
-    }
+    },
 }, { timestamps: true });
 export default model("Checklist", ChecklistSchema);

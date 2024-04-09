@@ -2,6 +2,8 @@ import jwt from "jsonwebtoken";
 import bcrypt from "bcryptjs";
 import Auth from "../models/auth.ts";
 import Worker from "../models/worker.ts";
+import { sendEmail } from "../aws/emailService.ts";
+import fs from "fs";
 const verifyPassword = async (currentPassword, userPassword) => await bcrypt.compare(currentPassword, userPassword);
 export const registerUser = async (req, res) => {
     try {
@@ -30,7 +32,7 @@ export const registerUser = async (req, res) => {
             jwt.sign({
                 userId: existingUser.id,
                 level: existingUser.level,
-                role: existingUser.role
+                role: existingUser.role,
             }, `${process.env.TOKEN_KEY}`, { algorithm: "HS256" }, async (err, userToken) => {
                 if (err) {
                     console.log("TOKEN ERROR: ", err);
@@ -81,7 +83,7 @@ export const login = async (req, res) => {
             // Get user info
             const verifiedUser = await Worker.findOne({ _id: userAuth.user });
             if (!verifiedPassword) {
-                return res.status(404).json({ msg: 'Username or Password Incorrect' });
+                return res.status(404).json({ msg: "Username or Password Incorrect" });
             }
             if (verifiedUser) {
                 // Mark user as active
@@ -113,10 +115,10 @@ export const login = async (req, res) => {
                             middleInitial: verifiedUser.middleInitial ? verifiedUser.middleInitial : null,
                             class: verifiedUser.class,
                             level: verifiedUser.level,
-                            role: verifiedUser.role
+                            role: verifiedUser.role,
                         };
                         // res.send(user);
-                        res.cookie("userToken", userToken).send({ msg: 'User successfully set', user });
+                        res.cookie("userToken", userToken).send({ msg: "User successfully set", user });
                     }
                 });
             }
@@ -188,5 +190,50 @@ export const updatePassword = async (req, res) => {
     }
     catch (error) {
         console.log(error);
+    }
+};
+const getRandomInt = (min, max) => {
+    const minCeiled = Math.ceil(min);
+    const maxFloored = Math.floor(max);
+    return Math.floor(Math.random() * (maxFloored - minCeiled) + minCeiled);
+};
+const setIntSixCodes = () => {
+    const randSix = Array.from({ length: 6 }, (r, idx) => getRandomInt(1, 9));
+    const time = 600000;
+    fs.writeFileSync("./tempAuthCode.txt", randSix.toString());
+    setInterval(() => {
+        fs.writeFileSync("./tempAuthCode.txt", randSix.toString());
+    }, time);
+};
+const getIntSixCodes = () => {
+    return fs.readFileSync("./tempAuthCode.txt");
+};
+export const confirmationEmail = async (req, res) => {
+    // const randSix: number[] = [];
+    // Array.from({ length: 6 }, (r: any, idx: number) => {
+    //   randSix.push(getRandomInt(1, 9));
+    // });
+    setIntSixCodes();
+    console.log("GET RAND SIX: ", getIntSixCodes().toString());
+    const { body } = req;
+    body.code = getIntSixCodes().toString();
+    body.text = "Please click the link and enter the 6 digit code below";
+    try {
+        fs.writeFileSync("./tempAuthCode.txt", body.code);
+        const emailRes = await sendEmail(body, body.email);
+        res.send(emailRes);
+    }
+    catch (error) {
+        console.log("SEND MAIL ERROR: ", error);
+    }
+};
+export const getIntCode = async (req, res) => {
+    setIntSixCodes();
+    try {
+        const authIntCode = getIntSixCodes();
+        res.send(authIntCode);
+    }
+    catch (error) {
+        console.log("SEND MAIL ERROR: ", error);
     }
 };

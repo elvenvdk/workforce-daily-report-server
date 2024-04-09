@@ -18,23 +18,26 @@ const workerSchema = new Schema({
         type: String,
     },
     userToken: {
-        type: String || null
+        type: String || null,
     },
     authorization: {
         type: Schema.Types.ObjectId,
-        ref: 'Auth'
+        ref: "Auth",
     },
     level: {
-        type: Number
+        type: Number,
     },
     role: {
-        type: String
+        type: String,
     },
     email: {
-        type: String
+        type: String,
     },
     active: {
-        type: Boolean
-    }
+        type: Boolean,
+    },
+    phone: {
+        type: String,
+    },
 }, { timestamps: true });
 export default model("Worker", workerSchema);

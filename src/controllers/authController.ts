@@ -254,7 +254,7 @@ export const confirmationEmail = async (req: TypedRequestBody<any>, res: TypedRe
 };
 
 export const getIntCode = async (req: TypedRequestBody<any>, res: TypedResponse<RegisterUserResponseType>) => {
-  setIntSixCodes();
+  // setIntSixCodes();
   try {
     const authIntCode = getIntSixCodes();
     res.send(authIntCode);

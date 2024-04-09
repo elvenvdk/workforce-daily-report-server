@@ -1,20 +1,20 @@
 import { Schema, model } from "mongoose";
 const authSchema = new Schema({
     userName: {
-        type: String
+        type: String,
     },
     password: {
-        type: String
+        type: String,
     },
     user: {
         type: Schema.Types.ObjectId,
-        ref: 'Worker'
+        ref: "Worker",
     },
     active: {
-        type: Boolean
+        type: Boolean,
     },
     userToken: {
-        type: String
+        type: String,
     },
 });
-export default model('Auth', authSchema);
+export default model("Auth", authSchema);
