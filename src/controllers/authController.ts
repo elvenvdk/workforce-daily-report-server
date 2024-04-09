@@ -239,7 +239,7 @@ export const confirmationEmail = async (req: TypedRequestBody<any>, res: TypedRe
   //   randSix.push(getRandomInt(1, 9));
   // });
   setIntSixCodes();
-  console.log("GET RAND SIX: ", getIntSixCodes().toString());
+  // console.log("GET RAND SIX: ", getIntSixCodes().toString());
   const { body } = req;
   body.code = getIntSixCodes().toString();
   body.text = "Please click the link and enter the 6 digit code below";
@@ -257,7 +257,8 @@ export const getIntCode = async (req: TypedRequestBody<any>, res: TypedResponse<
   // setIntSixCodes();
   try {
     const authIntCode = getIntSixCodes();
-    res.send(authIntCode);
+    // console.log("INT SIX CODES: ", authIntCode.toString());
+    res.send(authIntCode.toString());
   } catch (error) {
     console.log("SEND MAIL ERROR: ", error);
   }
