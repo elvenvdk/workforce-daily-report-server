@@ -33,7 +33,7 @@ export const sendEmail = async (body: any, messageRecipent: string) => {
           <div>
             <h1>Bissetta & List</h1>
             <h2>Workforce Daily Report Authorization</h2>
-            <a href="${devMailUrl}/user-confirmation" />
+            <a href="${prodMailUrl}/user-confirmation" />
             ${body?.text}
             <br />
             <br />
