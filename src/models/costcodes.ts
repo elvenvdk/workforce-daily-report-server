@@ -1,5 +1,5 @@
 import { Schema, model } from "mongoose";
-import { ICostCodes } from "../types.js";
+import { ICostCodes } from "'../types'.js";
 
 const CostCodeSchema = new Schema<ICostCodes>(
   {

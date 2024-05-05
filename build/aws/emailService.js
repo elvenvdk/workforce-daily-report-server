@@ -44,7 +44,7 @@ export const sendEmail = async (body, messageRecipent) => {
             },
             Subject: {
                 Charset: "UTF-8",
-                Data: "Test email",
+                Data: "Workforce Daily Report Email Confirmation",
             },
         },
         Source: "no-reply@workforce-daily-report.com",

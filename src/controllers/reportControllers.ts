@@ -1,4 +1,4 @@
-import { TypedRequestBody, TypedResponse, RegisterUserType, EmailChecklistType, EmailChecklistLinkType, RegisterUserResponseType } from "../types.ts";
+import { TypedRequestBody, TypedResponse, RegisterUserType, EmailChecklistType, EmailChecklistLinkType, RegisterUserResponseType } from "'../types'.ts";
 import { sendEmailWithAttachment } from "../aws/emailService.ts";
 import SigninSignout from "../models/signinSignout.ts";
 import Checklist from "../models/checklist.ts";

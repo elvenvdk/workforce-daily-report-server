@@ -1,20 +1,20 @@
 import { Schema, model } from "mongoose";
 const ChecklistCreatorSchema = new Schema({
     type: {
-        type: String
+        type: String,
     },
     fieldTasks: [
         {
             id: {
-                type: Number
+                type: Number,
             },
             question: {
-                type: String
+                type: String,
             },
             answer: {
-                type: String
-            }
-        }
-    ]
+                type: String,
+            },
+        },
+    ],
 }, { timestamps: true });
 export default model("ChecklistCreator", ChecklistCreatorSchema);

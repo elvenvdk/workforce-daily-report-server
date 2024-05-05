@@ -1,5 +1,5 @@
 import { Schema, model } from "mongoose";
-import { ISigninSignout } from "../types.ts";
+import { ISigninSignout } from "'../types'.ts";
 
 const SigninSignoutSchema = new Schema<ISigninSignout>(
   {

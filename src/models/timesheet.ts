@@ -1,5 +1,5 @@
 import { Schema, model } from "mongoose";
-import { ITimesheet } from "../types.ts";
+import { ITimesheet } from "'../types'.ts";
 
 const TimesheetSchema = new Schema<ITimesheet>(
   {

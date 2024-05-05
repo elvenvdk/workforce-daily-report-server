@@ -1,5 +1,5 @@
 import { Schema, model } from "mongoose";
-import { IContractRep } from "../types.ts";
+import { IContractRep } from "'../types'.ts";
 
 const ContractRepSchema = new Schema<IContractRep>({
   firstName: {

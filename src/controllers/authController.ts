@@ -1,4 +1,4 @@
-import { TypedRequestBody, TypedResponse, RegisterUserType, RegisterUserResponseType } from "../types";
+import { TypedRequestBody, TypedResponse, RegisterUserType, RegisterUserResponseType } from "'../types'";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcryptjs";
 import Auth from "../models/auth.ts";

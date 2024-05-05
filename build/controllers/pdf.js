@@ -1,7 +1,7 @@
 import { printPDF } from "../pdf/functions.js";
 import puppeteer from "puppeteer";
 export const savePdf = async (req, res) => {
-    console.log('SAVING PDF...');
+    console.log("SAVING PDF...");
     try {
         const checklistPdf = await printPDF();
         if (checklistPdf) {
@@ -18,18 +18,18 @@ export const createPdf = async (req, res) => {
     try {
         const browser = await puppeteer.launch({ headless: true });
         const page = await browser.newPage();
-        await page.goto('http://localhost:3000/checklistreports-pdf', { waitUntil: 'networkidle2' });
-        const pdf = await page.pdf({ format: 'A4', path: './pdfs/checklist-report.pdf' });
+        await page.goto("http://localhost:3000/checklistreports-pdf", { waitUntil: "networkidle2" });
+        const pdf = await page.pdf({ format: "A4", path: "./pdfs/checklist-report.pdf" });
         if (!pdf)
-            console.log('PDF ERROR: no pdf...');
+            console.log("PDF ERROR: no pdf...");
         await browser.close();
         res.set({
-            'Content-Type': 'application/pdf',
-            'Content-Length': pdf.length
+            "Content-Type": "application/pdf",
+            "Content-Length": pdf.length,
         });
         res.send(pdf);
     }
     catch (error) {
-        console.log('ERROR: ', error);
+        console.log("ERROR: ", error);
     }
 };

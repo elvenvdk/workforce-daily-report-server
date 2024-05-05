@@ -1,7 +1,5 @@
 import { Schema, model } from "mongoose";
-import { IWorksiteEmployees } from "../types.ts";
-
-
+import { IWorksiteEmployees } from "'../types'.ts";
 
 const WorksiteEmployeesSchema = new Schema<IWorksiteEmployees>({
   employees: {
@@ -20,7 +18,4 @@ const WorksiteEmployeesSchema = new Schema<IWorksiteEmployees>({
   },
 });
 
-export default model<IWorksiteEmployees>(
-  "WorksiteEmployees",
-  WorksiteEmployeesSchema
-);
+export default model<IWorksiteEmployees>("WorksiteEmployees", WorksiteEmployeesSchema);

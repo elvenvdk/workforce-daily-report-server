@@ -6,7 +6,7 @@ import { Sha256 } from "@aws-crypto/sha256-browser";
 import { Hash } from "@smithy/hash-node";
 import fs from "fs";
 import mime from "mime-types";
-import { TypedRequestBody, TypedResponse, RegisterUserType, EmailChecklistType, EmailChecklistLinkType, RegisterUserResponseType, IJobImages } from "../types.ts";
+import { TypedRequestBody, TypedResponse, RegisterUserType, EmailChecklistType, EmailChecklistLinkType, RegisterUserResponseType, IJobImages } from "'../types'.ts";
 import jobImages from "../models/jobImages.ts";
 import dotenv from "dotenv";
 

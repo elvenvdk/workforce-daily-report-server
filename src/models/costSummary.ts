@@ -1,5 +1,5 @@
 import { Schema, model } from "mongoose";
-import { IEmployeeRates } from "../types.ts";
+import { IEmployeeRates } from "'../types'.ts";
 
 const EmployeeRatesSchema = new Schema<IEmployeeRates>({}, { timestamps: true });
 

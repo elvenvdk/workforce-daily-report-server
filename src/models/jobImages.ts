@@ -1,5 +1,5 @@
 import { Schema, model } from "mongoose";
-import { IJobImages } from "../types.ts";
+import { IJobImages } from "'../types'.ts";
 import { timeStamp } from "console";
 
 const JobImagesSchema = new Schema<IJobImages>(

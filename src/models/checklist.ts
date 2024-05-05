@@ -1,5 +1,5 @@
 import { Schema, model } from "mongoose";
-import { IChecklist } from "../types.ts";
+import { IChecklist } from "'../types'.ts";
 
 const ChecklistSchema = new Schema<IChecklist>(
   {
