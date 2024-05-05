@@ -9,6 +9,8 @@ import mime from "mime-types";
 import { TypedRequestBody, TypedResponse, RegisterUserType, EmailChecklistType, EmailChecklistLinkType, RegisterUserResponseType, IJobImages } from "'../types'.ts";
 import jobImages from "../models/jobImages.ts";
 import dotenv from "dotenv";
+import ImageId from "../models/imageId.js";
+import Worker from "../models/worker.js";
 
 dotenv.config();
 
@@ -77,6 +79,36 @@ export const uploadJobImage = async (req: TypedRequestBody<any>, res: TypedRespo
   const imgStr = img64Arr.join("");
 
   newImgFile.details.imgString = imgStr;
+  res.send(newImgFile);
+};
+
+export const uploadImageId = async (req: TypedRequestBody<any>, res: TypedResponse<any>) => {
+  const data = { ...req.body };
+  // console.log("REQ BODY: ", { img: data.img, name: data.name, id: data.employeeId });
+
+  const employee = await Worker.findById(data.employeeId);
+
+  let imgBuffer = Buffer.from(data.img, "base64");
+
+  const newImgFile = new ImageId({
+    imgName: `${data.name}/image`,
+    imgBuffer: imgBuffer,
+    employee: data.employeeId,
+  });
+
+  const employeeImgId = await newImgFile.save();
+
+  employee.imageId = employeeImgId.id;
+
+  const img64 = Buffer.from(imgBuffer).toString("base64");
+
+  const img64Arr = [...img64];
+  img64Arr.splice(4, 0, ":");
+  img64Arr.splice(15, 0, ";");
+  img64Arr.splice(22, 0, ",");
+  const imgStr = img64Arr.join("");
+
+  newImgFile.imgString = imgStr;
   res.send(newImgFile);
 };
 

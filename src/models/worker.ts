@@ -42,6 +42,9 @@ const workerSchema = new Schema<IWorker>(
     phone: {
       type: String,
     },
+    imageId: {
+      type: String,
+    },
   },
   { timestamps: true }
 );

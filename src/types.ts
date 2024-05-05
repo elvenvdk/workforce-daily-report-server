@@ -32,6 +32,14 @@ export interface IJobImages {
   details: TJobImage;
 }
 
+export interface IImageId {
+  imgName: string;
+  imgUri: string;
+  imgBuffer: Buffer;
+  imgString: string;
+  employee: Types.ObjectId;
+}
+
 export interface IUserContextUser {
   firstName: string;
   lastName: string;
@@ -91,6 +99,7 @@ export interface IWorker {
   email: string;
   active: boolean;
   phone: string;
+  imageId: Types.ObjectId;
 }
 
 export interface IWorkType {
