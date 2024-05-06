@@ -9,8 +9,8 @@ import mime from "mime-types";
 import { TypedRequestBody, TypedResponse, RegisterUserType, EmailChecklistType, EmailChecklistLinkType, RegisterUserResponseType, IJobImages } from "'../types'.ts";
 import jobImages from "../models/jobImages.ts";
 import dotenv from "dotenv";
-import ImageId from "../models/imageId.js";
-import Worker from "../models/worker.js";
+import ImageId from "../models/imageId.ts";
+import Worker from "../models/worker.ts";
 
 dotenv.config();
 
@@ -110,6 +110,29 @@ export const uploadImageId = async (req: TypedRequestBody<any>, res: TypedRespon
 
   newImgFile.imgString = imgStr;
   res.send(newImgFile);
+};
+
+export const getImageId = async (req: TypedRequestBody<any>, res: TypedResponse<any>) => {
+  const { id } = req.params;
+  console.log("EMPLOYEE ID: ", id);
+  try {
+    const [employeeImg] = await ImageId.find({
+      employee: id,
+    });
+    if (!employeeImg) {
+      res.status(404).send({ message: "Image not found" });
+    }
+    const img64 = Buffer.from(employeeImg.imgBuffer).toString("base64");
+    const img64Arr = [...img64];
+    img64Arr.splice(4, 0, ":");
+    img64Arr.splice(15, 0, ";");
+    img64Arr.splice(22, 0, ",");
+    const imgStr = img64Arr.join("");
+    employeeImg.imgString = imgStr;
+    res.send(imgStr);
+  } catch (err) {
+    console.error("GET IMAGE ERROR: ", err);
+  }
 };
 
 export const listJobImages = async (req: TypedRequestBody<any>, res: TypedResponse<any>) => {
