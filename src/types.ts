@@ -256,6 +256,7 @@ export interface IJob {
   active: boolean;
   docPrefix: string;
   percentage: number;
+  shouldVerifyId: boolean;
 }
 
 export interface IContractRep {

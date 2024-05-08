@@ -236,6 +236,7 @@ export const typeDefs = gql`
     active: Boolean
     docPrefix: String
     percentage: Float
+    shouldVerifyId: Boolean
   }
 
   type WorksiteEmployees {
@@ -517,6 +518,7 @@ export const typeDefs = gql`
     active: Boolean
     docPrefix: String
     percentage: Float
+    shouldVerifyId: Boolean
   }
 
   input UpdateJobInput {
@@ -535,6 +537,7 @@ export const typeDefs = gql`
     active: Boolean
     docPrefix: String
     percentage: Float
+    shouldVerifyId: Boolean
   }
 
   input CreateWorksiteEmployeesInput {
