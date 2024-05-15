@@ -176,7 +176,7 @@ export const typeDefs = gql`
   }
 
   type Agency {
-    id: ID!
+    id: ID
     agencyName: String
   }
 
@@ -186,11 +186,11 @@ export const typeDefs = gql`
 
   type SIWorker {
     id: ID!
-    firstName: String!
-    lastName: String!
+    firstName: String
+    lastName: String
     middleInitial: String
-    last4SSN: String!
-    class: String!
+    last4SSN: String
+    class: String
     timeIn: Date
     timeOut: Date
     timeInSignature: String
@@ -204,8 +204,8 @@ export const typeDefs = gql`
 
   type Worker {
     id: ID!
-    firstName: String!
-    lastName: String!
+    firstName: String
+    lastName: String
     middleInitial: String
     last4SSN: String
     class: String
