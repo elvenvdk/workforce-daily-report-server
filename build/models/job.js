@@ -20,6 +20,9 @@ const JobSchema = new Schema({
     percentage: {
         type: Number,
     },
+    shouldVerifyId: {
+        type: Boolean,
+    },
     laborTicketAbv: {
         type: String,
     },

@@ -39,5 +39,8 @@ const workerSchema = new Schema({
     phone: {
         type: String,
     },
+    imageId: {
+        type: String,
+    },
 }, { timestamps: true });
 export default model("Worker", workerSchema);
