@@ -22,11 +22,11 @@ const app = express();
 const httpServer = http.createServer(app);
 // MONGODB
 const mainDbConnection = async () => {
-    const uri = `mongodb+srv://bl_developer:${process.env.BL_DEVELOPER_MONGOPASS}@cluster0.vvoqqub.mongodb.net/?retryWrites=true&w=majority`;
-    await mongoose.connect(uri, {
-        dbName: "snappii",
-    });
-    console.log("database connected");
+  const uri = `mongodb+srv://bl_developer:${process.env.BL_DEVELOPER_MONGOPASS}@cluster0.vvoqqub.mongodb.net/?retryWrites=true&w=majority`;
+  await mongoose.connect(uri, {
+    dbName: "snappii",
+  });
+  console.log("database connected");
 };
 mainDbConnection().catch(err => console.log(err));
 // IMAGE STORAGE
@@ -41,25 +41,31 @@ mainDbConnection().catch(err => console.log(err));
 // const upload = multer({ dest: "uploads/" });
 // GRAPHQL
 const apolloServer = new ApolloServer({
-    typeDefs,
-    resolvers,
-    plugins: [ApolloServerPluginDrainHttpServer({ httpServer })],
+  typeDefs,
+  resolvers,
+  plugins: [ApolloServerPluginDrainHttpServer({ httpServer })],
 });
 await apolloServer.start();
 // MIDDLEWARE
-app.use("/gql", express.json({ limit: "10mb" }), express.urlencoded({ limit: "10mb" }), cors({
-    origin: ["http://localhost:3000", "http://workforce-daily-report.com", "https://studio.apollographql.com"],
+app.use(
+  "/gql",
+  express.json({ limit: "10mb" }),
+  express.urlencoded({ limit: "10mb" }),
+  cors({
+    origin: ["http://localhost:3000", "https://workforce-daily-report.com", "https://studio.apollographql.com"],
     credentials: true,
     methods: "GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS",
     preflightContinue: false,
     optionsSuccessStatus: 204,
-}), expressMiddleware(apolloServer, {
+  }),
+  expressMiddleware(apolloServer, {
     context: async ({ req }) => {
-        return {
-            userToken: req.headers.authorization,
-        };
+      return {
+        userToken: req.headers.authorization,
+      };
     },
-}));
+  })
+);
 app.use(express.json({ limit: "100mb" }));
 app.use(express.urlencoded({ limit: "100mb", extended: true }));
 app.use(morgan("dev"));
@@ -68,16 +74,18 @@ const __dirname = path.dirname(__filename);
 app.use(express.static(path.join(__dirname, "public")));
 app.use(cookieParser());
 app
-    .use(cors({
-    origin: ["http://localhost:3000", "http://workforce-daily-report.com"],
-    optionsSuccessStatus: 204,
-    credentials: true,
-    methods: "GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS",
-    preflightContinue: true,
-}))
-    .options("*", function (req, res) {
+  .use(
+    cors({
+      origin: ["http://localhost:3000", "https://workforce-daily-report.com"],
+      optionsSuccessStatus: 204,
+      credentials: true,
+      methods: "GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS",
+      preflightContinue: true,
+    })
+  )
+  .options("*", function (req, res) {
     res.set("X-Preflight-Response", "true").end();
-});
+  });
 app.use("/api/auth", authRoutes);
 app.use("/api/reports", reportRoutes);
 app.use("/api/pdf", pdfRoutes);

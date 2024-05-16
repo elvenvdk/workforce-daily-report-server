@@ -10,7 +10,7 @@ const mailer = nodemailer.createTransport({
 });
 
 const devMailUrl = "http://localhost:3000";
-const prodMailUrl = "http://workforce-daily-report.com";
+const prodMailUrl = "https://workforce-daily-report.com";
 
 const style: CSS.Properties<string | number> = {
   position: "relative",

@@ -63,7 +63,7 @@ app.use(
   express.json({ limit: "10mb" }),
   express.urlencoded({ limit: "10mb" }),
   cors<cors.CorsRequest>({
-    origin: ["http://localhost:3000", "http://workforce-daily-report.com", "https://studio.apollographql.com"],
+    origin: ["http://localhost:3000", "https://workforce-daily-report.com", "https://studio.apollographql.com"],
     credentials: true,
     methods: "GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS",
     preflightContinue: false,
@@ -87,7 +87,7 @@ app.use(cookieParser());
 app
   .use(
     cors<cors.CorsRequest>({
-      origin: ["http://localhost:3000", "http://workforce-daily-report.com"],
+      origin: ["http://localhost:3000", "https://workforce-daily-report.com"],
       optionsSuccessStatus: 204,
       credentials: true,
       methods: "GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS",
@@ -104,4 +104,4 @@ app.use("/api/pdf", pdfRoutes);
 app.use("/api/job-images", imagesRoutes);
 
 await new Promise<void>(resolve => httpServer.listen({ port: PORT }, resolve));
-console.log(`🚀 Server connected at http://localhost:${PORT} - YES!`);
+console.log(`🚀 Server connected on port: ${PORT} - YES!`);
